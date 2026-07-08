@@ -1,0 +1,217 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Diagnóstico de Backlog — Portafolio GD 2026 | Seguros Bolívar</title>
+<style>
+:root{--primary:#1a237e;--primary-light:#283593;--primary-dark:#0d1642;--white:#fff;--gray-50:#f8f9fa;--gray-100:#f1f3f5;--gray-200:#e9ecef;--gray-400:#ced4da;--gray-500:#adb5bd;--gray-600:#868e96;--gray-800:#343a40;--success:#2e7d32;--success-bg:#e8f5e9;--warning:#f57f17;--warning-bg:#fff8e1;--danger:#c62828;--danger-bg:#ffebee;--neutral:#546e7a;--neutral-bg:#eceff1;--font:system-ui,-apple-system,sans-serif;--radius:8px;--shadow:0 2px 8px rgba(26,35,126,.08)}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:var(--font);background:var(--gray-50);color:var(--gray-800);line-height:1.6;font-size:.9rem}
+a{color:var(--primary);text-decoration:none}a:hover{text-decoration:underline}
+.header{background:linear-gradient(135deg,var(--primary-dark),var(--primary));color:var(--white);padding:2rem 1.5rem;text-align:center}
+.header h1{font-size:1.6rem;font-weight:700;margin-bottom:.25rem}.header .sub{font-size:.95rem;opacity:.85}.header .date{font-size:.8rem;opacity:.7;margin-top:.5rem}
+.container{max-width:1200px;margin:0 auto;padding:1.5rem}
+.summary{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);padding:1.5rem;margin-bottom:2rem}
+.summary h2{font-size:1.2rem;color:var(--primary);margin-bottom:1rem}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin-bottom:1.5rem}
+.metric{text-align:center;padding:1rem;border-radius:var(--radius);background:var(--gray-50)}
+.metric .val{font-size:1.8rem;font-weight:700}.metric .lbl{font-size:.75rem;color:var(--gray-600)}
+.metric.ok .val{color:var(--success)}.metric.warn .val{color:var(--warning)}.metric.bad .val{color:var(--danger)}
+table{width:100%;border-collapse:collapse;font-size:.85rem;margin:1rem 0}
+thead{background:var(--primary);color:var(--white)}th{padding:.6rem .8rem;text-align:left;font-weight:600}
+td{padding:.5rem .8rem;border-bottom:1px solid var(--gray-200)}tbody tr:hover{background:var(--gray-100)}
+.card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:1.5rem;overflow:hidden}
+.card-header{padding:1rem 1.5rem;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;gap:.75rem;cursor:pointer}
+.card-header:hover{background:var(--gray-50)}.card-header h3{flex:1;font-size:1rem;color:var(--primary-dark)}
+.card-body{padding:1.5rem;display:none}.card-body.open{display:block}
+.badge{display:inline-block;padding:.2rem .5rem;border-radius:10px;font-size:.7rem;font-weight:600}
+.badge-ok{background:var(--success-bg);color:var(--success)}.badge-warn{background:var(--warning-bg);color:var(--warning)}
+.badge-bad{background:var(--danger-bg);color:var(--danger)}.badge-na{background:var(--neutral-bg);color:var(--neutral)}
+.finding{padding:.5rem .75rem;margin-bottom:.5rem;border-left:4px solid var(--danger);background:var(--danger-bg);border-radius:0 var(--radius) var(--radius) 0;font-size:.8rem}
+.finding.minor{border-left-color:var(--warning);background:var(--warning-bg)}.finding.ok{border-left-color:var(--success);background:var(--success-bg)}
+.footer{text-align:center;padding:2rem 1rem;font-size:.75rem;color:var(--gray-500);border-top:1px solid var(--gray-200);margin-top:2rem}
+@media(max-width:768px){.metrics{grid-template-columns:repeat(2,1fr)}}
+</style></head><body>
+<header class="header"><h1>🏥 Diagnóstico de Backlog — Portafolio GD 2026</h1>
+<div class="sub">Análisis de prácticas de gestión en Jira · 12 Proyectos</div>
+<div class="date">7 de julio de 2026</div></header>
+<div class="container">
+
+<div class="summary"><h2>📊 Resumen Ejecutivo</h2>
+
+<div style="background:var(--danger-bg);border:2px solid var(--danger);border-radius:var(--radius);padding:1rem;margin-bottom:1.5rem">
+<h3 style="color:var(--danger);margin-bottom:.5rem">🚨 Alerta Transversal: Épicas con duedate vencida o próxima sin actividad</h3>
+<p style="font-size:.85rem;margin-bottom:.75rem">Patrón detectado en múltiples proyectos: épicas con fecha comprometida cercana/vencida que no han iniciado o contradicen su avance reportado.</p>
+<table style="font-size:.8rem"><thead><tr><th>Proyecto</th><th>Épica</th><th>Estado</th><th>Duedate</th><th>Avance</th><th>Problema</th></tr></thead><tbody>
+<tr style="background:var(--danger-bg)"><td>GD-929</td><td>GD929-1395 (Prioridad 2)</td><td>Por Hacer</td><td>2026-07-09 ⚠️</td><td>77%</td><td>Estado contradice avance. Venció ayer.</td></tr>
+<tr><td>GD-929</td><td>GD929-1396 (Prioridad 3)</td><td>Por Hacer</td><td>2026-08-14</td><td>7%</td><td>5 semanas para terminar con 7%</td></tr>
+<tr><td>GD-981</td><td>GD981-1506 (Retoma)</td><td>Por Hacer</td><td>2026-07-22</td><td>23%</td><td>2 semanas. "Por Hacer" con avance.</td></tr>
+<tr style="background:var(--danger-bg)"><td>GD-1136</td><td>GD1136-34 (Paquete 1)</td><td>En Progreso</td><td>2026-05-08 ⚠️</td><td>49%</td><td>Venció hace 60 días.</td></tr>
+<tr style="background:var(--danger-bg)"><td>GD-1136</td><td>GD1136-35 (Paquete 2)</td><td>En Progreso</td><td>2026-05-25 ⚠️</td><td>0%</td><td>Venció hace 43d. Sin historias.</td></tr>
+<tr style="background:var(--danger-bg)"><td>GD-1136</td><td>GD1136-36 (Paquete 3)</td><td>En Progreso</td><td>2026-06-19 ⚠️</td><td>0%</td><td>Venció hace 18d. Sin historias.</td></tr>
+<tr><td>GD-902</td><td>5 épicas (960,969,1004,1009,1018)</td><td>En Progreso</td><td>2026-06-30 ⚠️</td><td>0-98%</td><td>Vencidas hace 7 días.</td></tr>
+<tr><td>GD-905</td><td>GD905-44 (Integración gestor)</td><td>En Progreso</td><td>2026-05-31 ⚠️</td><td>67%</td><td>Venció hace 37 días.</td></tr>
+<tr><td>GD-904</td><td>GD904-663, 720 (Contingencia)</td><td>En Progreso</td><td>2026-05-15/28 ⚠️</td><td>50-90%</td><td>Vencidas hace 40-53d.</td></tr>
+</tbody></table>
+<p style="font-size:.8rem;color:var(--danger);margin-top:.75rem;font-weight:600">Impacto: 9 de 12 proyectos tienen al menos una épica con duedate vencida. Problema sistémico de actualización de fechas comprometidas.</p>
+</div>
+
+<div class="metrics">
+<div class="metric ok"><div class="val">3</div><div class="lbl">Proyectos con buena estructura</div></div>
+<div class="metric warn"><div class="val">6</div><div class="lbl">Con observaciones</div></div>
+<div class="metric bad"><div class="val">3</div><div class="lbl">Requieren normalización</div></div>
+</div>
+<table><thead><tr><th>Proyecto</th><th>Épicas</th><th>Historias</th><th>Ratio HU/Épica</th><th>Jerarquía</th><th>Duedates</th><th>SPI confiable</th><th>Veredicto</th></tr></thead><tbody>
+<tr><td>GD-902 Motor Suscripción</td><td>21</td><td>128</td><td>6.1</td><td>✅</td><td>✅</td><td>✅</td><td><span class="badge badge-ok">OK</span></td></tr>
+<tr><td>GD-903 Simon Ventas</td><td>11</td><td>105</td><td>9.5</td><td>✅</td><td>⚠️</td><td>✅</td><td><span class="badge badge-warn">Observaciones</span></td></tr>
+<tr><td>GD-904 Indemnizaciones</td><td>9</td><td>52</td><td>5.8</td><td>✅</td><td>⚠️</td><td>✅</td><td><span class="badge badge-ok">OK</span></td></tr>
+<tr><td>GD-905 Carpeta Única</td><td>21</td><td>40</td><td>1.9</td><td>✅</td><td>✅</td><td>✅</td><td><span class="badge badge-ok">OK</span></td></tr>
+<tr><td>GD-907 Unificación Plataformas</td><td>8</td><td>2</td><td>0.3</td><td>❌</td><td>❌</td><td>❌</td><td><span class="badge badge-bad">Normalizar</span></td></tr>
+<tr><td>GD-929 Autorizaciones ARL/Salud</td><td>4*</td><td>120</td><td>30</td><td>✅</td><td>⚠️</td><td>⚠️</td><td><span class="badge badge-warn">Observaciones</span></td></tr>
+<tr><td>GD-971 WAAP Multinube</td><td>5</td><td>~4</td><td>~1</td><td>✅</td><td>✅</td><td>⚠️</td><td><span class="badge badge-warn">Observaciones</span></td></tr>
+<tr><td>GD-976 SSE</td><td>1</td><td>~1</td><td>~1</td><td>✅</td><td>✅</td><td>⚠️</td><td><span class="badge badge-warn">Observaciones</span></td></tr>
+<tr><td>GD-981 Cumplimiento 0-500M</td><td>4</td><td>20</td><td>5.0</td><td>✅</td><td>⚠️</td><td>✅</td><td><span class="badge badge-warn">Observaciones</span></td></tr>
+<tr><td>GD-1130 Cuentas Médicas</td><td>5</td><td>17</td><td>3.4</td><td>✅</td><td>✅</td><td>⚠️</td><td><span class="badge badge-warn">Observaciones</span></td></tr>
+<tr><td>GD-1136 Bizagi/BPMS</td><td>4</td><td>18</td><td>4.5</td><td>✅</td><td>❌</td><td>❌</td><td><span class="badge badge-bad">Normalizar</span></td></tr>
+<tr><td>GD-1141 APM</td><td>3</td><td>7</td><td>2.3</td><td>✅</td><td>✅</td><td>⚠️</td><td><span class="badge badge-bad">Normalizar</span></td></tr>
+</tbody></table>
+<p style="font-size:.8rem;color:var(--gray-600);margin-top:.5rem"><strong>Criterios:</strong> Ratio HU/Épica ideal: 3-10. Jerarquía: INI→Épica→HU correcta. Duedates: todas las épicas activas tienen fecha. SPI confiable: no inflado por ítems no-funcionales.<br><strong>*</strong> GD-929 tiene 15 hijos en Jira pero solo 4 son épicas funcionales; las 11 restantes son ceremonias/sub-tareas (mismo patrón que GD-907).</p>
+</div>
+
+<h2 style="font-size:1.3rem;color:var(--primary);margin:2rem 0 1rem;padding-bottom:.5rem;border-bottom:2px solid var(--gray-200)">Diagnóstico por Proyecto</h2>
+
+<!-- GD-902 -->
+<div class="card"><div class="card-header" onclick="toggle(this)"><span class="badge badge-ok">OK</span><h3>GD-902 — PRY Transformación de Suscripción (Motor suscripción)</h3><span>▼</span></div>
+<div class="card-body"><p><strong>Épicas:</strong> 21 | <strong>Historias:</strong> 128 | <strong>Ratio:</strong> 6.1 HU/Épica | <strong>SPI INI:</strong> 2.79</p>
+<div class="finding ok">✅ Estructura correcta: INI → Épicas → Historias. Jerarquía respetada.</div>
+<div class="finding ok">✅ Buen desglose funcional con 128 HUs distribuidas en 21 épicas.</div>
+<div class="finding ok">✅ Duedates asignadas en todas las épicas activas.</div>
+<div class="finding minor">⚠️ 11 épicas completadas sin campo "Fin Real" — impide validar desviación temporal.</div>
+<div class="finding minor">⚠️ Algunas épicas En Progreso con duedate vencida (jun 2026) — requieren replanificación.</div>
+<div class="finding minor">⚠️ <strong>PO:</strong> Épicas con redacción técnica ("Extracción reglas tronador", "Creación APIS motor", "Mejoras Filenet") — no expresan valor de negocio. Sugerencia: "Motor de reglas operativo con reglas migradas de Tronador".</div>
+<p style="margin-top:.75rem"><strong>Acción:</strong> Completar Fin Real en épicas cerradas. Actualizar duedates vencidas. Reformular nombres de épicas técnicas.</p></div></div>
+
+<!-- GD-903 -->
+<div class="card"><div class="card-header" onclick="toggle(this)"><span class="badge badge-warn">Obs.</span><h3>GD-903 — PRY Autogestión Pólizas Individuales (Simon ventas)</h3><span>▼</span></div>
+<div class="card-body"><p><strong>Épicas:</strong> 11 | <strong>Historias:</strong> 105 | <strong>Ratio:</strong> 9.5 HU/Épica | <strong>SPI INI:</strong> 0.41 (Retraso Crítico)</p>
+<div class="finding ok">✅ Buen desglose: 105 HUs bien distribuidas.</div>
+<div class="finding">🔴 10 de 11 épicas en "Por Hacer" sin duedate — proyecto casi sin iniciar.</div>
+<div class="finding">🔴 SPI 0.41 — solo 1 épica activa (GD903-42 al 64%).</div>
+<p style="margin-top:.75rem"><strong>Acción:</strong> Definir roadmap: ¿cuándo inician las 10 épicas? Evaluar si scope 2026 es realista.</p></div></div>
+
+<!-- GD-904 -->
+<div class="card"><div class="card-header" onclick="toggle(this)"><span class="badge badge-ok">OK</span><h3>GD-904 — PRY Transformación de Indemnizaciones</h3><span>▼</span></div>
+<div class="card-body"><p><strong>Épicas:</strong> 9 | <strong>Historias:</strong> 52 | <strong>Ratio:</strong> 5.8 HU/Épica | <strong>SPI INI:</strong> 3.35</p>
+<div class="finding ok">✅ Buena estructura con MVPs completados y evolutivos planificados.</div>
+<div class="finding minor">⚠️ 3 épicas "Evolutivo" sin duedate.</div>
+<div class="finding minor">⚠️ 2 épicas "Plan contingencia" con duedate vencida (mayo 2026).</div>
+<div class="finding minor">⚠️ <strong>PO:</strong> Épicas "Ejecución de pruebas", "Diseño de pruebas", "Entrega", "Ceremonias Edinson" (4 de 9) NO son entregables — son actividades del DoD o tracking de persona. Deben ser sub-tareas.</div>
+<p style="margin-top:.75rem"><strong>Acción:</strong> Asignar duedates a evolutivos. Actualizar planes contingencia. Eliminar épicas de actividades y moverlas como sub-tareas.</p></div></div>
+
+<!-- GD-905 -->
+<div class="card"><div class="card-header" onclick="toggle(this)"><span class="badge badge-ok">OK</span><h3>GD-905 — PRY Carpeta Única de Cliente</h3><span>▼</span></div>
+<div class="card-body"><p><strong>Épicas:</strong> 21 | <strong>Historias:</strong> 40 | <strong>Ratio:</strong> 1.9 HU/Épica | <strong>SPI INI:</strong> 2.42</p>
+<div class="finding ok">✅ Proyecto más avanzado — 86.8% avance real. 16/21 épicas completadas.</div>
+<div class="finding ok">✅ Fin Real registrado en épicas cerradas. Ejemplar.</div>
+<div class="finding minor">⚠️ GD905-44 con duedate vencida y SPI 0.66.</div>
+<div class="finding minor">⚠️ <strong>PO:</strong> "API componente integraciones" — redacción técnica. Sugerencia: "Componente de integración documental disponible para otros sistemas".</div>
+<p style="margin-top:.75rem"><strong>Acción:</strong> Resolver GD905-44. Usar como referencia de buenas prácticas.</p></div></div>
+
+<!-- GD-907 -->
+<div class="card"><div class="card-header" onclick="toggle(this)"><span class="badge badge-bad">Normalizar</span><h3>GD-907 — Unificación de Plataformas</h3><span>▼</span></div>
+<div class="card-body"><p><strong>Épicas:</strong> 8 | <strong>Historias:</strong> 2 | <strong>Ratio:</strong> 0.3 HU/Épica | <strong>SPI INI:</strong> 4.59 (engañoso)</p>
+<div class="finding">🔴 Sub-tareas de "Ceremonias" (4) como hijas directas de la Iniciativa — inflan SPI.</div>
+<div class="finding">🔴 Jerarquía rota — Sub-tareas (level -1) como hijas de Iniciativa (level 2).</div>
+<div class="finding">🔴 Solo 1 épica funcional real (IDOR). GD907-621 bloqueado 5+ meses.</div>
+<div class="finding">🔴 Ningún ítem tiene duedate. SPI real ~0.30.</div>
+<div class="finding">🔴 <strong>PO:</strong> 20% de ítems NO son entregables de valor: "Ceremonias" (4), "Desarrollo Front", "Integración captcha", "Diseño pruebas", "Entrega" — son actividades, no capacidades de negocio.</div>
+<p style="margin-top:.75rem"><strong>Acciones:</strong> 1) Mover ceremonias fuera. 2) Crear épicas funcionales. 3) Desbloquear IDOR. 4) Asignar duedates. 5) Reformular ítems técnicos como historias de valor.</p></div></div>
+
+<!-- GD-929 -->
+<div class="card"><div class="card-header" onclick="toggle(this)"><span class="badge badge-warn">Obs.</span><h3>GD-929 — PRY Autorizaciones ARL/Salud</h3><span>▼</span></div>
+<div class="card-body"><p><strong>Épicas:</strong> 4 funcionales (de 15 hijos totales en Jira*) | <strong>Historias:</strong> 120 | <strong>Ratio:</strong> 30 HU/Épica | <strong>SPI INI:</strong> 2.91 (parcialmente engañoso)</p>
+<div class="finding ok">✅ Mayor volumen de HUs (120). Alta actividad en Prioridad 1.</div>
+<div class="finding ok">✅ GD929-729 (Prioridad 1) al 94.5% — casi completa.</div>
+<div class="finding">🔴 GD929-1395 (Prioridad 2): duedate VENCIDA (9 jul) con estado "Por Hacer" + 77% avance reportado — INCONSISTENCIA: ¿está hecha o no?</div>
+<div class="finding">🔴 GD929-1396 (Prioridad 3): duedate 14 ago con solo 7.2% y "Por Hacer" — alto riesgo de incumplimiento.</div>
+<div class="finding minor">⚠️ *La Iniciativa tiene 15 hijos en Jira: 4 épicas funcionales + 11 sub-tareas de ceremonias/análisis completados (mismo patrón que GD-907). Las 11 sub-tareas inflan el SPI.</div>
+<div class="finding minor">⚠️ <strong>PO:</strong> Épicas redactadas como etiquetas de release ("Despliegue prioridad 1/2/3"), no como valor de negocio. Un stakeholder no sabe qué capacidad incluye cada "prioridad". Sugerencia: "Autorizaciones automáticas salud: prestaciones ambulatorias" / "...hospitalización" / "...medicamentos".</div>
+<div class="finding minor">⚠️ Ratio 30 HU/Épica muy alto — épicas demasiado grandes.</div>
+<p style="margin-top:.75rem"><strong>Acciones urgentes:</strong></p>
+<ol style="font-size:.8rem;padding-left:1.5rem">
+<li>Resolver inconsistencia GD929-1395: si tiene 77% avance, actualizar estado a "En Progreso".</li>
+<li>Escalar GD929-1396 — con 7% y 5 semanas, ¿es alcanzable?</li>
+<li>Subdividir épica de 120 HUs para seguimiento granular.</li>
+</ol></div></div>
+
+<!-- GD-971 -->
+<div class="card"><div class="card-header" onclick="toggle(this)"><span class="badge badge-warn">Obs.</span><h3>GD-971 — Ciber 5.0 WAAP Multinube</h3><span>▼</span></div>
+<div class="card-body"><p><strong>Épicas:</strong> 5 | <strong>Historias:</strong> ~4 | <strong>Ratio:</strong> ~1 | <strong>SPI INI:</strong> 0.70 (Retraso Alto)</p>
+<div class="finding ok">✅ Jerarquía correcta. Duedates asignadas.</div>
+<div class="finding">🔴 Duedate INI VENCIDA (31 mar 2026). Proyecto en retraso severo.</div>
+<div class="finding minor">⚠️ GD971-45 (Implementación 27 dominios) al 50% con duedate vencida (mar 2026).</div>
+<div class="finding minor">⚠️ <strong>PO:</strong> Épicas nombradas como fases del proyecto ("Kickoff", "Requisitos", "Implementación", "Marcha Blanca", "Cierre") — no expresan valor. Sugerencia: "27 dominios protegidos con WAAP Cloudflare" / "Reglas de protección validadas en producción".</div>
+<p style="margin-top:.75rem"><strong>Acción:</strong> Actualizar duedate INI. Escalar bloqueo de Marcha Blanca. Reformular épicas por capacidad entregada.</p></div></div>
+
+<!-- GD-976 -->
+<div class="card"><div class="card-header" onclick="toggle(this)"><span class="badge badge-warn">Obs.</span><h3>GD-976 — Ciber 5.0 SSE</h3><span>▼</span></div>
+<div class="card-body"><p><strong>Épicas:</strong> 1 | <strong>Historias:</strong> ~1 | <strong>Ratio:</strong> ~1 | <strong>SPI INI:</strong> 0 (Sin iniciar)</p>
+<div class="finding minor">⚠️ "Sin iniciar" pero marcado "En Progreso" — inconsistencia de estado.</div>
+<div class="finding minor">⚠️ Duedate 23 jul — vence en 16 días sin avance.</div>
+<p style="margin-top:.75rem"><strong>Acción:</strong> Actualizar duedate o escalar si no va a cumplir. Corregir estado.</p></div></div>
+
+<!-- GD-981 -->
+<div class="card"><div class="card-header" onclick="toggle(this)"><span class="badge badge-warn">Obs.</span><h3>GD-981 — Plataforma Cumplimiento Autogestión 0-500M</h3><span>▼</span></div>
+<div class="card-body"><p><strong>Épicas:</strong> 4 | <strong>Historias:</strong> 20 | <strong>Ratio:</strong> 5.0 HU/Épica | <strong>SPI INI:</strong> 2.27</p>
+<div class="finding ok">✅ Estructura correcta INI→Épicas→Historias. Buen ratio (5 HU/Épica).</div>
+<div class="finding ok">✅ GD981-1412 (Atención email) bien desglosada: 14 HUs con flujo claro.</div>
+<div class="finding">🔴 GD981-1506 (Retoma): "Por Hacer" con duedate 22 jul + 23% avance + 1 HU activa dentro — inconsistencia.</div>
+<div class="finding">🔴 GD981-1507 (Modificación tasa): duedate 10 jul (vence mañana) con 50% — riesgo.</div>
+<div class="finding minor">⚠️ GD981-1412: duedate 9 jul (venció hoy) con 32% y 6 HUs en Backlog.</div>
+<p style="margin-top:.75rem"><strong>Acciones:</strong> 1) Actualizar estado GD981-1506. 2) Escalar GD981-1507. 3) Replanificar HUs en Backlog de GD981-1412.</p></div></div>
+
+<!-- GD-1130 -->
+<div class="card"><div class="card-header" onclick="toggle(this)"><span class="badge badge-warn">Obs.</span><h3>GD-1130 — PRY Cuentas Médicas</h3><span>▼</span></div>
+<div class="card-body"><p><strong>Épicas:</strong> 5 | <strong>Historias:</strong> 17 | <strong>Ratio:</strong> 3.4 HU/Épica | <strong>SPI INI:</strong> 0.56 (Retraso Crítico)</p>
+<div class="finding ok">✅ Estructura correcta. Épicas funcionales bien nombradas.</div>
+<div class="finding">🔴 SPI 0.56 — retraso significativo en todas las épicas.</div>
+<div class="finding minor">⚠️ GD1130-81 (Gestor Cuentas) con 0% avance pese a estar "En Progreso".</div>
+<div class="finding minor">⚠️ GD1130-83 (Paramétricas) SPI 0.26 — muy retrasada.</div>
+<div class="finding minor">⚠️ <strong>PO:</strong> "Front radicación facturas", "Front Gestor Cuentas Médicas" — redacción por capa técnica. Sugerencia: "Módulo de radicación de facturas IPS accesible al usuario".</div>
+<p style="margin-top:.75rem"><strong>Acción:</strong> Escalar retrasos. Revisar capacidad del equipo. Reformular épicas orientándolas al valor entregado.</p></div></div>
+
+<!-- GD-1136 -->
+<div class="card"><div class="card-header" onclick="toggle(this)"><span class="badge badge-bad">Normalizar</span><h3>GD-1136 — Migración e Implementación Bizagi / BPMS</h3><span>▼</span></div>
+<div class="card-body"><p><strong>Épicas:</strong> 4 | <strong>Historias:</strong> 18 | <strong>Ratio:</strong> 4.5 HU/Épica | <strong>SPI INI:</strong> 2.42 (engañoso)</p>
+<div class="finding">🔴 Paquete 2 y 3: duedate VENCIDA (mayo/jun) con 0% avance y 0 historias.</div>
+<div class="finding">🔴 SPI inflado por Setup completado (1.34). Épicas activas: SPI 0.49, 0, 0.</div>
+<div class="finding minor">⚠️ Paquete 1: 18 HUs pero avance uniforme sospechoso (12 de 18 al 50%).</div>
+<div class="finding minor">⚠️ Historias técnicas sin perspectiva de usuario ("API lambda CONECTA...").</div>
+<div class="finding">🔴 <strong>PO:</strong> Las 18 HUs del Paquete 1 son tareas técnicas, NO historias de valor ("Técnica API lambda CONECTA de API consulta-X"). Deben agruparse bajo pocas épicas funcionales. Ejemplo: "Como analista de siniestros, puedo consultar pólizas desde Bizagi para radicar sin cambiar de sistema".</div>
+<div class="finding minor">⚠️ <strong>PO:</strong> Épicas nombradas como paquetes contractuales ("Paquete 1 - Radicación", "Paquete 2 - Análisis", "Paquete 3 - Cierre"). No expresan valor funcional. Sugerencia: "Radicación de siniestros automatizada en Bizagi" / "Análisis de siniestros con reglas migradas".</div>
+<p style="margin-top:.75rem"><strong>Acciones:</strong> 1) Desglosar Paquetes 2 y 3. 2) Actualizar duedates. 3) Validar avances. 4) Reformular HUs como historias de valor. 5) Renombrar épicas por capacidad, no por paquete contractual.</p></div></div>
+
+<!-- GD-1141 -->
+<div class="card"><div class="card-header" onclick="toggle(this)"><span class="badge badge-bad">Normalizar</span><h3>GD-1141 — PRY Access Policy Management (APM)</h3><span>▼</span></div>
+<div class="card-body"><p><strong>Épicas:</strong> 3 | <strong>Historias:</strong> 7 | <strong>Ratio:</strong> 2.3 HU/Épica | <strong>SPI INI:</strong> 2.74</p>
+<div class="finding ok">✅ 2 de 3 épicas completadas (Plan Migración + Migración Producción).</div>
+<div class="finding">🔴 GD1141-28 (Migración DRP) con 0% avance, duedate jul 31 — riesgo de incumplir.</div>
+<div class="finding minor">⚠️ GD1141-11 completada sin Fin Real registrado.</div>
+<div class="finding minor">⚠️ <strong>PO:</strong> Épicas nombradas como fases de migración ("Plan Migración Bajos", "Migración Producción", "Migración DRP"). Aceptable para infra pero no comunica valor. Sugerencia: "Políticas de acceso migradas a APM (bajos)" / "APM operativo en producción" / "APM con respaldo DRP activo".</div>
+<p style="margin-top:.75rem"><strong>Acción:</strong> Priorizar GD1141-28 (DRP). Registrar Fin Real en GD1141-11. Evaluar si 7 HUs son suficientes para DRP.</p></div></div>
+
+<!-- Recomendaciones transversales -->
+<div class="summary" style="margin-top:2rem"><h2>🎯 Recomendaciones Transversales</h2>
+<table><thead><tr><th>#</th><th>Recomendación</th><th>Proyectos afectados</th><th>Prioridad</th></tr></thead><tbody>
+<tr><td>1</td><td><strong>Completar campo "Fin Real"</strong> en épicas cerradas</td><td>GD-902, GD-905, GD-971, GD-981, GD-1136, GD-1141</td><td>Alta</td></tr>
+<tr><td>2</td><td><strong>No usar épicas/sub-tareas para ceremonias</strong></td><td>GD-907, GD-929</td><td>Crítica</td></tr>
+<tr><td>3</td><td><strong>Asignar duedates a épicas activas</strong></td><td>GD-907, GD-903, GD-904</td><td>Alta</td></tr>
+<tr><td>4</td><td><strong>Desglosar épicas vacías en historias</strong></td><td>GD-1136, GD-907</td><td>Alta</td></tr>
+<tr><td>5</td><td><strong>Actualizar duedates vencidas</strong></td><td>GD-971, GD-1136, GD-902, GD-904</td><td>Media</td></tr>
+<tr><td>6</td><td><strong>Revisar avances uniformes sospechosos</strong></td><td>GD-1136</td><td>Media</td></tr>
+<tr><td>7</td><td><strong>Subdividir épicas con >15 HUs</strong></td><td>GD-929</td><td>Baja</td></tr>
+<tr><td>8</td><td><strong>Renombrar épicas de "fases/releases" por capacidad de negocio entregada</strong> — "Despliegue prioridad X", "Paquete N", "Marcha Blanca" no comunican valor. Usar: "[Capacidad] + [contexto]"</td><td>GD-929, GD-1136, GD-1141, GD-971</td><td>Media</td></tr>
+</tbody></table></div>
+
+</div>
+<footer class="footer"><p>Diagnóstico de Backlog — Portafolio GD 2026 · Seguros Bolívar</p>
+<p>Generado: 7 de julio de 2026 · Fuente: Jira</p>
+<p>Criterios: Ratio HU/Épica ideal 3-10 | Jerarquía INI→Épica→HU | Duedates obligatorias | SPI sin inflación</p></footer>
+<script>function toggle(el){var b=el.nextElementSibling,t=el.querySelector('span:last-child');if(b.classList.contains('open')){b.classList.remove('open');t.textContent='▼';}else{b.classList.add('open');t.textContent='▲';}}</script>
+</body></html>
