@@ -7,16 +7,16 @@ const TODAY_STR=TODAY.toLocaleDateString('es-CO',{day:'numeric',month:'long',yea
 // Datos de Iniciativa 2026 (fuente oficial del semáforo consolidado)
 // [id, code, name, ini_key, ini_duedate, ini_spi, ini_estado]
 const INI=[
-['gd902','GD-902','PRY Transformación de Suscripción (Motor suscripción)','GD902-533','2026-12-30',2.80,'Adelantado',31.2,87.4],
+['gd902','GD-902','PRY Transformación de Suscripción (Motor suscripción)','GD902-533','2026-12-30',2.06,'Adelantado',31.2,64.2],
 ['gd903','GD-903','PRY Autogestión Pólizas Individuales (Simon ventas)','GD903-246','2026-12-31',0.41,'Retraso Crítico',15.4,6.3],
-['gd905','GD-905','PRY Carpeta Única de Cliente','GD905-38','2026-09-30',2.41,'Adelantado',35.9,86.5],
+['gd905','GD-905','PRY Carpeta Única de Cliente','GD905-38','2026-09-30',1.64,'Adelantado',35.9,59.0],
 ['gd907','GD-907','Unificación de Plataformas','GD907-613','2026-12-31',4.64,'Adelantado',14.4,66.9],
 ['gd929','GD-929','PRY Gestión en Bienestar - Autorizaciones ARL/Salud','GD929-716','2026-12-31',2.99,'Adelantado',15.4,46.0],
 ['gd971','GD-971','Ciber 5.0 WAPP Multinube','GD971-42','2026-03-31',0.70,'Retraso Alto',71.1,50.0],
 ['gd976','GD-976','Ciber 5.0 SSE (Security Service Edge)','GD976-48','2026-07-23',0,'Sin iniciar',6.5,0],
 ['gd981','GD-981','Plataforma Cumplimiento Autogestión 0-500M','GD981-1037','2026-12-31',2.27,'Adelantado',22.6,51.3],
-['gd1130','GD-1130','PRY Cuentas Médicas','GD1130-75','2026-11-09',0.56,'Retraso Crítico',46.8,26.2],
-['gd1136','GD-1136','Migración e Implementación Bizagi / BPMS','GD1136-18','2026-12-31',2.42,'Adelantado',15.4,37.2],
+['gd1130','GD-1130','PRY Cuentas Médicas','GD1130-75','2026-11-09',0.59,'Retraso Crítico',46.8,27.8],
+['gd1136','GD-1136','Migración e Implementación Bizagi / BPMS','GD1136-18','2026-12-31',2.41,'Adelantado',15.4,37.1],
 ['gd1141','GD-1141','PRY Access Policy Management (APM)','GD1141-3','2026-08-31',2.74,'Adelantado',24.3,66.7],
 ['gd904','GD-904','PRY Transformación de Indemnizaciones','GD904-509','2026-12-31',3.35,'Adelantado',15.4,51.5]
 ];
