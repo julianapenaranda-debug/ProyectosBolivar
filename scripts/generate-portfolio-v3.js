@@ -238,20 +238,20 @@ P.forEach(p=>{p.e.forEach(e=>{
   if(!due)return;
   if(st==='hecho'||st==='cancel')return;
   const diff=Math.round((new Date(due)-TODAY)/864e5);
-  if(diff<=30) alertas.push({proj:p.c,key:k,epic:s,st,due,diff});
+  if(diff<=30) alertas.push({proj:p.c,name:p.n,key:k,epic:s,st,due,diff});
 });});
 alertas.sort((a,b)=>a.diff-b.diff);
 html+=`<h2 class="st" id="alertas">🚨 Alertas — Épicas que vencen en los próximos 30 días</h2>`;
 if(alertas.length===0){
   html+=`<p style="color:var(--success);font-weight:600;margin-bottom:2rem">✓ No hay épicas con vencimiento inminente.</p>`;
 }else{
-  html+=`<div class="tw"><table><thead><tr><th>Proyecto</th><th>Key</th><th>Épica</th><th>Estado</th><th>Duedate</th><th>Días restantes</th></tr></thead><tbody>`;
+  html+=`<div class="tw"><table><thead><tr><th>Proyecto</th><th>Nombre</th><th>Key</th><th>Épica</th><th>Estado</th><th>Duedate</th><th>Días restantes</th></tr></thead><tbody>`;
   alertas.forEach(a=>{
     let diasCell,rowStyle='';
     if(a.diff<0){diasCell=`<span style="color:var(--danger);font-weight:700">⚠️ VENCIDA ${a.diff}d</span>`;rowStyle=' style="background:var(--danger-bg)"';}
     else if(a.diff<=7){diasCell=`<span style="color:var(--warning);font-weight:700">${a.diff}d</span>`;rowStyle=' style="background:var(--warning-bg)"';}
     else{diasCell=`${a.diff}d`;}
-    html+=`<tr${rowStyle}><td>${a.proj}</td><td><a href="${JIRA}/${a.key}" target="_blank">${a.key}</a></td><td>${a.epic}</td><td>${badge(a.st)}</td><td>${a.due}</td><td>${diasCell}</td></tr>`;
+    html+=`<tr${rowStyle}><td>${a.proj}</td><td style="font-size:.8rem">${a.name}</td><td><a href="${JIRA}/${a.key}" target="_blank">${a.key}</a></td><td>${a.epic}</td><td>${badge(a.st)}</td><td>${a.due}</td><td>${diasCell}</td></tr>`;
   });
   html+=`</tbody></table></div>`;
 }
