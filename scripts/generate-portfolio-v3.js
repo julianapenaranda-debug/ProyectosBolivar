@@ -302,6 +302,17 @@ html+=`</div></div>`;
 // ═══════════════════════════════════════════════════════════════════
 // SECCIÓN 4: Mapa de Dependencias Inter-Proyecto
 // ═══════════════════════════════════════════════════════════════════
+// Mapa de key → nombre corto para visualización en SVG y tablas
+const KEY_TO_NAME={
+  'GD-902':'Suscripción','GD-903':'Autogestión Pólizas','GD-905':'Carpeta Única',
+  'GD-907':'Unif. Plataformas','GD-929':'Bienestar ARL','GD-971':'Ciber WAPP',
+  'GD-976':'Ciber SSE','GD-981':'Cumplimiento 0-500M','GD-1130':'Cuentas Médicas',
+  'GD-1136':'Migración Bizagi','GD-1141':'APM','GD-904':'Indemnizaciones',
+  'Tronador':'Tronador','Saghi (ext)':'Saghi (ext)'
+};
+/** Resuelve key a nombre corto para visualización. */
+function depName(key){return KEY_TO_NAME[key]||key;}
+
 const DEPS=[
 ['GD-902','GD-905','Carpeta Única para gestión documental'],
 ['GD-902','GD-907','Portal Intermediarios como canal de solicitudes'],
@@ -343,13 +354,14 @@ DEPS.forEach(dep=>{
     svgContent+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#90a4ae" stroke-width="1.5" marker-end="url(#arrowhead)"/>`;
   }
 });
-// Dibujar nodos
-Object.entries(nodePositions).forEach(([label,pos])=>{
-  const color=nodeColors[label]||'#78909c';
-  const isExt=label==='Tronador'||label==='Saghi (ext)';
-  const fontSize=isExt?'10':'11';
+// Dibujar nodos con nombres de proyecto (no keys)
+Object.entries(nodePositions).forEach(([key,pos])=>{
+  const color=nodeColors[key]||'#78909c';
+  const name=depName(key);
+  const isExt=key==='Tronador'||key==='Saghi (ext)';
+  const fontSize=name.length>14?'8':name.length>10?'9':isExt?'10':'10';
   svgContent+=`<circle cx="${pos.x}" cy="${pos.y}" r="40" fill="${color}" opacity="0.9" stroke="#fff" stroke-width="2"/>`;
-  svgContent+=`<text x="${pos.x}" y="${pos.y+4}" text-anchor="middle" font-size="${fontSize}" font-weight="600" fill="#fff" font-family="system-ui,sans-serif">${label}</text>`;
+  svgContent+=`<text x="${pos.x}" y="${pos.y+4}" text-anchor="middle" font-size="${fontSize}" font-weight="600" fill="#fff" font-family="system-ui,sans-serif">${name}</text>`;
 });
 // Leyenda
 svgContent+=`<rect x="10" y="10" width="180" height="100" rx="6" fill="#fff" stroke="#e0e0e0"/>`;
@@ -375,7 +387,7 @@ html+=svgContent;
 html+=`<button onclick="copyTable('tbl-deps')" style="margin-bottom:1rem;padding:.5rem 1rem;background:var(--primary);color:var(--white);border:none;border-radius:var(--radius);cursor:pointer;font-size:.85rem">📋 Copiar para Sheets</button><span id="copy-deps-msg" style="margin-left:.5rem;font-size:.8rem;color:var(--success);display:none">✓ Copiado</span>`;
 html+=`<div class="tw"><table id="tbl-deps"><thead><tr><th>Proyecto</th><th>Depende de</th><th>Tipo de dependencia</th><th>Riesgo</th></tr></thead><tbody>`;
 DEPS.forEach(d=>{
-  html+=`<tr><td>${d[0]}</td><td>${d[1]}</td><td>${d[2]}</td><td>${depRisk(d[0],d[1])}</td></tr>`;
+  html+=`<tr><td>${depName(d[0])}</td><td>${depName(d[1])}</td><td>${d[2]}</td><td>${depRisk(d[0],d[1])}</td></tr>`;
 });
 html+=`</tbody></table></div></div></div>`;
 
