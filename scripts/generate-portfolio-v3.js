@@ -299,6 +299,86 @@ if(zombis.length===0){
 }
 html+=`</div></div>`;
 
+// ═══════════════════════════════════════════════════════════════════
+// SECCIÓN 4: Mapa de Dependencias Inter-Proyecto
+// ═══════════════════════════════════════════════════════════════════
+const DEPS=[
+['GD-902','GD-905','Carpeta Única para gestión documental'],
+['GD-902','GD-907','Portal Intermediarios como canal de solicitudes'],
+['GD-907','GD-905','Integración Carpeta Única y Gestor Documental'],
+['GD-907','Saghi (ext)','Backend externo — Bloqueado'],
+['GD-981','GD-907','Tribu Portal de Intermediarios'],
+['GD-981','Tronador','Core seguros para emisión'],
+['GD-929','GD-1136','Bizagi BPMS para back-office'],
+['GD-929','GD-905','O\'Leary para soportes médicos'],
+['GD-1130','GD-1136','Bizagi BPMS para flujos de pago'],
+['GD-1130','Tronador','Liquidación de pólizas'],
+['GD-1136','Tronador','Pólizas y reservas (proceso 70)']
+];
+// Posiciones de nodos para el SVG (manualmente distribuidas)
+const nodePositions={
+  'GD-905':{x:450,y:250},'GD-907':{x:200,y:100},'GD-902':{x:700,y:100},
+  'GD-929':{x:200,y:400},'GD-1136':{x:450,y:400},'GD-1130':{x:700,y:400},
+  'GD-981':{x:80,y:250},'Tronador':{x:450,y:480},'Saghi (ext)':{x:450,y:50}
+};
+// Colores por estado
+const nodeColors={
+  'GD-902':'#2e7d32','GD-905':'#2e7d32','GD-904':'#2e7d32',
+  'GD-929':'#f57f17','GD-981':'#f57f17','GD-971':'#f57f17','GD-976':'#f57f17','GD-1130':'#f57f17',
+  'GD-907':'#c62828','GD-1136':'#c62828','GD-1141':'#c62828',
+  'Tronador':'#78909c','Saghi (ext)':'#78909c'
+};
+// Generar SVG inline
+let svgContent=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 530" style="width:100%;max-width:900px;height:auto;display:block;margin:0 auto 1.5rem">`;
+svgContent+=`<defs><marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#546e7a"/></marker></defs>`;
+// Dibujar líneas de dependencia
+DEPS.forEach(dep=>{
+  const from=nodePositions[dep[0]];const to=nodePositions[dep[1]];
+  if(from&&to){
+    const dx=to.x-from.x,dy=to.y-from.y;
+    const dist=Math.sqrt(dx*dx+dy*dy);
+    const offsetFrom=42,offsetTo=42;
+    const x1=from.x+(dx/dist)*offsetFrom,y1=from.y+(dy/dist)*offsetFrom;
+    const x2=to.x-(dx/dist)*offsetTo,y2=to.y-(dy/dist)*offsetTo;
+    svgContent+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#90a4ae" stroke-width="1.5" marker-end="url(#arrowhead)"/>`;
+  }
+});
+// Dibujar nodos
+Object.entries(nodePositions).forEach(([label,pos])=>{
+  const color=nodeColors[label]||'#78909c';
+  const isExt=label==='Tronador'||label==='Saghi (ext)';
+  const fontSize=isExt?'10':'11';
+  svgContent+=`<circle cx="${pos.x}" cy="${pos.y}" r="40" fill="${color}" opacity="0.9" stroke="#fff" stroke-width="2"/>`;
+  svgContent+=`<text x="${pos.x}" y="${pos.y+4}" text-anchor="middle" font-size="${fontSize}" font-weight="600" fill="#fff" font-family="system-ui,sans-serif">${label}</text>`;
+});
+// Leyenda
+svgContent+=`<rect x="10" y="10" width="180" height="100" rx="6" fill="#fff" stroke="#e0e0e0"/>`;
+svgContent+=`<text x="20" y="28" font-size="10" font-weight="700" fill="#333" font-family="system-ui,sans-serif">Leyenda</text>`;
+svgContent+=`<circle cx="28" cy="42" r="6" fill="#2e7d32"/><text x="40" y="46" font-size="9" fill="#333" font-family="system-ui,sans-serif">Buena completitud</text>`;
+svgContent+=`<circle cx="28" cy="60" r="6" fill="#f57f17"/><text x="40" y="64" font-size="9" fill="#333" font-family="system-ui,sans-serif">En riesgo</text>`;
+svgContent+=`<circle cx="28" cy="78" r="6" fill="#c62828"/><text x="40" y="82" font-size="9" fill="#333" font-family="system-ui,sans-serif">Requiere normalización</text>`;
+svgContent+=`<circle cx="28" cy="96" r="6" fill="#78909c"/><text x="40" y="100" font-size="9" fill="#333" font-family="system-ui,sans-serif">Sistema externo</text>`;
+svgContent+=`</svg>`;
+
+// Evaluar riesgo por dependencia
+function depRisk(from,to){
+  const redProjects=['GD-907','GD-1136','GD-1141'];
+  const extSystems=['Tronador','Saghi (ext)'];
+  if(extSystems.includes(to))return '<span style="color:var(--danger);font-weight:600">Alto — Externo</span>';
+  if(redProjects.includes(to)||redProjects.includes(from))return '<span style="color:var(--danger);font-weight:600">Alto</span>';
+  return '<span style="color:var(--warning)">Medio</span>';
+}
+
+html+=`<div class="ds" style="margin-top:3rem" id="dependencias"><div class="dh" onclick="toggleDetail(this)"><h3 style="color:var(--primary)">🔗 Mapa de Dependencias Inter-Proyecto (${DEPS.length} relaciones documentadas)</h3><span class="tg">▼</span></div><div class="dc">`;
+html+=`<p style="font-size:.85rem;color:var(--gray-600);margin-bottom:1rem;font-style:italic">Fuente: Informes Maestros de cada proyecto (GitHub Pages). No existen issue links en Jira — dependencias identificadas por análisis documental.</p>`;
+html+=svgContent;
+html+=`<button onclick="copyTable('tbl-deps')" style="margin-bottom:1rem;padding:.5rem 1rem;background:var(--primary);color:var(--white);border:none;border-radius:var(--radius);cursor:pointer;font-size:.85rem">📋 Copiar para Sheets</button><span id="copy-deps-msg" style="margin-left:.5rem;font-size:.8rem;color:var(--success);display:none">✓ Copiado</span>`;
+html+=`<div class="tw"><table id="tbl-deps"><thead><tr><th>Proyecto</th><th>Depende de</th><th>Tipo de dependencia</th><th>Riesgo</th></tr></thead><tbody>`;
+DEPS.forEach(d=>{
+  html+=`<tr><td>${d[0]}</td><td>${d[1]}</td><td>${d[2]}</td><td>${depRisk(d[0],d[1])}</td></tr>`;
+});
+html+=`</tbody></table></div></div></div>`;
+
 // Inconsistencias tab - Épicas finalizadas sin Fecha Fin Real
 const inconsData=[
 ['GD-902','PRY Transformación de Suscripción','GD902-536','Mejoras Filenet','Hecho','2026-12-29'],
