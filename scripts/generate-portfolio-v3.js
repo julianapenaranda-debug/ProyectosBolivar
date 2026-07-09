@@ -305,9 +305,9 @@ html+=`</div></div>`;
 // Mapa de key → nombre corto para visualización en SVG y tablas
 const KEY_TO_NAME={
   'GD-902':'Suscripción','GD-903':'Autogestión Pólizas','GD-905':'Carpeta Única',
-  'GD-907':'Unif. Plataformas','GD-929':'Bienestar ARL','GD-971':'Ciber WAPP',
-  'GD-976':'Ciber SSE','GD-981':'Cumplimiento 0-500M','GD-1130':'Cuentas Médicas',
-  'GD-1136':'Migración Bizagi','GD-1141':'APM','GD-904':'Indemnizaciones',
+  'GD-907':'P. Intermediarios','GD-929':'Gestión Bienestar','GD-971':'Ciber WAPP',
+  'GD-976':'Ciber SSE','GD-981':'Cumplimiento','GD-1130':'Cuentas Médicas',
+  'GD-1136':'Bizagi','GD-1141':'APM','GD-904':'Indemnizaciones',
   'Tronador':'Tronador','Saghi (ext)':'Saghi (ext)'
 };
 /** Resuelve key a nombre corto para visualización. */
