@@ -245,7 +245,8 @@ html+=`<h2 class="st" id="alertas">🚨 Alertas — Épicas que vencen en los pr
 if(alertas.length===0){
   html+=`<p style="color:var(--success);font-weight:600;margin-bottom:2rem">✓ No hay épicas con vencimiento inminente.</p>`;
 }else{
-  html+=`<div class="tw"><table><thead><tr><th>Proyecto</th><th>Nombre</th><th>Key</th><th>Épica</th><th>Estado</th><th>Duedate</th><th>Días restantes</th></tr></thead><tbody>`;
+  html+=`<button onclick="copyTable('tbl-alertas')" style="margin-bottom:1rem;padding:.5rem 1rem;background:var(--primary);color:var(--white);border:none;border-radius:var(--radius);cursor:pointer;font-size:.85rem">📋 Copiar para Sheets</button><span id="copy-alertas-msg" style="margin-left:.5rem;font-size:.8rem;color:var(--success);display:none">✓ Copiado</span>`;
+  html+=`<div class="tw"><table id="tbl-alertas"><thead><tr><th>Proyecto</th><th>Nombre</th><th>Key</th><th>Épica</th><th>Estado</th><th>Duedate</th><th>Días restantes</th></tr></thead><tbody>`;
   alertas.forEach(a=>{
     let diasCell,rowStyle='';
     if(a.diff<0){diasCell=`<span style="color:var(--danger);font-weight:700">⚠️ VENCIDA ${a.diff}d</span>`;rowStyle=' style="background:var(--danger-bg)"';}
@@ -265,9 +266,11 @@ const bloqueosData=BLOCKED.map(b=>{
   return {key,resumen,proj,desde,dias};
 }).sort((a,b)=>b.dias-a.dias);
 html+=`<div class="ds" id="bloqueos"><div class="dh" onclick="toggleDetail(this)"><h3 style="color:var(--danger)">🔴 Issues Bloqueados (${bloqueosData.length} issues)</h3><span class="tg">▼</span></div><div class="dc">`;
-html+=`<div class="tw"><table><thead><tr><th>Key</th><th>Resumen</th><th>Proyecto</th><th>Bloqueado desde</th><th>Días bloqueado</th></tr></thead><tbody>`;
+html+=`<button onclick="copyTable('tbl-bloqueos')" style="margin-bottom:1rem;padding:.5rem 1rem;background:var(--primary);color:var(--white);border:none;border-radius:var(--radius);cursor:pointer;font-size:.85rem">📋 Copiar para Sheets</button><span id="copy-bloqueos-msg" style="margin-left:.5rem;font-size:.8rem;color:var(--success);display:none">✓ Copiado</span>`;
+html+=`<div class="tw"><table id="tbl-bloqueos"><thead><tr><th>Key</th><th>Resumen</th><th>Proyecto</th><th>Nombre</th><th>Bloqueado desde</th><th>Días bloqueado</th></tr></thead><tbody>`;
 bloqueosData.forEach(b=>{
-  html+=`<tr><td><a href="${JIRA}/${b.key}" target="_blank">${b.key}</a></td><td>${b.resumen}</td><td>${b.proj}</td><td>${b.desde}</td><td><span style="color:var(--danger);font-weight:600">${b.dias}d</span></td></tr>`;
+  const pData=P.find(x=>x.c===b.proj); const pName=pData?pData.n:'';
+  html+=`<tr><td><a href="${JIRA}/${b.key}" target="_blank">${b.key}</a></td><td>${b.resumen}</td><td>${b.proj}</td><td style="font-size:.8rem">${pName}</td><td>${b.desde}</td><td><span style="color:var(--danger);font-weight:600">${b.dias}d</span></td></tr>`;
 });
 html+=`</tbody></table></div></div></div>`;
 
@@ -279,16 +282,18 @@ P.forEach(p=>{p.e.forEach(e=>{
   const[k,s,st,due]=e;
   if(st!=='prog'||!due)return;
   const diff=Math.round((TODAY-new Date(due))/864e5);
-  if(diff>60) zombis.push({proj:p.c,key:k,epic:s,due,dias:diff});
+  const pName=p.n;
+  if(diff>60) zombis.push({proj:p.c,pName,key:k,epic:s,due,dias:diff});
 });});
 zombis.sort((a,b)=>b.dias-a.dias);
 html+=`<div class="ds" id="aging"><div class="dh" onclick="toggleDetail(this)"><h3 style="color:var(--warning)">⏳ Épicas en Progreso > 60 días sin completar (${zombis.length})</h3><span class="tg">▼</span></div><div class="dc">`;
 if(zombis.length===0){
   html+=`<p style="color:var(--success);margin-bottom:1rem">✓ No hay épicas zombi.</p>`;
 }else{
-  html+=`<div class="tw"><table><thead><tr><th>Proyecto</th><th>Key</th><th>Épica</th><th>Duedate</th><th>Días vencida</th></tr></thead><tbody>`;
+  html+=`<button onclick="copyTable('tbl-aging')" style="margin-bottom:1rem;padding:.5rem 1rem;background:var(--primary);color:var(--white);border:none;border-radius:var(--radius);cursor:pointer;font-size:.85rem">📋 Copiar para Sheets</button><span id="copy-aging-msg" style="margin-left:.5rem;font-size:.8rem;color:var(--success);display:none">✓ Copiado</span>`;
+  html+=`<div class="tw"><table id="tbl-aging"><thead><tr><th>Proyecto</th><th>Nombre</th><th>Key</th><th>Épica</th><th>Duedate</th><th>Días vencida</th></tr></thead><tbody>`;
   zombis.forEach(z=>{
-    html+=`<tr><td>${z.proj}</td><td><a href="${JIRA}/${z.key}" target="_blank">${z.key}</a></td><td>${z.epic}</td><td>${z.due}</td><td><span style="color:var(--danger);font-weight:600">${z.dias}d</span></td></tr>`;
+    html+=`<tr><td>${z.proj}</td><td style="font-size:.8rem">${z.pName}</td><td><a href="${JIRA}/${z.key}" target="_blank">${z.key}</a></td><td>${z.epic}</td><td>${z.due}</td><td><span style="color:var(--danger);font-weight:600">${z.dias}d</span></td></tr>`;
   });
   html+=`</tbody></table></div>`;
 }
@@ -333,14 +338,14 @@ const inconsData=[
 ];
 html+=`<div class="ds" style="margin-top:3rem" id="inconsistencias"><div class="dh" onclick="toggleDetail(this)"><h3 style="color:var(--danger)">⚠️ Inconsistencias — Épicas finalizadas sin Fecha Fin Real (${inconsData.length})</h3><span class="tg">▼</span></div><div class="dc">`;
 html+=`<p style="font-size:.9rem;color:var(--gray-600);margin-bottom:1rem">El campo "Fecha Fin Real" (customfield_25346) no está registrado en estas ${inconsData.length} épicas. Esto impide validar si el entregable se completó dentro del plazo comprometido.</p>`;
-html+=`<button onclick="copyInconsTable()" style="margin-bottom:1rem;padding:.5rem 1rem;background:var(--primary);color:var(--white);border:none;border-radius:var(--radius);cursor:pointer;font-size:.85rem">📋 Copiar tabla para Sheets</button><span id="copy-msg" style="margin-left:.5rem;font-size:.8rem;color:var(--success);display:none">✓ Copiado</span>`;
+html+=`<button onclick="copyTable('tbl-incons')" style="margin-bottom:1rem;padding:.5rem 1rem;background:var(--primary);color:var(--white);border:none;border-radius:var(--radius);cursor:pointer;font-size:.85rem">📋 Copiar tabla para Sheets</button><span id="copy-msg" style="margin-left:.5rem;font-size:.8rem;color:var(--success);display:none">✓ Copiado</span>`;
 html+=`<div class="tw"><table id="tbl-incons"><thead><tr><th>Proyecto</th><th>Iniciativa</th><th>Key</th><th>Épica</th><th>Estado</th><th>Duedate</th></tr></thead><tbody>`;
 inconsData.forEach(r=>{html+=`<tr><td>${r[0]}</td><td>${r[1]}</td><td><a href="${JIRA}/${r[2]}" target="_blank">${r[2]}</a></td><td>${r[3]}</td><td>${r[4]}</td><td>${r[5]}</td></tr>`;});
 html+=`</tbody></table></div></div></div>`;
 // Footer
 html+=`</div><footer class="footer"><p>Dashboard Portafolio V3 — Gestión de la Demanda · Seguros Bolívar</p><p>Generado: ${TODAY_STR} · Reglas: 🟢 Completitud≥60% · 🟡 Completitud 30-60% o duedate vencida (En Progreso) · 🔴 Completitud&lt;30% o duedate INI vencida · ⚪ Sin iniciar · ✓ Completada (Hecho)</p></footer>
 <script>function toggleDetail(el){var c=el.nextElementSibling,t=el.querySelector('.tg');if(c.classList.contains('open')){c.classList.remove('open');t.textContent='▼';}else{c.classList.add('open');t.textContent='▲';}}
-function copyInconsTable(){var t=document.getElementById('tbl-incons');var rows=t.querySelectorAll('tr');var tsv=[];rows.forEach(function(r){var cells=r.querySelectorAll('th,td');var row=[];cells.forEach(function(c){row.push(c.textContent.trim());});tsv.push(row.join('\\t'));});navigator.clipboard.writeText(tsv.join('\\n')).then(function(){var m=document.getElementById('copy-msg');m.style.display='inline';setTimeout(function(){m.style.display='none';},2000);});}</script></body></html>`;
+function copyTable(tableId){var t=document.getElementById(tableId);var rows=t.querySelectorAll('tr');var tsv=[];rows.forEach(function(r){var cells=r.querySelectorAll('th,td');var row=[];cells.forEach(function(c){row.push(c.textContent.trim());});tsv.push(row.join('\\t'));});navigator.clipboard.writeText(tsv.join('\\n')).then(function(){var msgId=tableId==='tbl-incons'?'copy-msg':'copy-'+tableId.replace('tbl-','')+'-msg';var m=document.getElementById(msgId);if(m){m.style.display='inline';setTimeout(function(){m.style.display='none';},2000);}});}</script></body></html>`;
 // Write file
 const out=path.join(__dirname,'..','docs','portafolio-proyectos.html');
 fs.writeFileSync(out,html,'utf8');
