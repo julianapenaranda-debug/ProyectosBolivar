@@ -363,13 +363,13 @@ Object.entries(nodePositions).forEach(([key,pos])=>{
   svgContent+=`<circle cx="${pos.x}" cy="${pos.y}" r="40" fill="${color}" opacity="0.9" stroke="#fff" stroke-width="2"/>`;
   svgContent+=`<text x="${pos.x}" y="${pos.y+4}" text-anchor="middle" font-size="${fontSize}" font-weight="600" fill="#fff" font-family="system-ui,sans-serif">${name}</text>`;
 });
-// Leyenda
-svgContent+=`<rect x="10" y="10" width="180" height="100" rx="6" fill="#fff" stroke="#e0e0e0"/>`;
-svgContent+=`<text x="20" y="28" font-size="10" font-weight="700" fill="#333" font-family="system-ui,sans-serif">Leyenda</text>`;
-svgContent+=`<circle cx="28" cy="42" r="6" fill="#2e7d32"/><text x="40" y="46" font-size="9" fill="#333" font-family="system-ui,sans-serif">Buena completitud</text>`;
-svgContent+=`<circle cx="28" cy="60" r="6" fill="#f57f17"/><text x="40" y="64" font-size="9" fill="#333" font-family="system-ui,sans-serif">En riesgo</text>`;
-svgContent+=`<circle cx="28" cy="78" r="6" fill="#c62828"/><text x="40" y="82" font-size="9" fill="#333" font-family="system-ui,sans-serif">Requiere normalización</text>`;
-svgContent+=`<circle cx="28" cy="96" r="6" fill="#78909c"/><text x="40" y="100" font-size="9" fill="#333" font-family="system-ui,sans-serif">Sistema externo</text>`;
+// Leyenda (esquina superior derecha, sin tapar nodos)
+svgContent+=`<rect x="710" y="10" width="180" height="100" rx="6" fill="#fff" stroke="#e0e0e0"/>`;
+svgContent+=`<text x="720" y="28" font-size="10" font-weight="700" fill="#333" font-family="system-ui,sans-serif">Leyenda</text>`;
+svgContent+=`<circle cx="728" cy="42" r="6" fill="#2e7d32"/><text x="740" y="46" font-size="9" fill="#333" font-family="system-ui,sans-serif">Buena completitud</text>`;
+svgContent+=`<circle cx="728" cy="60" r="6" fill="#f57f17"/><text x="740" y="64" font-size="9" fill="#333" font-family="system-ui,sans-serif">En riesgo</text>`;
+svgContent+=`<circle cx="728" cy="78" r="6" fill="#c62828"/><text x="740" y="82" font-size="9" fill="#333" font-family="system-ui,sans-serif">Requiere normalización</text>`;
+svgContent+=`<circle cx="728" cy="96" r="6" fill="#78909c"/><text x="740" y="100" font-size="9" fill="#333" font-family="system-ui,sans-serif">Core</text>`;
 svgContent+=`</svg>`;
 
 // Evaluar riesgo por dependencia
