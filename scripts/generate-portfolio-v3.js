@@ -308,7 +308,7 @@ const KEY_TO_NAME={
   'GD-907':'P. Intermediarios','GD-929':'Gestión Bienestar','GD-971':'Ciber WAPP',
   'GD-976':'Ciber SSE','GD-981':'Cumplimiento','GD-1130':'Cuentas Médicas',
   'GD-1136':'Bizagi','GD-1141':'APM','GD-904':'Indemnizaciones',
-  'Tronador':'Tronador','Saghi (ext)':'Saghi (ext)'
+  'Tronador':'Tronador','Saghi':'Saghi'
 };
 /** Resuelve key a nombre corto para visualización. */
 function depName(key){return KEY_TO_NAME[key]||key;}
@@ -317,12 +317,13 @@ const DEPS=[
 ['GD-902','GD-905','Carpeta Única para gestión documental'],
 ['GD-902','GD-907','Portal Intermediarios como canal de solicitudes'],
 ['GD-907','GD-905','Integración Carpeta Única y Gestor Documental'],
-['GD-907','Saghi (ext)','Backend externo — Bloqueado'],
+['GD-907','Saghi','Backend externo — Bloqueado'],
 ['GD-981','GD-907','Tribu Portal de Intermediarios'],
 ['GD-981','Tronador','Core seguros para emisión'],
 ['GD-929','GD-1136','Bizagi BPMS para back-office'],
 ['GD-929','GD-905','O\'Leary para soportes médicos'],
 ['GD-1130','GD-1136','Bizagi BPMS para flujos de pago'],
+['GD-1130','GD-905','O\'Leary para gestión documental'],
 ['GD-1130','Tronador','Liquidación de pólizas'],
 ['GD-1136','Tronador','Pólizas y reservas (proceso 70)']
 ];
@@ -330,14 +331,14 @@ const DEPS=[
 const nodePositions={
   'GD-905':{x:450,y:250},'GD-907':{x:200,y:100},'GD-902':{x:700,y:100},
   'GD-929':{x:200,y:400},'GD-1136':{x:450,y:400},'GD-1130':{x:700,y:400},
-  'GD-981':{x:80,y:250},'Tronador':{x:450,y:480},'Saghi (ext)':{x:450,y:50}
+  'GD-981':{x:80,y:250},'Tronador':{x:450,y:480},'Saghi':{x:450,y:50}
 };
 // Colores por estado
 const nodeColors={
   'GD-902':'#2e7d32','GD-905':'#2e7d32','GD-904':'#2e7d32',
   'GD-929':'#f57f17','GD-981':'#f57f17','GD-971':'#f57f17','GD-976':'#f57f17','GD-1130':'#f57f17',
   'GD-907':'#c62828','GD-1136':'#c62828','GD-1141':'#c62828',
-  'Tronador':'#78909c','Saghi (ext)':'#78909c'
+  'Tronador':'#78909c','Saghi':'#78909c'
 };
 // Generar SVG inline
 let svgContent=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 530" style="width:100%;max-width:900px;height:auto;display:block;margin:0 auto 1.5rem">`;
@@ -358,7 +359,7 @@ DEPS.forEach(dep=>{
 Object.entries(nodePositions).forEach(([key,pos])=>{
   const color=nodeColors[key]||'#78909c';
   const name=depName(key);
-  const isExt=key==='Tronador'||key==='Saghi (ext)';
+  const isExt=key==='Tronador'||key==='Saghi';
   const fontSize=name.length>14?'8':name.length>10?'9':isExt?'10':'10';
   svgContent+=`<circle cx="${pos.x}" cy="${pos.y}" r="40" fill="${color}" opacity="0.9" stroke="#fff" stroke-width="2"/>`;
   svgContent+=`<text x="${pos.x}" y="${pos.y+4}" text-anchor="middle" font-size="${fontSize}" font-weight="600" fill="#fff" font-family="system-ui,sans-serif">${name}</text>`;
@@ -375,8 +376,8 @@ svgContent+=`</svg>`;
 // Evaluar riesgo por dependencia
 function depRisk(from,to){
   const redProjects=['GD-907','GD-1136','GD-1141'];
-  const extSystems=['Tronador','Saghi (ext)'];
-  if(extSystems.includes(to))return '<span style="color:var(--danger);font-weight:600">Alto — Externo</span>';
+  const extSystems=['Tronador','Saghi'];
+  if(extSystems.includes(to))return '<span style="color:var(--danger);font-weight:600">Alto</span>';
   if(redProjects.includes(to)||redProjects.includes(from))return '<span style="color:var(--danger);font-weight:600">Alto</span>';
   return '<span style="color:var(--warning)">Medio</span>';
 }
