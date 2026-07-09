@@ -137,6 +137,16 @@ const P=[
 ['GD904-720','Plan contingencia | Flujo Trabajo Rentas','prog','2026-05-28'],
 ['GD904-778','Flujo de trabajo Patrimoniales','porhacer',null]]}
 ];
+// Issues bloqueados del portafolio [key, resumen, proyecto, fecha_bloqueo]
+const BLOCKED=[
+['GD907-621','Blindaje IDOR','GD-907','2026-01-16'],
+['GD907-625','Control de Acceso MITM','GD-907','2026-01-16'],
+['GD929-805','Validación data exclusiones','GD-929','2026-01-15'],
+['GD902-956','Flujo preliquidación cotización','GD-902','2026-04-01'],
+['GD981-1276','Implementación Clarity','GD-981','2026-03-27'],
+['GD981-1484','Tags monitoreo front','GD-981','2026-04-13'],
+['GD981-1491','Encuesta satisfacción Survicate','GD-981','2026-04-13']
+];
 
 function isOverdue(d){if(!d)return false;return new Date(d)<TODAY;}
 function sem(st,due){
@@ -219,6 +229,71 @@ P.forEach(p=>{
   });
   html+=`</tbody></table></div><a href="#tc" style="font-size:.85rem">↑ Volver</a></div></div>`;
 });
+// ═══════════════════════════════════════════════════════════════════
+// SECCIÓN 1: Alertas de Vencimiento Inminente (siempre visible)
+// ═══════════════════════════════════════════════════════════════════
+const alertas=[];
+P.forEach(p=>{p.e.forEach(e=>{
+  const[k,s,st,due]=e;
+  if(!due)return;
+  if(st==='hecho'||st==='cancel')return;
+  const diff=Math.round((new Date(due)-TODAY)/864e5);
+  if(diff<=30) alertas.push({proj:p.c,key:k,epic:s,st,due,diff});
+});});
+alertas.sort((a,b)=>a.diff-b.diff);
+html+=`<h2 class="st" id="alertas">🚨 Alertas — Épicas que vencen en los próximos 30 días</h2>`;
+if(alertas.length===0){
+  html+=`<p style="color:var(--success);font-weight:600;margin-bottom:2rem">✓ No hay épicas con vencimiento inminente.</p>`;
+}else{
+  html+=`<div class="tw"><table><thead><tr><th>Proyecto</th><th>Key</th><th>Épica</th><th>Estado</th><th>Duedate</th><th>Días restantes</th></tr></thead><tbody>`;
+  alertas.forEach(a=>{
+    let diasCell,rowStyle='';
+    if(a.diff<0){diasCell=`<span style="color:var(--danger);font-weight:700">⚠️ VENCIDA ${a.diff}d</span>`;rowStyle=' style="background:var(--danger-bg)"';}
+    else if(a.diff<=7){diasCell=`<span style="color:var(--warning);font-weight:700">${a.diff}d</span>`;rowStyle=' style="background:var(--warning-bg)"';}
+    else{diasCell=`${a.diff}d`;}
+    html+=`<tr${rowStyle}><td>${a.proj}</td><td><a href="${JIRA}/${a.key}" target="_blank">${a.key}</a></td><td>${a.epic}</td><td>${badge(a.st)}</td><td>${a.due}</td><td>${diasCell}</td></tr>`;
+  });
+  html+=`</tbody></table></div>`;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// SECCIÓN 2: Índice de Bloqueos (colapsable)
+// ═══════════════════════════════════════════════════════════════════
+const bloqueosData=BLOCKED.map(b=>{
+  const[key,resumen,proj,desde]=b;
+  const dias=Math.round((TODAY-new Date(desde))/864e5);
+  return {key,resumen,proj,desde,dias};
+}).sort((a,b)=>b.dias-a.dias);
+html+=`<div class="ds" id="bloqueos"><div class="dh" onclick="toggleDetail(this)"><h3 style="color:var(--danger)">🔴 Issues Bloqueados (${bloqueosData.length} issues)</h3><span class="tg">▼</span></div><div class="dc">`;
+html+=`<div class="tw"><table><thead><tr><th>Key</th><th>Resumen</th><th>Proyecto</th><th>Bloqueado desde</th><th>Días bloqueado</th></tr></thead><tbody>`;
+bloqueosData.forEach(b=>{
+  html+=`<tr><td><a href="${JIRA}/${b.key}" target="_blank">${b.key}</a></td><td>${b.resumen}</td><td>${b.proj}</td><td>${b.desde}</td><td><span style="color:var(--danger);font-weight:600">${b.dias}d</span></td></tr>`;
+});
+html+=`</tbody></table></div></div></div>`;
+
+// ═══════════════════════════════════════════════════════════════════
+// SECCIÓN 3: Aging — Épicas zombi (>60 días vencidas en progreso)
+// ═══════════════════════════════════════════════════════════════════
+const zombis=[];
+P.forEach(p=>{p.e.forEach(e=>{
+  const[k,s,st,due]=e;
+  if(st!=='prog'||!due)return;
+  const diff=Math.round((TODAY-new Date(due))/864e5);
+  if(diff>60) zombis.push({proj:p.c,key:k,epic:s,due,dias:diff});
+});});
+zombis.sort((a,b)=>b.dias-a.dias);
+html+=`<div class="ds" id="aging"><div class="dh" onclick="toggleDetail(this)"><h3 style="color:var(--warning)">⏳ Épicas en Progreso > 60 días sin completar (${zombis.length})</h3><span class="tg">▼</span></div><div class="dc">`;
+if(zombis.length===0){
+  html+=`<p style="color:var(--success);margin-bottom:1rem">✓ No hay épicas zombi.</p>`;
+}else{
+  html+=`<div class="tw"><table><thead><tr><th>Proyecto</th><th>Key</th><th>Épica</th><th>Duedate</th><th>Días vencida</th></tr></thead><tbody>`;
+  zombis.forEach(z=>{
+    html+=`<tr><td>${z.proj}</td><td><a href="${JIRA}/${z.key}" target="_blank">${z.key}</a></td><td>${z.epic}</td><td>${z.due}</td><td><span style="color:var(--danger);font-weight:600">${z.dias}d</span></td></tr>`;
+  });
+  html+=`</tbody></table></div>`;
+}
+html+=`</div></div>`;
+
 // Inconsistencias tab - Épicas finalizadas sin Fecha Fin Real
 const inconsData=[
 ['GD-902','PRY Transformación de Suscripción','GD902-536','Mejoras Filenet','Hecho','2026-12-29'],
