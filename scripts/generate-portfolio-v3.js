@@ -510,9 +510,9 @@ function generateHtml(P, BLOCKED, inconsData) {
   html += `<p style="font-size:.85rem;color:var(--gray-600);margin-bottom:1rem;font-style:italic">Fuente: Informes Maestros de cada proyecto (GitHub Pages). No existen issue links en Jira — dependencias identificadas por análisis documental.</p>`;
   html += svgContent;
   html += `<button onclick="copyTable('tbl-deps')" style="margin-bottom:1rem;padding:.5rem 1rem;background:var(--primary);color:var(--white);border:none;border-radius:var(--radius);cursor:pointer;font-size:.85rem">📋 Copiar para Sheets</button><span id="copy-deps-msg" style="margin-left:.5rem;font-size:.8rem;color:var(--success);display:none">✓ Copiado</span>`;
-  html += `<div class="tw"><table id="tbl-deps"><thead><tr><th>Proyecto</th><th>Depende de</th><th>Tipo de dependencia</th><th>Riesgo</th></tr></thead><tbody>`;
+  html += `<div class="tw"><table id="tbl-deps"><thead><tr><th>Proyecto</th><th>Depende de</th><th>Tipo de dependencia</th></tr></thead><tbody>`;
   DEPS.forEach((d) => {
-    html += `<tr><td>${depName(d[0])}</td><td>${depName(d[1])}</td><td>${d[2]}</td><td>${depRisk(d[0], d[1])}</td></tr>`;
+    html += `<tr><td>${depName(d[0])}</td><td>${depName(d[1])}</td><td>${d[2]}</td></tr>`;
   });
   html += `</tbody></table></div></div></div>`;
 
