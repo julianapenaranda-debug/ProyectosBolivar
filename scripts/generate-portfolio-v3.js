@@ -596,8 +596,8 @@ const P = [
     ['GD905-137','Admin edición proceso','hecho','2026-06-01','2026-06-11'],
     ['GD905-142','Trazabilidad y Auditoría','hecho','2026-06-01','2026-06-11'],
     ['GD905-477','Nuevo Gestor documental Oleary POC','hecho',null,'2026-07-07'],
-    ['GD905-259','Visualización docs operación','cancel','2026-06-01','2026-04-27'],
-    ['GD905-262','Gestión vigencias','cancel','2026-06-01','2026-05-22'],
+    ['GD905-259','Integración Filenet para visualizar doc','cancel','2026-06-01','2026-04-27'],
+    ['GD905-262','Validador de vigencias en documentos','cancel','2026-06-01','2026-05-22'],
     ['GD905-264','Creación caso workflow','cancel','2026-06-01','2026-04-27']
   ]},
   {id:'gd907',c:'GD-907',n:'Unificación de Plataformas',e:[
@@ -637,9 +637,9 @@ const P = [
     ['GD981-1412','Atención solicitudes email','prog','2026-07-09'],
     ['GD981-1506','Retoma solicitudes','porhacer','2026-07-22'],
     ['GD981-1507','Modificación tasa','prog','2026-07-10'],
-    ['GD981-7','Solicitudes cotización 0-500M','hecho','2026-01-22','2026-01-24'],
-    ['GD981-28','Solicitudes emisión 0-500M','hecho','2026-02-10','2026-02-11'],
-    ['GD981-34','Solicitudes renovación 0-500M','hecho','2026-02-22','2026-02-25'],
+    ['GD981-7','Prerrequisitos plataforma cumplimiento','hecho','2026-01-22','2026-01-24'],
+    ['GD981-28','Config infra cloud cumplimiento','hecho','2026-02-10','2026-02-11'],
+    ['GD981-34','Config terraform infra cloud','hecho','2026-02-22','2026-02-25'],
     ['GD981-59','Módulo 2 gestión comercial','hecho','2026-03-14','2026-03-18'],
     ['GD981-72','Módulo 3 documentos','hecho','2026-04-03','2026-04-04'],
     ['GD981-77','Despliegue ambiente usuarios','hecho','2026-04-09','2026-04-11'],
@@ -651,19 +651,19 @@ const P = [
     ['GD1130-19','Front radicación facturas','prog','2026-11-09'],
     ['GD1130-81','Front Gestor Cuentas Médicas','prog','2026-11-09'],
     ['GD1130-82','Flujo Cuentas Médicas IPS','prog','2026-11-09'],
-    ['GD1130-83','Paramétricas Cuentas Médicas','prog','2026-11-09'],
+    ['GD1130-83','Paramétricas y parámetros Cuentas Médicas','prog','2026-11-09'],
     ['GD1130-281','SIIFA Cuentas Médicas Fase 1','prog',null]
   ]},
   {id:'gd1136',c:'GD-1136',n:'Migración e Implementación Bizagi / BPMS',e:[
-    ['GD1136-34','Paquete 1 Radicación','prog','2026-05-08'],
-    ['GD1136-35','Paquete 2 Análisis','prog','2026-05-25'],
-    ['GD1136-36','Paquete 3 Cierre','prog','2026-06-19'],
+    ['GD1136-34','Entregable Paquete 1 - Radicación','prog','2026-05-08'],
+    ['GD1136-35','Entregable Paquete 2 - Análisis','prog','2026-05-25'],
+    ['GD1136-36','Entregable Paquete 3 - Cierre','prog','2026-06-19'],
     ['GD1136-2','Bizagi Setup cloud','hecho','2026-03-31']
   ]},
   {id:'gd1141',c:'GD-1141',n:'PRY Access Policy Management (APM)',e:[
-    ['GD1141-28','Migración APM DRP','prog','2026-07-31'],
-    ['GD1141-4','Plan Migración Bajos','hecho','2026-05-25'],
-    ['GD1141-11','Migración Producción','hecho','2026-06-30']
+    ['GD1141-28','Migracion APM ambiente DRP','prog','2026-07-31'],
+    ['GD1141-4','Plan de Migracion Ambiente Bajos','hecho','2026-05-25'],
+    ['GD1141-11','Migración ambiente de Producción','hecho','2026-06-30']
   ]},
   {id:'gd904',c:'GD-904',n:'PRY Transformación de Indemnizaciones',e:[
     ['GD904-518','Retomar indemnización multicanal','porhacer',null],
@@ -681,7 +681,7 @@ const P = [
     ['GD1129-877','Particionamiento y Depuración DBA','prog','2026-09-30'],
     ['GD1129-879','Observabilidad-Trazabilidad Fenix','hecho','2026-12-31'],
     ['GD1129-90','Observabilidad-Trazabilidad COREX','hecho','2026-06-11'],
-    ['GD1129-80','Particionamiento (cancelado)','cancel',null]
+    ['GD1129-80','Borrar Particionamiento y Depuración','cancel',null]
   ]}
 ];
 
