@@ -15,6 +15,7 @@ const https = require('https');
 const JIRA_BASE = 'https://jirasegurosbolivar.atlassian.net';
 const JIRA = `${JIRA_BASE}/browse`;
 const TODAY = new Date();
+const TODAY_ISO = TODAY.toISOString().slice(0, 10);
 const TODAY_STR = TODAY.toLocaleDateString('es-CO', {
   day: 'numeric', month: 'long', year: 'numeric'
 });
@@ -268,11 +269,10 @@ function iniSem(pctDone, due) {
   return 'gris';
 }
 
-/** @param {string} d - Fecha string. @returns {boolean} Vencida solo si es estrictamente anterior a hoy. */
+/** @param {string} d - Fecha YYYY-MM-DD. @returns {boolean} Vencida si es estrictamente anterior a hoy. */
 function isOverdue(d) {
   if (!d) return false;
-  const due = new Date(d + 'T23:59:59');
-  return due < TODAY;
+  return d < TODAY_ISO;
 }
 
 /**
@@ -315,7 +315,7 @@ function badge(s) {
 function dueH(d, st) {
   if (!d) return '—';
   if (st === 'prog' && isOverdue(d)) {
-    const dd = Math.floor((TODAY - new Date(d + 'T23:59:59')) / 864e5);
+    const dd = Math.round((new Date(TODAY_ISO) - new Date(d)) / 864e5);
     return `<span class="due-vencida">${d} ⚠️ -${dd}d</span>`;
   }
   return d;
@@ -453,7 +453,7 @@ function generateHtml(P, BLOCKED, inconsData) {
     const [k, s, st, due] = e;
     if (!due) return;
     if (st === 'hecho' || st === 'cancel') return;
-    const diff = Math.ceil((new Date(due + 'T23:59:59') - TODAY) / 864e5);
+    const diff = Math.round((new Date(due) - new Date(TODAY_ISO)) / 864e5);
     if (diff <= 30) alertas.push({ proj: p.c, name: p.n, key: k, epic: s, st, due, diff });
   }); });
   alertas.sort((a, b) => a.diff - b.diff);
@@ -493,7 +493,7 @@ function generateHtml(P, BLOCKED, inconsData) {
   P.forEach((p) => { p.e.forEach((e) => {
     const [k, s, st, due] = e;
     if (st !== 'prog' || !due) return;
-    const diff = Math.floor((TODAY - new Date(due + 'T23:59:59')) / 864e5);
+    const diff = Math.round((new Date(TODAY_ISO) - new Date(due)) / 864e5);
     if (diff > 60) zombis.push({ proj: p.c, pName: p.n, key: k, epic: s, due, dias: diff });
   }); });
   zombis.sort((a, b) => b.dias - a.dias);
