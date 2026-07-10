@@ -666,15 +666,13 @@ const P = [
     ['GD1141-11','Migración Producción','hecho','2026-06-30']
   ]},
   {id:'gd904',c:'GD-904',n:'PRY Transformación de Indemnizaciones',e:[
-    ['GD904-3','Guía Parte 2 Ejecución','prog','2025-02-28'],
     ['GD904-518','Retomar indemnización multicanal','porhacer',null],
     ['GD904-633','Activar botón trazabilidad','porhacer',null],
     ['GD904-663','Automatizar correos contingencia','prog','2026-05-15'],
     ['GD904-682','Automatización pruebas','prog',null],
     ['GD904-720','Flujo Trabajo Rentas','prog','2026-05-28'],
     ['GD904-778','Flujo trabajo Patrimoniales','porhacer',null],
-    ['GD904-379','MVP Habilitar Vida-Renta','hecho','2026-02-28','2026-03-11'],
-    ['GD904-683','Proceso PAC conversacional','hecho','2025-12-11','2025-12-02']
+    ['GD904-379','MVP Habilitar Vida-Renta','hecho','2026-02-28','2026-03-11']
   ]},
   {id:'gd1129',c:'GD-1129',n:'PRY Nuevo Core de Seguros',e:[
     ['GD1129-175','Estabilización tronador 2026','prog','2026-12-31'],
@@ -683,10 +681,6 @@ const P = [
     ['GD1129-877','Particionamiento y Depuración DBA','prog','2026-09-30'],
     ['GD1129-879','Observabilidad-Trazabilidad Fenix','hecho','2026-12-31'],
     ['GD1129-90','Observabilidad-Trazabilidad COREX','hecho','2026-06-11'],
-    ['GD1129-3','DESACOPLE 2025','hecho','2025-12-31'],
-    ['GD1129-4','Estabilización tronador 2025','hecho','2025-12-31'],
-    ['GD1129-5','Integración 2025','hecho','2025-12-31'],
-    ['GD1129-23','Desacople 2025 (dup)','cancel','2025-12-31'],
     ['GD1129-80','Particionamiento (cancelado)','cancel',null]
   ]}
 ];
