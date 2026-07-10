@@ -315,7 +315,7 @@ function badge(s) {
 function dueH(d, st) {
   if (!d) return '—';
   if (st === 'prog' && isOverdue(d)) {
-    const dd = Math.round((new Date(TODAY_ISO) - new Date(d)) / 864e5);
+    const dd = Math.round((new Date(TODAY_ISO + 'T12:00:00') - new Date(d + 'T12:00:00')) / 864e5);
     return `<span class="due-vencida">${d} ⚠️ -${dd}d</span>`;
   }
   return d;
@@ -453,7 +453,7 @@ function generateHtml(P, BLOCKED, inconsData) {
     const [k, s, st, due] = e;
     if (!due) return;
     if (st === 'hecho' || st === 'cancel') return;
-    const diff = Math.round((new Date(due) - new Date(TODAY_ISO)) / 864e5);
+    const diff = Math.round((new Date(due + 'T12:00:00') - new Date(TODAY_ISO + 'T12:00:00')) / 864e5);
     if (diff <= 30) alertas.push({ proj: p.c, name: p.n, key: k, epic: s, st, due, diff });
   }); });
   alertas.sort((a, b) => a.diff - b.diff);
@@ -493,7 +493,7 @@ function generateHtml(P, BLOCKED, inconsData) {
   P.forEach((p) => { p.e.forEach((e) => {
     const [k, s, st, due] = e;
     if (st !== 'prog' || !due) return;
-    const diff = Math.round((new Date(TODAY_ISO) - new Date(due)) / 864e5);
+    const diff = Math.round((new Date(TODAY_ISO + 'T12:00:00') - new Date(due + 'T12:00:00')) / 864e5);
     if (diff > 60) zombis.push({ proj: p.c, pName: p.n, key: k, epic: s, due, dias: diff });
   }); });
   zombis.sort((a, b) => b.dias - a.dias);
