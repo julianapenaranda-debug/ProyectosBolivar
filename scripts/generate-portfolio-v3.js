@@ -36,7 +36,8 @@ const INI = [
   ['gd1130','GD-1130','PRY Cuentas Médicas','GD1130-75','2026-11-09'],
   ['gd1136','GD-1136','Migración e Implementación Bizagi / BPMS','GD1136-18','2026-12-31'],
   ['gd1141','GD-1141','PRY Access Policy Management (APM)','GD1141-3','2026-08-31'],
-  ['gd904','GD-904','PRY Transformación de Indemnizaciones','GD904-509','2026-12-31']
+  ['gd904','GD-904','PRY Transformación de Indemnizaciones','GD904-509','2026-12-31'],
+  ['gd1129','GD-1129','PRY Nuevo Core de Seguros','GD1129-174','2026-12-31']
 ];
 
 const DEPS = [
@@ -59,6 +60,7 @@ const KEY_TO_NAME = {
   'GD-907':'P. Intermediarios','GD-929':'Gestión Bienestar','GD-971':'Ciber WAPP',
   'GD-976':'Ciber SSE','GD-981':'Cumplimiento','GD-1130':'Cuentas Médicas',
   'GD-1136':'Bizagi','GD-1141':'APM','GD-904':'Indemnizaciones',
+  'GD-1129':'Core Seguros',
   'Tronador':'Tronador','Saghi':'Saghi'
 };
 
@@ -405,7 +407,7 @@ function generateHtml(P, BLOCKED, inconsData) {
 <header class="header"><h1>Dashboard de Portafolio V3 — Gestión de la Demanda</h1><div class="sub">Seguros Bolívar · Vicepresidencia de Tecnología</div><div class="date">${TODAY_STR}</div><div class="vb">V3 — Semáforo: % Completitud + Duedate</div></header><div class="container">`;
 
   // KPIs
-  html += `<h2 class="st">Indicadores Clave</h2><div class="kpi-grid"><div class="kpi-card"><div class="v">12</div><div class="l">Total Proyectos</div></div><div class="kpi-card s"><div class="v">${iniAdelantado}</div><div class="l">Iniciativas OK</div></div><div class="kpi-card d"><div class="v">${iniCritico}</div><div class="l">Iniciativas Retraso Crítico</div></div><div class="kpi-card w"><div class="v">${iniRiesgo}</div><div class="l">Iniciativas En Riesgo</div></div><div class="kpi-card"><div class="v">${totH + totP + totPH}</div><div class="l">Total Épicas</div></div><div class="kpi-card s"><div class="v">${totH}</div><div class="l">Épicas Completadas</div></div><div class="kpi-card w"><div class="v">${totP}</div><div class="l">Épicas En Progreso</div></div><div class="kpi-card"><div class="v">${totPH}</div><div class="l">Épicas Por Hacer</div></div></div>`;
+  html += `<h2 class="st">Indicadores Clave</h2><div class="kpi-grid"><div class="kpi-card"><div class="v">${P.length}</div><div class="l">Total Proyectos</div></div><div class="kpi-card s"><div class="v">${iniAdelantado}</div><div class="l">Iniciativas OK</div></div><div class="kpi-card d"><div class="v">${iniCritico}</div><div class="l">Iniciativas Retraso Crítico</div></div><div class="kpi-card w"><div class="v">${iniRiesgo}</div><div class="l">Iniciativas En Riesgo</div></div><div class="kpi-card"><div class="v">${totH + totP + totPH}</div><div class="l">Total Épicas</div></div><div class="kpi-card s"><div class="v">${totH}</div><div class="l">Épicas Completadas</div></div><div class="kpi-card w"><div class="v">${totP}</div><div class="l">Épicas En Progreso</div></div><div class="kpi-card"><div class="v">${totPH}</div><div class="l">Épicas Por Hacer</div></div></div>`;
 
   // Tabla de Iniciativas
   html += `<h2 class="st" id="tc">Tabla Consolidada de Iniciativas</h2><div class="tw"><table><thead><tr><th>Código</th><th>Nombre</th><th>Iniciativa</th><th>Duedate INI</th><th>Completitud</th><th>Épicas</th><th>Semáforo</th></tr></thead><tbody>`;
@@ -673,6 +675,19 @@ const P = [
     ['GD904-778','Flujo trabajo Patrimoniales','porhacer',null],
     ['GD904-379','MVP Habilitar Vida-Renta','hecho','2026-02-28','2026-03-11'],
     ['GD904-683','Proceso PAC conversacional','hecho','2025-12-11','2025-12-02']
+  ]},
+  {id:'gd1129',c:'GD-1129',n:'PRY Nuevo Core de Seguros',e:[
+    ['GD1129-175','Estabilización tronador 2026','prog','2026-12-31'],
+    ['GD1129-444','Integración 2026','prog','2026-12-31'],
+    ['GD1129-445','Desacople 2026','porhacer','2026-12-31'],
+    ['GD1129-877','Particionamiento y Depuración DBA','prog','2026-09-30'],
+    ['GD1129-879','Observabilidad-Trazabilidad Fenix','hecho','2026-12-31'],
+    ['GD1129-90','Observabilidad-Trazabilidad COREX','hecho','2026-06-11'],
+    ['GD1129-3','DESACOPLE 2025','hecho','2025-12-31'],
+    ['GD1129-4','Estabilización tronador 2025','hecho','2025-12-31'],
+    ['GD1129-5','Integración 2025','hecho','2025-12-31'],
+    ['GD1129-23','Desacople 2025 (dup)','cancel','2025-12-31'],
+    ['GD1129-80','Particionamiento (cancelado)','cancel',null]
   ]}
 ];
 

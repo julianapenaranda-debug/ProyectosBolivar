@@ -29,8 +29,8 @@ td{padding:.5rem .8rem;border-bottom:1px solid var(--gray-200)}tbody tr:hover{ba
 @media(max-width:768px){.metrics{grid-template-columns:repeat(2,1fr)}}
 </style></head><body>
 <header class="header"><h1>🏥 Diagnóstico de Backlog — Portafolio GD 2026</h1>
-<div class="sub">Análisis de prácticas de gestión en Jira · 12 Proyectos</div>
-<div class="date">9 de julio de 2026</div></header>
+<div class="sub">Análisis de prácticas de gestión en Jira · 13 Proyectos</div>
+<div class="date">10 de julio de 2026</div></header>
 <div class="container">
 
 <div class="summary"><h2>📊 Resumen Ejecutivo</h2>
@@ -48,12 +48,12 @@ td{padding:.5rem .8rem;border-bottom:1px solid var(--gray-200)}tbody tr:hover{ba
 <tr><td>GD-905</td><td>GD905-44 (Integración gestor)</td><td>En Progreso</td><td>2026-05-31 ⚠️</td><td>67%</td><td>Venció hace 39 días.</td></tr>
 <tr><td>GD-904</td><td>GD904-663, 720 (Contingencia)</td><td>En Progreso</td><td>2026-05-15/28 ⚠️</td><td>50-90%</td><td>Vencidas hace 42-55d.</td></tr>
 </tbody></table>
-<p style="font-size:.8rem;color:var(--danger);margin-top:.75rem;font-weight:600">Impacto: 9 de 12 proyectos tienen al menos una épica con duedate vencida. Problema sistémico de actualización de fechas comprometidas.</p>
+<p style="font-size:.8rem;color:var(--danger);margin-top:.75rem;font-weight:600">Impacto: 9 de 13 proyectos tienen al menos una épica con duedate vencida. Problema sistémico de actualización de fechas comprometidas.</p>
 </div>
 
 <div class="metrics">
 <div class="metric ok"><div class="val">3</div><div class="lbl">Proyectos con buena estructura</div></div>
-<div class="metric warn"><div class="val">6</div><div class="lbl">Con observaciones</div></div>
+<div class="metric warn"><div class="val">7</div><div class="lbl">Con observaciones</div></div>
 <div class="metric bad"><div class="val">3</div><div class="lbl">Requieren normalización</div></div>
 </div>
 <table><thead><tr><th>Proyecto</th><th>Épicas</th><th>Historias</th><th>Ratio HU/Épica</th><th>Jerarquía</th><th>Duedates</th><th>Veredicto</th></tr></thead><tbody>
@@ -69,6 +69,7 @@ td{padding:.5rem .8rem;border-bottom:1px solid var(--gray-200)}tbody tr:hover{ba
 <tr><td>GD-1130 Cuentas Médicas</td><td>5</td><td>17</td><td>3.4</td><td>✅</td><td>✅</td><td><span class="badge badge-warn">Observaciones</span></td></tr>
 <tr><td>GD-1136 Bizagi/BPMS</td><td>4</td><td>18</td><td>4.5</td><td>✅</td><td>❌</td><td><span class="badge badge-bad">Normalizar</span></td></tr>
 <tr><td>GD-1141 APM</td><td>3</td><td>7</td><td>2.3</td><td>✅</td><td>✅</td><td><span class="badge badge-bad">Normalizar</span></td></tr>
+<tr><td>GD-1129 Nuevo Core Seguros</td><td>11</td><td>100+</td><td>~9</td><td>⚠️</td><td>✅</td><td><span class="badge badge-warn">Observaciones</span></td></tr>
 </tbody></table>
 <p style="font-size:.8rem;color:var(--gray-600);margin-top:.5rem"><strong>Criterios:</strong> Ratio HU/Épica ideal: 3-10. Jerarquía: INI→Épica→HU correcta. Duedates: todas las épicas activas tienen fecha.<br><strong>*</strong> GD-929 tiene 15 hijos en Jira pero solo 5 son épicas funcionales; las restantes son ceremonias/sub-tareas (mismo patrón que GD-907).</p>
 </div>
@@ -200,10 +201,23 @@ td{padding:.5rem .8rem;border-bottom:1px solid var(--gray-200)}tbody tr:hover{ba
 <div class="finding minor">⚠️ <strong>PO:</strong> Épicas nombradas como fases de migración ("Plan Migración Bajos", "Migración Producción", "Migración DRP"). Aceptable para infra pero no comunica valor. Sugerencia: "Políticas de acceso migradas a APM (bajos)" / "APM operativo en producción" / "APM con respaldo DRP activo".</div>
 <p style="margin-top:.75rem"><strong>Acción:</strong> Priorizar GD1141-28 (DRP). Registrar Fin Real en GD1141-11. Evaluar si 7 HUs son suficientes para DRP.</p></div></div>
 
+<!-- GD-1129 -->
+<div class="card"><div class="card-header" onclick="toggle(this)"><span class="badge badge-warn">Obs.</span><h3>GD-1129 — PRY Nuevo Core de Seguros</h3><span>▼</span></div>
+<div class="card-body"><p><strong>Épicas:</strong> 11 (5 Hecho + 3 Prog + 1 Por Hacer + 2 Cancel) | <strong>Historias:</strong> 100+ | <strong>Ratio:</strong> ~9 HU/Épica</p>
+<div class="finding ok">✅ Épicas activas 2026 con duedate asignado (dic 2026, sep 2026).</div>
+<div class="finding ok">✅ 5 épicas completadas (3 de 2025 + 2 de 2026).</div>
+<div class="finding ok">✅ Nombres de épicas descriptivos y orientados a capacidad técnica.</div>
+<div class="finding">🔴 Fin Real (customfield_25346) vacío en TODAS las épicas — no se registra fecha de cierre.</div>
+<div class="finding">🔴 Jerarquía no convencional: issues tipo "Upstream" como nivel intermedio entre Épica e historias. Dificulta trazabilidad.</div>
+<div class="finding minor">⚠️ Sub-tareas con nombres genéricos: "Entrega", "Diseño de pruebas", "Ejecución de pruebas" — no comunican funcionalidad.</div>
+<div class="finding minor">⚠️ Épica duplicada: GD1129-3 "DESACOPLE - 2025" (Hecho) y GD1129-23 "Desacople - 2025" (Cancelada).</div>
+<div class="finding minor">⚠️ Issues cancelados con sub-tareas en estado Hecho — incoherencia de estados.</div>
+<p style="margin-top:.75rem"><strong>Acciones:</strong> 1) Registrar Fin Real en épicas cerradas. 2) Normalizar jerarquía (eliminar nivel "Upstream"). 3) Renombrar sub-tareas genéricas con contexto funcional. 4) Limpiar duplicados y resolver incoherencias de estado.</p></div></div>
+
 <!-- Recomendaciones transversales -->
 <div class="summary" style="margin-top:2rem"><h2>🎯 Recomendaciones Transversales</h2>
 <table><thead><tr><th>#</th><th>Recomendación</th><th>Proyectos afectados</th><th>Prioridad</th></tr></thead><tbody>
-<tr><td>1</td><td><strong>Completar campo "Fin Real"</strong> en épicas cerradas</td><td>GD-971, GD-1136, GD-1141</td><td>Alta</td></tr>
+<tr><td>1</td><td><strong>Completar campo "Fin Real"</strong> en épicas cerradas</td><td>GD-971, GD-1136, GD-1141, GD-1129</td><td>Alta</td></tr>
 <tr><td>2</td><td><strong>No usar épicas/sub-tareas para ceremonias</strong></td><td>GD-907, GD-929</td><td>Crítica</td></tr>
 <tr><td>3</td><td><strong>Asignar duedates a épicas activas</strong></td><td>GD-907, GD-903, GD-904</td><td>Alta</td></tr>
 <tr><td>4</td><td><strong>Desglosar épicas vacías en historias</strong></td><td>GD-1136, GD-907</td><td>Alta</td></tr>
@@ -215,7 +229,7 @@ td{padding:.5rem .8rem;border-bottom:1px solid var(--gray-200)}tbody tr:hover{ba
 
 </div>
 <footer class="footer"><p>Diagnóstico de Backlog — Portafolio GD 2026 · Seguros Bolívar</p>
-<p>Generado: 9 de julio de 2026 · Fuente: Jira</p>
+<p>Generado: 10 de julio de 2026 · Fuente: Jira</p>
 <p>Criterios: Ratio HU/Épica ideal 3-10 | Jerarquía INI→Épica→HU | Duedates obligatorias | % completitud como indicador de avance</p></footer>
 <script>function toggle(el){var b=el.nextElementSibling,t=el.querySelector('span:last-child');if(b.classList.contains('open')){b.classList.remove('open');t.textContent='▼';}else{b.classList.add('open');t.textContent='▲';}}</script>
 </body></html>
