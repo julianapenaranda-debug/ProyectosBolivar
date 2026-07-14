@@ -598,7 +598,6 @@ const P = [
     ['GD907-27','Autogestión actualización de datos','prog','2026-05-31'],
     ['GD907-620','Ajustes vulnerabilidades IDOR','porhacer',null],
     ['GD907-631','Ajustes Portal Migración Simon','hecho',null,'2026-03-31'],
-    ['GD907-651','Implementación Tags Portal Interm','prog','2026-12-31'],
     ['GD907-658','Modal Informativo Admin Usuarios','prog','2026-07-31'],
     ['GD907-664','Migración módulo Gestión Humana','prog',null],
     ['GD907-901','Desarrollos backend Sagui Portal','prog','2026-08-28']
@@ -615,7 +614,7 @@ const P = [
     ['GD971-45','Implementacion Cloudflare 27 dominios','prog','2026-03-27'],
     ['GD971-46','Monitoreo y estabilización dominios','prog','2026-07-09'],
     ['GD971-47','Cierre del proyecto','prog','2026-07-09'],
-    ['GD971-57','Plan de Choque 9 Dominios','prog','2026-07-09'],
+    ['GD971-57','Plan de Choque 9 Dominios','hecho','2026-07-09'],
     ['GD971-58','Control cambios SegurosBolivar.com','porhacer',null]
   ]},
   {id:'gd976',c:'GD-976',n:'Ciber 5.0 SSE (Security Service Edge)',e:[
