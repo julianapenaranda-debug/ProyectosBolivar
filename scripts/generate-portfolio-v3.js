@@ -645,7 +645,7 @@ const P = [
     ['GD1141-28','Migracion APM ambiente DRP','prog','2026-07-31']
   ]},
   {id:'gd904',c:'GD-904',n:'PRY Transformación de Indemnizaciones',e:[
-    ['GD904-379','MVP Habilitar Vida-renta formularios','hecho','2024-11-28','2026-03-11'],
+    ['GD904-379','MVP Habilitar Vida-renta formularios','hecho','2025-11-28','2026-03-11'],
     ['GD904-518','Retomar indemnización multicanal','porhacer',null],
     ['GD904-633','Activar botón trazabilidad indemn','porhacer',null],
     ['GD904-663','Automatizar correos indemnizaciones','prog','2026-05-15'],
