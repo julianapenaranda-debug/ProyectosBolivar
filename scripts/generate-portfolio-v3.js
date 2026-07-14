@@ -32,7 +32,7 @@ const INI = [
   ['gd907','GD-907','Unificación de Plataformas','GD907-613','2026-12-31'],
   ['gd929','GD-929','PRY Gestión en Bienestar - Autorizaciones ARL/Salud','GD929-716','2026-12-31'],
   ['gd971','GD-971','Ciber 5.0 WAPP Multinube','GD971-42','2026-03-31'],
-  ['gd976','GD-976','Ciber 5.0 SSE (Security Service Edge)','GD976-48','2026-07-23'],
+
   ['gd981','GD-981','Plataforma Cumplimiento Autogestión 0-500M','GD981-1007','2026-12-31'],
   ['gd1130','GD-1130','PRY Cuentas Médicas','GD1130-75','2026-11-09'],
   ['gd1136','GD-1136','Migración e Implementación Bizagi / BPMS','GD1136-18','2026-12-31'],
@@ -59,7 +59,7 @@ const DEPS = [
 const KEY_TO_NAME = {
   'GD-902':'Suscripción','GD-903':'Autogestión Pólizas','GD-905':'Carpeta Única',
   'GD-907':'P. Intermediarios','GD-929':'Gestión Bienestar','GD-971':'Ciber WAPP',
-  'GD-976':'Ciber SSE','GD-981':'Cumplimiento','GD-1130':'Cuentas Médicas',
+  'GD-981':'Cumplimiento','GD-1130':'Cuentas Médicas',
   'GD-1136':'Bizagi','GD-1141':'APM','GD-904':'Indemnizaciones',
   'GD-1129':'Core Seguros',
   'Tronador':'Tronador','Saghi':'Saghi'
@@ -74,7 +74,7 @@ const nodePositions = {
 const nodeColors = {
   'GD-902':'#2e7d32','GD-905':'#2e7d32','GD-904':'#2e7d32',
   'GD-929':'#f57f17','GD-981':'#f57f17','GD-971':'#f57f17',
-  'GD-976':'#f57f17','GD-1130':'#f57f17',
+  'GD-1130':'#f57f17',
   'GD-907':'#c62828','GD-1136':'#c62828','GD-1141':'#c62828',
   'Tronador':'#78909c','Saghi':'#78909c'
 };
@@ -616,9 +616,7 @@ const P = [
     ['GD971-57','Plan de Choque 9 Dominios','hecho','2026-07-09'],
     ['GD971-58','Control cambios SegurosBolivar.com','porhacer',null]
   ]},
-  {id:'gd976',c:'GD-976',n:'Ciber 5.0 SSE (Security Service Edge)',e:[
-    ['GD976-49','Marcha blanca proyecto','prog','2026-07-23']
-  ]},
+
   {id:'gd981',c:'GD-981',n:'Plataforma Cumplimiento Autogestión 0-500M',e:[
     // Fase I (GD981-1007) — épicas con duedate 2026
     ['GD981-7','Prerrequisitos plataforma cumplimie','hecho','2026-04-30','2026-01-04'],
