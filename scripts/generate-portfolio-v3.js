@@ -539,174 +539,113 @@ function copyTable(tableId){var t=document.getElementById(tableId);var rows=t.qu
 }
 
 // ═══════════════════════════════════════════════════════════════════
-// DATOS FRESCOS — Julio 9, 2026
+// DATOS FRESCOS — Julio 14, 2026
 // ═══════════════════════════════════════════════════════════════════
 
 const P = [
   {id:'gd902',c:'GD-902',n:'PRY Transformación de Suscripción (Motor suscripción)',e:[
-    ['GD902-534','Extracción reglas tronador','prog','2026-06-30'],
-    ['GD902-535','Creación APIS motor','prog','2026-12-29'],
-    ['GD902-1310','Ajustes Evolutivos Motor','prog','2026-12-31'],
-    ['GD902-1329','Módulo parametrización reglas','prog','2026-07-07'],
-    ['GD902-536','Mejoras Filenet','hecho','2026-12-29','2026-01-30'],
-    ['GD902-839','MR Dashboard activación rol','hecho','2026-05-31','2026-06-05'],
-    ['GD902-844','MR Config Reglas Lenguaje Natural','hecho','2026-05-31','2026-05-29'],
-    ['GD902-910','MR Vigencia reglas','hecho','2026-05-31','2026-05-29'],
-    ['GD902-923','MR Aseguramiento Calidad','hecho','2026-05-31','2026-05-29'],
-    ['GD902-932','MR Ejecución Simulación','hecho','2026-05-31','2026-05-29'],
-    ['GD902-937','MR Tablero Gestión Reglas','hecho','2026-05-31','2026-05-29'],
-    ['GD902-940','MR Consulta Trazabilidad','hecho','2026-06-30','2026-06-24'],
-    ['GD902-947','MR Edición activar inactivar','hecho','2026-05-31','2026-05-29'],
-    ['GD902-982','MR Registro Evidencia','hecho','2026-06-30','2026-06-24'],
-    ['GD902-995','MR Exportación reportes','hecho','2026-06-30','2026-06-24'],
-    ['GD902-825','MR Desarrollo bases técnicas','cancel','2026-06-30','2026-07-09'],
-    ['GD902-834','MR Gestión Accesos Seguridad','cancel','2026-07-31','2026-07-09'],
-    ['GD902-960','MR Registro Evidencia (dup)','cancel','2026-06-30','2026-07-09'],
-    ['GD902-969','MR Modulo reportería','cancel','2026-06-30','2026-07-09'],
-    ['GD902-1004','MR Restaurar regla','cancel','2026-06-30','2026-07-09'],
-    ['GD902-1009','MR Config Alertas','cancel','2026-06-30','2026-07-09'],
-    ['GD902-1018','MR envío notificaciones','cancel','2026-06-30','2026-07-09']
+    ['GD902-534','Extracción reglas tronador y Migración','prog','2026-06-30'],
+    ['GD902-535','Creación de APIS necesarias para motor','prog','2026-12-29'],
+    ['GD902-536','Mejoras Filenet para motor','hecho','2026-12-29','2026-01-30'],
+    ['GD902-1310','Ajustes y Evolutivos Motor 2026','prog','2026-12-31'],
+    ['GD902-1329','Modulo de parametrizacion de reglas','prog','2026-07-07']
   ]},
   {id:'gd903',c:'GD-903',n:'PRY Autogestión Pólizas Individuales (Simon ventas)',e:[
-    ['GD903-42','Autos Cotización y Emisión','cancel','2026-07-31'],
-    ['GD903-310','Vida Migración','prog','2026-06-12'],
-    ['GD903-321','Autos Migración Angular 17+','prog','2026-05-22'],
-    ['GD903-402','Autos Modificaciones Autogestión','porhacer',null],
-    ['GD903-403','Vida Modificaciones','porhacer',null],
-    ['GD903-404','Salud Modificaciones','porhacer',null],
-    ['GD903-405','Hogar Modificaciones','porhacer',null],
-    ['GD903-406','Módulo Consulta Cotizaciones','porhacer',null],
-    ['GD903-407','Salud Cotización y Emisión','prog','2026-06-19'],
-    ['GD903-408','Unificación Firma Electrónica','porhacer',null],
-    ['GD903-409','Hogar Cotización y Emisión','prog','2026-07-10']
+    ['GD903-310','Vida - Migración Cotización y Emisión','prog','2026-06-12'],
+    ['GD903-321','Autos - Migración Cotización y Emisión','prog','2026-05-22'],
+    ['GD903-402','Autos - Modificaciones Autogestión','porhacer',null],
+    ['GD903-403','Vida - Modificaciones Autogestión','porhacer',null],
+    ['GD903-404','Salud - Modificaciones Autogestión','porhacer',null],
+    ['GD903-405','Hogar - Modificaciones Autogestión','porhacer',null],
+    ['GD903-406','Transversal - Módulo Consulta Cotiz','porhacer',null],
+    ['GD903-407','Salud - Migración Cotización y Emisión','prog','2026-06-19'],
+    ['GD903-408','Transversal - Unificación Firma Elect','porhacer',null],
+    ['GD903-409','Hogar - Migración Cotización y Emisión','prog','2026-07-10']
   ]},
   {id:'gd905',c:'GD-905',n:'PRY Carpeta Única de Cliente',e:[
-    ['GD905-44','Integración gestor documental','prog','2026-05-31'],
-    ['GD905-261','Creación OCR y API','prog','2026-10-31'],
-    ['GD905-390','Evolutivos CUC Oleary','prog','2026-10-31'],
-    ['GD905-39','Módulo parametrización docs','hecho','2026-06-30','2026-07-03'],
-    ['GD905-49','API componente integraciones','hecho','2026-06-01','2026-05-14'],
-    ['GD905-98','Config inicial proyecto','hecho','2026-12-31','2026-02-27'],
-    ['GD905-103','Pantalla Gestión Config','hecho','2026-06-01','2026-06-11'],
-    ['GD905-108','Visualización tablas','hecho','2026-06-01','2026-05-11'],
-    ['GD905-113','Creación documentos','hecho','2026-06-01','2026-06-11'],
-    ['GD905-114','Editar información','hecho','2026-06-01','2026-06-11'],
-    ['GD905-119','Cargar masivamente','hecho','2026-06-01','2026-06-11'],
-    ['GD905-120','Creación datos','hecho','2026-06-01','2026-06-11'],
-    ['GD905-121','Validación y edición','hecho','2026-06-01','2026-06-11'],
-    ['GD905-122','Admin Módulo Procesos','hecho','2026-06-01','2026-06-11'],
-    ['GD905-127','Creación subprocesos','hecho','2026-06-01','2026-06-11'],
-    ['GD905-132','Editar subprocesos','hecho','2026-06-01','2026-06-11'],
-    ['GD905-137','Admin edición proceso','hecho','2026-06-01','2026-06-11'],
-    ['GD905-142','Trazabilidad y Auditoría','hecho','2026-06-01','2026-06-11'],
-    ['GD905-477','Nuevo Gestor documental Oleary POC','hecho',null,'2026-07-07'],
-    ['GD905-259','Integración Filenet para visualizar doc','cancel','2026-06-01','2026-04-27'],
-    ['GD905-262','Validador de vigencias en documentos','cancel','2026-06-01','2026-05-22'],
-    ['GD905-264','Creación caso workflow','cancel','2026-06-01','2026-04-27']
+    ['GD905-39','Módulo parametrización docs dominio','hecho','2026-06-30','2026-07-08'],
+    ['GD905-44','Integración gestor documental Oleary','prog','2026-05-31'],
+    ['GD905-49','API componente para integraciones','hecho','2026-06-01','2026-05-14'],
+    ['GD905-259','Integración Filenet visualizar doc','cancel','2026-06-01','2026-04-27'],
+    ['GD905-261','Creación del OCR y API OPERACIONAL','prog','2026-10-31'],
+    ['GD905-390','Evolutivos/mejoras CUC - Oleary 2026','prog','2026-10-31'],
+    ['GD905-477','Nuevo Gestor documental Oleary POC','hecho','2026-05-29','2026-07-08']
   ]},
   {id:'gd907',c:'GD-907',n:'Unificación de Plataformas',e:[
-    ['GD907-26','Autoservicio empleados','prog','2026-05-31'],
-    ['GD907-27','Autogestión datos','prog','2026-05-31'],
+    ['GD907-26','Autoservicio creación/actualiz empleados','prog','2026-05-31'],
+    ['GD907-27','Autogestión actualización de datos','prog','2026-05-31'],
     ['GD907-620','Ajustes vulnerabilidades IDOR','porhacer',null],
-    ['GD907-651','Implementación Tags','prog','2026-12-31'],
-    ['GD907-658','Modal Informativo Admin','prog','2026-07-31'],
-    ['GD907-664','Migración módulo GH','prog',null],
-    ['GD907-901','Desarrollos backend Sagui','prog','2026-08-28'],
-    ['GD907-631','Ajustes Portal Migración Simon','hecho',null,'2026-03-31']
+    ['GD907-631','Ajustes Portal Migración Simon','hecho',null,'2026-03-31'],
+    ['GD907-651','Implementación Tags Portal Interm','prog','2026-12-31'],
+    ['GD907-658','Modal Informativo Admin Usuarios','prog','2026-07-31'],
+    ['GD907-664','Migración módulo Gestión Humana','prog',null],
+    ['GD907-901','Desarrollos backend Sagui Portal','prog','2026-08-28']
   ]},
   {id:'gd929',c:'GD-929',n:'PRY Gestión en Bienestar - Autorizaciones ARL/Salud',e:[
-    ['GD929-729','Despliegue prioridad 1','prog','2026-12-31'],
-    ['GD929-1395','Despliegue prioridad 2','prog','2026-07-09'],
-    ['GD929-1396','Despliegue prioridad 3','prog','2026-08-14'],
-    ['GD929-1688','Automatización pruebas','porhacer',null],
-    ['GD929-2007','Proyecto General','porhacer',null]
+    ['GD929-729','Despliegue prioridad 1 salud','prog','2026-05-30'],
+    ['GD929-1395','Despliegue prioridad 2 salud','prog','2026-07-09'],
+    ['GD929-1396','Despliegue prioridad 3 salud','prog','2026-08-14'],
+    ['GD929-1688','Automatización de pruebas','porhacer',null]
   ]},
   {id:'gd971',c:'GD-971',n:'Ciber 5.0 WAPP Multinube',e:[
-    ['GD971-40','Configuración Políticas','porhacer',null],
-    ['GD971-45','Implementación Cloudflare 27 dom','prog','2026-03-27'],
-    ['GD971-46','Monitoreo y estabilización','prog','2026-07-09'],
+    ['GD971-43','Kickoff proveedor y plan trabajo','hecho','2026-01-19'],
+    ['GD971-44','Requisitos','hecho','2026-01-30'],
+    ['GD971-45','Implementacion Cloudflare 27 dominios','prog','2026-03-27'],
+    ['GD971-46','Monitoreo y estabilización dominios','prog','2026-07-09'],
     ['GD971-47','Cierre del proyecto','prog','2026-07-09'],
     ['GD971-57','Plan de Choque 9 Dominios','prog','2026-07-09'],
-    ['GD971-58','Control cambios SegurosBolivar','porhacer',null],
-    ['GD971-43','Kickoff proveedor','hecho','2026-01-19'],
-    ['GD971-44','Requisitos','hecho','2026-01-30']
+    ['GD971-58','Control cambios SegurosBolivar.com','porhacer',null]
   ]},
   {id:'gd976',c:'GD-976',n:'Ciber 5.0 SSE (Security Service Edge)',e:[
-    ['GD976-49','Marcha blanca proyecto','prog','2026-07-23'],
-    ['GD976-50','Dominios con Cloudflare','porhacer',null]
+    ['GD976-49','Marcha blanca proyecto','prog','2026-07-23']
   ]},
   {id:'gd981',c:'GD-981',n:'Plataforma Cumplimiento Autogestión 0-500M',e:[
-    ['GD981-1018','Modificación pólizas autogestión','porhacer',null],
-    ['GD981-1347','Evolutivos Autogestión Fase I','prog',null],
+    ['GD981-733','Aplicación automática sobrecomisión','hecho','2026-06-10','2026-06-19'],
     ['GD981-1412','Atención solicitudes email','prog','2026-07-09'],
-    ['GD981-1506','Retoma solicitudes','porhacer','2026-07-22'],
-    ['GD981-1507','Modificación tasa','prog','2026-07-10'],
-    ['GD981-1850','Evolutivos Autogestión fase I (nueva)','porhacer',null],
-    ['GD981-1851','Modificación pólizas RC autogestión','porhacer',null],
-    ['GD981-7','Prerrequisitos plataforma cumplimiento','hecho','2026-01-22','2026-01-24'],
-    ['GD981-28','Config infra cloud cumplimiento','hecho','2026-02-10','2026-02-11'],
-    ['GD981-34','Config terraform infra cloud','hecho','2026-02-22','2026-02-25'],
-    ['GD981-59','Módulo 2 gestión comercial','hecho','2026-03-14','2026-03-18'],
-    ['GD981-72','Módulo 3 documentos','hecho','2026-04-03','2026-04-04'],
-    ['GD981-77','Despliegue ambiente usuarios','hecho','2026-04-09','2026-04-11'],
-    ['GD981-121','Salida producción fase I','hecho','2026-05-14','2026-05-16'],
-    ['GD981-186','Estabilización y marcha blanca','hecho','2026-05-28','2026-06-02'],
-    ['GD981-733','Aplicación sobrecomisión','hecho','2026-06-10','2026-06-10'],
-    ['GD981-785','Emisión Póliza RC','hecho','2026-04-30','2026-04-15'],
-    ['GD981-1038','Actividades IA proyecto','hecho','2026-04-30','2026-04-15']
+    ['GD981-1506','Retoma solicitudes no finalizadas','porhacer','2026-07-22'],
+    ['GD981-1507','Modificación de tasa','prog','2026-07-10']
   ]},
   {id:'gd1130',c:'GD-1130',n:'PRY Cuentas Médicas',e:[
-    ['GD1130-19','Front radicación facturas','prog','2026-11-09'],
-    ['GD1130-81','Front Gestor Cuentas Médicas','prog','2026-11-09'],
-    ['GD1130-82','Flujo Cuentas Médicas IPS','prog','2026-11-09'],
-    ['GD1130-83','Paramétricas y parámetros Cuentas Médicas','prog','2026-11-09'],
-    ['GD1130-281','SIIFA Cuentas Médicas Fase 1','prog',null]
+    ['GD1130-19','Front radicación facturas proveedores','prog','2026-07-16'],
+    ['GD1130-81','Front Gestor Cuentas Medicas','prog','2026-07-16'],
+    ['GD1130-82','Flujo Cuentas Medicas IPS Baja/Media','prog','2026-07-16'],
+    ['GD1130-83','Paramétricas y parámetros Ctas Médicas','prog','2026-07-16'],
+    ['GD1130-281','SIIFA Cuentas Medicas - Fase 1','prog','2026-09-07']
   ]},
   {id:'gd1136',c:'GD-1136',n:'Migración e Implementación Bizagi / BPMS',e:[
+    ['GD1136-2','Bizagi - Setup cloud','hecho','2026-03-31'],
     ['GD1136-34','Entregable Paquete 1 - Radicación','prog','2026-05-08'],
     ['GD1136-35','Entregable Paquete 2 - Análisis','prog','2026-05-25'],
-    ['GD1136-36','Entregable Paquete 3 - Cierre','prog','2026-06-19'],
-    ['GD1136-2','Bizagi Setup cloud','hecho','2026-03-31']
+    ['GD1136-36','Entregable Paquete 3 - Cierre','prog','2026-06-19']
   ]},
   {id:'gd1141',c:'GD-1141',n:'PRY Access Policy Management (APM)',e:[
-    ['GD1141-28','Migracion APM ambiente DRP','prog','2026-07-31'],
     ['GD1141-4','Plan de Migracion Ambiente Bajos','hecho','2026-05-25'],
-    ['GD1141-11','Migración ambiente de Producción','hecho','2026-06-30']
+    ['GD1141-11','Migración ambiente de Producción','hecho','2026-06-30'],
+    ['GD1141-28','Migracion APM ambiente DRP','prog','2026-07-31']
   ]},
   {id:'gd904',c:'GD-904',n:'PRY Transformación de Indemnizaciones',e:[
+    ['GD904-379','MVP Habilitar Vida-renta formularios','hecho','2024-11-28','2026-03-11'],
     ['GD904-518','Retomar indemnización multicanal','porhacer',null],
-    ['GD904-633','Activar botón trazabilidad','porhacer',null],
-    ['GD904-663','Automatizar correos contingencia','prog','2026-05-15'],
-    ['GD904-682','Automatización pruebas','prog',null],
+    ['GD904-633','Activar botón trazabilidad indemn','porhacer',null],
+    ['GD904-663','Automatizar correos indemnizaciones','prog','2026-05-15'],
     ['GD904-720','Flujo Trabajo Rentas','prog','2026-05-28'],
-    ['GD904-778','Flujo trabajo Patrimoniales','porhacer',null],
-    ['GD904-379','MVP Habilitar Vida-Renta','hecho','2026-02-28','2026-03-11']
+    ['GD904-778','Flujo trabajo Patrimoniales','porhacer',null]
   ]},
   {id:'gd1129',c:'GD-1129',n:'PRY Nuevo Core de Seguros',e:[
-    ['GD1129-175','Estabilización tronador 2026','prog','2026-12-31'],
-    ['GD1129-444','Integración 2026','prog','2026-12-31'],
-    ['GD1129-445','Desacople 2026','porhacer','2026-12-31'],
-    ['GD1129-877','Particionamiento y Depuración DBA','prog','2026-09-30'],
-    ['GD1129-879','Observabilidad-Trazabilidad Fenix','hecho','2026-12-31'],
+    ['GD1129-80','Borrar Particionamiento y Depuración','cancel',null],
     ['GD1129-90','Observabilidad-Trazabilidad COREX','hecho','2026-06-11'],
-    ['GD1129-80','Borrar Particionamiento y Depuración','cancel',null]
+    ['GD1129-175','Estabilización tronador - 2026','prog','2026-12-31'],
+    ['GD1129-444','Integración - 2026','prog','2026-12-31'],
+    ['GD1129-445','Desacople - 2026','porhacer','2026-12-31'],
+    ['GD1129-877','Particionamiento y Depuración DBA','prog','2026-09-30'],
+    ['GD1129-879','Observabilidad-Trazabilidad Fenix','hecho','2026-12-31']
   ]}
 ];
 
 const BLOCKED = [];
 
-const inconsData = [
-  ['GD-907','Unificación de Plataformas','GD907-23','Nuevo Home Simon Servicio','Hecho','—'],
-  ['GD-907','Unificación de Plataformas','GD907-24','Admin roles','Hecho','—'],
-  ['GD-907','Unificación de Plataformas','GD907-158','Integración Simon','Hecho','—'],
-  ['GD-907','Unificación de Plataformas','GD907-518','Ajuste incidentes','Hecho','—'],
-  ['GD-903','PRY Autogestión Pólizas Individuales (Simon ventas)','GD903-98','Autos comportamiento IT 1','Hecho','—'],
-  ['GD-971','Ciber 5.0 WAPP Multinube','GD971-43','Kickoff proveedor','Hecho','2026-01-19'],
-  ['GD-971','Ciber 5.0 WAPP Multinube','GD971-44','Requisitos','Hecho','2026-01-30'],
-  ['GD-1136','Migración e Implementación Bizagi / BPMS','GD1136-2','Bizagi Setup cloud','Hecho','2026-03-31'],
-  ['GD-1141','PRY Access Policy Management (APM)','GD1141-4','Plan Migración Bajos','Hecho','2026-05-25'],
-  ['GD-1141','PRY Access Policy Management (APM)','GD1141-11','Migración Producción','Hecho','2026-06-30']
-];
+// inconsistencias calculadas dinámicamente por buildInconsData(P)
+const inconsData = buildInconsData(P);
 
 // ═══════════════════════════════════════════════════════════════════
 // EJECUCIÓN PRINCIPAL
