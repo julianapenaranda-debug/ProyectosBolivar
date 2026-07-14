@@ -568,9 +568,9 @@ const P = [
     ['GD902-1018','MR envío notificaciones','cancel','2026-06-30','2026-07-09']
   ]},
   {id:'gd903',c:'GD-903',n:'PRY Autogestión Pólizas Individuales (Simon ventas)',e:[
-    ['GD903-42','Autos Cotización y Emisión','prog','2026-07-31'],
-    ['GD903-310','Vida Migración','porhacer',null],
-    ['GD903-321','Autos Migración Angular 17+','porhacer',null],
+    ['GD903-42','Autos Cotización y Emisión','cancel','2026-07-31'],
+    ['GD903-310','Vida Migración','prog',null],
+    ['GD903-321','Autos Migración Angular 17+','prog',null],
     ['GD903-402','Autos Modificaciones Autogestión','porhacer',null],
     ['GD903-403','Vida Modificaciones','porhacer',null],
     ['GD903-404','Salud Modificaciones','porhacer',null],
@@ -641,6 +641,8 @@ const P = [
     ['GD981-1412','Atención solicitudes email','prog','2026-07-09'],
     ['GD981-1506','Retoma solicitudes','porhacer','2026-07-22'],
     ['GD981-1507','Modificación tasa','prog','2026-07-10'],
+    ['GD981-1850','Evolutivos Autogestión fase I (nueva)','porhacer',null],
+    ['GD981-1851','Modificación pólizas RC autogestión','porhacer',null],
     ['GD981-7','Prerrequisitos plataforma cumplimiento','hecho','2026-01-22','2026-01-24'],
     ['GD981-28','Config infra cloud cumplimiento','hecho','2026-02-10','2026-02-11'],
     ['GD981-34','Config terraform infra cloud','hecho','2026-02-22','2026-02-25'],
@@ -649,7 +651,9 @@ const P = [
     ['GD981-77','Despliegue ambiente usuarios','hecho','2026-04-09','2026-04-11'],
     ['GD981-121','Salida producción fase I','hecho','2026-05-14','2026-05-16'],
     ['GD981-186','Estabilización y marcha blanca','hecho','2026-05-28','2026-06-02'],
-    ['GD981-733','Aplicación sobrecomisión','hecho','2026-06-10','2026-06-10']
+    ['GD981-733','Aplicación sobrecomisión','hecho','2026-06-10','2026-06-10'],
+    ['GD981-785','Emisión Póliza RC','hecho','2026-04-30','2026-04-15'],
+    ['GD981-1038','Actividades IA proyecto','hecho','2026-04-30','2026-04-15']
   ]},
   {id:'gd1130',c:'GD-1130',n:'PRY Cuentas Médicas',e:[
     ['GD1130-19','Front radicación facturas','prog','2026-11-09'],
