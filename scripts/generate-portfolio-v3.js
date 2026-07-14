@@ -644,7 +644,11 @@ const P = [
     ['GD981-733','Aplicación automática sobrecomisión','hecho','2026-06-10','2026-06-19'],
     ['GD981-1412','Atención solicitudes email','prog','2026-07-09'],
     ['GD981-1506','Retoma solicitudes no finalizadas','porhacer','2026-07-22'],
-    ['GD981-1507','Modificación de tasa','prog','2026-07-10']
+    ['GD981-1507','Modificación de tasa','prog','2026-07-10'],
+    // ANT 2026 Fase II Nueva Plataforma (GD981-1705)
+    ['GD981-1018','Modificación pólizas Cumplimiento au','porhacer',null],
+    ['GD981-1850','Evolutivos de la Autogestión fase I','porhacer',null],
+    ['GD981-1851','Modificación pólizas RC autogestionada','porhacer',null]
   ]},
   {id:'gd1130',c:'GD-1130',n:'PRY Cuentas Médicas',e:[
     ['GD1130-19','Front radicación facturas proveedores','prog','2026-07-16'],
