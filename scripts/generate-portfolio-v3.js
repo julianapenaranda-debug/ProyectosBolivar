@@ -276,6 +276,28 @@ function isOverdue(d) {
 }
 
 /**
+ * Calcula días hábiles (lunes a viernes) entre dos fechas.
+ * @param {string} fromDate - Fecha inicio YYYY-MM-DD.
+ * @param {string} toDate - Fecha fin YYYY-MM-DD.
+ * @returns {number} Días hábiles (positivo si toDate > fromDate).
+ */
+function businessDays(fromDate, toDate) {
+  const start = new Date(fromDate + 'T12:00:00');
+  const end = new Date(toDate + 'T12:00:00');
+  const sign = end >= start ? 1 : -1;
+  const [earlier, later] = sign === 1 ? [start, end] : [end, start];
+  let count = 0;
+  const current = new Date(earlier);
+  current.setDate(current.getDate() + 1);
+  while (current <= later) {
+    const day = current.getDay();
+    if (day !== 0 && day !== 6) count++;
+    current.setDate(current.getDate() + 1);
+  }
+  return count * sign;
+}
+
+/**
  * Calcula semáforo de épica individual.
  * @param {string} st - Estado mapeado.
  * @param {string|null} due - Duedate de la épica.
@@ -315,7 +337,7 @@ function badge(s) {
 function dueH(d, st) {
   if (!d) return '—';
   if (st === 'prog' && isOverdue(d)) {
-    const dd = Math.round((new Date(TODAY_ISO + 'T12:00:00') - new Date(d + 'T12:00:00')) / 864e5);
+    const dd = businessDays(d, TODAY_ISO);
     return `<span class="due-vencida">${d} ⚠️ -${dd}d</span>`;
   }
   return d;
@@ -453,7 +475,7 @@ function generateHtml(P, BLOCKED, inconsData) {
     const [k, s, st, due] = e;
     if (!due) return;
     if (st === 'hecho' || st === 'cancel') return;
-    const diff = Math.round((new Date(due + 'T12:00:00') - new Date(TODAY_ISO + 'T12:00:00')) / 864e5);
+    const diff = businessDays(TODAY_ISO, due);
     if (diff <= 30) alertas.push({ proj: p.c, name: p.n, key: k, epic: s, st, due, diff });
   }); });
   alertas.sort((a, b) => a.diff - b.diff);
@@ -493,7 +515,7 @@ function generateHtml(P, BLOCKED, inconsData) {
   P.forEach((p) => { p.e.forEach((e) => {
     const [k, s, st, due] = e;
     if (st !== 'prog' || !due) return;
-    const diff = Math.round((new Date(TODAY_ISO + 'T12:00:00') - new Date(due + 'T12:00:00')) / 864e5);
+    const diff = businessDays(due, TODAY_ISO);
     if (diff > 60) zombis.push({ proj: p.c, pName: p.n, key: k, epic: s, due, dias: diff });
   }); });
   zombis.sort((a, b) => b.dias - a.dias);
