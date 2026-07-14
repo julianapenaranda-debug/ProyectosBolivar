@@ -569,16 +569,16 @@ const P = [
   ]},
   {id:'gd903',c:'GD-903',n:'PRY Autogestión Pólizas Individuales (Simon ventas)',e:[
     ['GD903-42','Autos Cotización y Emisión','cancel','2026-07-31'],
-    ['GD903-310','Vida Migración','prog',null],
-    ['GD903-321','Autos Migración Angular 17+','prog',null],
+    ['GD903-310','Vida Migración','prog','2026-06-12'],
+    ['GD903-321','Autos Migración Angular 17+','prog','2026-05-22'],
     ['GD903-402','Autos Modificaciones Autogestión','porhacer',null],
     ['GD903-403','Vida Modificaciones','porhacer',null],
     ['GD903-404','Salud Modificaciones','porhacer',null],
     ['GD903-405','Hogar Modificaciones','porhacer',null],
     ['GD903-406','Módulo Consulta Cotizaciones','porhacer',null],
-    ['GD903-407','Salud Cotización y Emisión','porhacer',null],
+    ['GD903-407','Salud Cotización y Emisión','prog','2026-06-19'],
     ['GD903-408','Unificación Firma Electrónica','porhacer',null],
-    ['GD903-409','Hogar Cotización y Emisión','porhacer',null]
+    ['GD903-409','Hogar Cotización y Emisión','prog','2026-07-10']
   ]},
   {id:'gd905',c:'GD-905',n:'PRY Carpeta Única de Cliente',e:[
     ['GD905-44','Integración gestor documental','prog','2026-05-31'],
