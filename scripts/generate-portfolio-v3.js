@@ -602,9 +602,9 @@ const P = [
     ['GD907-901','Desarrollos backend Sagui Portal','prog','2026-08-28']
   ]},
   {id:'gd929',c:'GD-929',n:'PRY Gestión en Bienestar - Autorizaciones ARL/Salud',e:[
-    ['GD929-729','Despliegue prioridad 1 salud','prog','2026-05-30'],
-    ['GD929-1395','Despliegue prioridad 2 salud','prog','2026-07-09'],
-    ['GD929-1396','Despliegue prioridad 3 salud','prog','2026-08-14'],
+    ['GD929-729','Despliegue P1 – Homologaciones Core de Salud (Tipos de Servicio, CUPS y Restricciones)','prog','2026-05-30'],
+    ['GD929-1395','Despliegue P2 – Flujo de Autorizaciones n8n (Exclusiones, Deducibles, Períodos de Carencia y Coberturas)','prog','2026-07-09'],
+    ['GD929-1396','Despliegue P3 – Flujo de Autorizaciones n8n (Controles, Programas y Modelo Autorizador)','prog','2026-08-14'],
     ['GD929-1688','Automatización de pruebas','porhacer',null]
   ]},
   {id:'gd971',c:'GD-971',n:'Ciber 5.0 WAPP Multinube',e:[
