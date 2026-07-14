@@ -436,16 +436,15 @@ function generateHtml(P, BLOCKED, inconsData) {
   html += `<h2 class="st">Indicadores Clave</h2><div class="kpi-grid"><div class="kpi-card"><div class="v">${P.length}</div><div class="l">Total Proyectos</div></div><div class="kpi-card s"><div class="v">${iniAdelantado}</div><div class="l">Iniciativas OK</div></div><div class="kpi-card d"><div class="v">${iniCritico}</div><div class="l">Iniciativas Retraso Crítico</div></div><div class="kpi-card w"><div class="v">${iniRiesgo}</div><div class="l">Iniciativas En Riesgo</div></div><div class="kpi-card"><div class="v">${totH + totP + totPH}</div><div class="l">Total Épicas</div></div><div class="kpi-card s"><div class="v">${totH}</div><div class="l">Épicas Completadas</div></div><div class="kpi-card w"><div class="v">${totP}</div><div class="l">Épicas En Progreso</div></div><div class="kpi-card"><div class="v">${totPH}</div><div class="l">Épicas Por Hacer</div></div></div>`;
 
   // Tabla de Iniciativas
-  html += `<h2 class="st" id="tc">Tabla Consolidada de Iniciativas</h2><div class="tw"><table><thead><tr><th>Código</th><th>Nombre</th><th>Iniciativa</th><th>Duedate INI</th><th>Completitud</th><th>Épicas</th><th>Semáforo</th></tr></thead><tbody>`;
+  html += `<h2 class="st" id="tc">Tabla Consolidada de Iniciativas</h2><div class="tw"><table><thead><tr><th>Código</th><th>Nombre</th><th>Iniciativa</th><th>Duedate INI</th><th>Completitud</th><th>Épicas</th></tr></thead><tbody>`;
   INI.forEach((ini) => {
     const [id, code, name, ikey, idue] = ini;
     const p = P.find((x) => x.id === id);
     let done = 0, total = 0;
     if (p) { p.e.forEach((e) => { total++; if (e[2] === 'hecho' || e[2] === 'cancel') done++; }); }
     const pct = total > 0 ? ((done / total) * 100) : 0;
-    const sm = iniSem(pct, idue);
     const dueStr = idue && new Date(idue) < TODAY ? `<span class="due-vencida">${idue} ⚠️</span>` : idue || '—';
-    html += `<tr><td><a href="#${id}">${code}</a></td><td>${name}</td><td><a href="${JIRA}/${ikey}" target="_blank">${ikey}</a></td><td>${dueStr}</td><td><div class="progress-bar"><div class="progress-fill ${pct < 30 ? 'low' : pct <= 60 ? 'mid' : 'high'}" style="width:${pct}%"></div></div>${pct.toFixed(0)}% (${done}/${total})</td><td>${total}</td><td><span class="sem sem-${sm}"></span></td></tr>`;
+    html += `<tr><td><a href="#${id}">${code}</a></td><td>${name}</td><td><a href="${JIRA}/${ikey}" target="_blank">${ikey}</a></td><td>${dueStr}</td><td><div class="progress-bar"><div class="progress-fill ${pct < 30 ? 'low' : pct <= 60 ? 'mid' : 'high'}" style="width:${pct}%"></div></div>${pct.toFixed(0)}% (${done}/${total})</td><td>${total}</td></tr>`;
   });
   html += `</tbody></table></div>`;
 
