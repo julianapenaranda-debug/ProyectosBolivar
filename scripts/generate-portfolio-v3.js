@@ -454,16 +454,44 @@ function generateHtml(P, BLOCKED, inconsData) {
     let doneD = 0, totalD = 0;
     p.e.forEach((e) => { totalD++; if (e[2] === 'hecho' || e[2] === 'cancel') doneD++; });
     const pctD = totalD > 0 ? ((doneD / totalD) * 100).toFixed(0) : 0;
-    html += `<div class="ds" id="${p.id}"><div class="dh" onclick="toggleDetail(this)"><h3>${p.c} — ${p.n} (${p.e.length} épicas) · <span style="font-size:.85rem;color:var(--gray-600)">Completitud: ${pctD}% (${doneD}/${totalD})</span></h3><span class="tg">▼</span></div><div class="dc"><div class="tw"><table><thead><tr><th>Key</th><th>Resumen</th><th>Estado</th><th>Semáforo</th><th>Due Date</th></tr></thead><tbody>`;
+    html += `<div class="ds" id="${p.id}"><div class="dh" onclick="toggleDetail(this)"><h3>${p.c} — ${p.n} (${p.e.length} épicas) · <span style="font-size:.85rem;color:var(--gray-600)">Completitud: ${pctD}% (${doneD}/${totalD})</span></h3><span class="tg">▼</span></div><div class="dc"><div class="tw"><table><thead><tr><th>Key</th><th>Resumen</th><th>Estado</th><th>Semáforo</th><th>Due Date</th><th>% Real</th><th>% Esperado</th><th>Delta</th></tr></thead><tbody>`;
     p.e.forEach((e) => {
-      const [k, s, st, due, finReal] = e;
+      const [k, s, st, due, finReal, startDate, huTotal, huDone] = e;
       const sm2 = sem(st, due);
       let dueCell = dueH(due, st);
       if ((st === 'hecho' || st === 'cancel') && finReal && due && new Date(finReal) > new Date(due)) {
         const days = Math.round((new Date(finReal) - new Date(due)) / 864e5);
         dueCell = `<span class="due-vencida">✓ +${days}d atraso (Fin: ${finReal})</span>`;
       }
-      html += `<tr><td><a href="${JIRA}/${k}" target="_blank">${k}</a></td><td>${s}</td><td>${badge(st)}</td><td><span class="sem sem-${sm2}"></span></td><td>${dueCell}</td></tr>`;
+      // Avance real y esperado
+      let realPct = '', esperadoPct = '', deltaCell = '';
+      if (st === 'hecho' || st === 'cancel') {
+        realPct = st === 'hecho' ? '100%' : '—';
+        esperadoPct = '—';
+        deltaCell = st === 'hecho' ? '<span style="color:var(--success)">✓</span>' : '—';
+      } else if (st === 'porhacer') {
+        realPct = '0%';
+        esperadoPct = '—';
+        deltaCell = '—';
+      } else if (huTotal && huTotal > 0) {
+        const real = Math.round((huDone / huTotal) * 100);
+        realPct = `${real}%`;
+        let esp = 0;
+        if (startDate && due) {
+          const total = new Date(due) - new Date(startDate);
+          const elapsed = TODAY - new Date(startDate);
+          esp = Math.min(100, Math.max(0, Math.round((elapsed / total) * 100)));
+        }
+        esperadoPct = startDate && due ? `${esp}%` : '—';
+        if (startDate && due) {
+          const delta = real - esp;
+          const color = delta >= 0 ? 'var(--success)' : delta >= -20 ? 'var(--warning)' : 'var(--danger)';
+          deltaCell = `<span style="color:${color};font-weight:600">${delta >= 0 ? '+' : ''}${delta}pp</span>`;
+        } else { deltaCell = '—'; }
+      } else {
+        realPct = '—'; esperadoPct = '—'; deltaCell = '—';
+      }
+      html += `<tr><td><a href="${JIRA}/${k}" target="_blank">${k}</a></td><td>${s}</td><td>${badge(st)}</td><td><span class="sem sem-${sm2}"></span></td><td>${dueCell}</td><td style="text-align:center;font-weight:600">${realPct}</td><td style="text-align:center">${esperadoPct}</td><td style="text-align:center">${deltaCell}</td></tr>`;
     });
     html += `</tbody></table></div><a href="#tc" style="font-size:.85rem">↑ Volver</a></div></div>`;
   });
@@ -567,54 +595,54 @@ const P = [
   {id:'gd902',c:'GD-902',n:'PRY Transformación de Suscripción (Motor suscripción)',e:[
     ['GD902-330','Integrar Filenet - Motor Suscripción','hecho','2025-12-31','2025-12-30'],
     ['GD902-436','Extracción Reglas Negocio Core Suscripc','hecho','2025-10-31','2025-10-30'],
-    ['GD902-534','Extracción reglas tronador y Migración','prog','2026-06-30'],
-    ['GD902-535','Creación de APIS necesarias para motor','prog','2026-12-29'],
+    ['GD902-534','Extracción reglas tronador y Migración','prog','2026-06-30',null,'2026-03-02',40,32],
+    ['GD902-535','Creación de APIS necesarias para motor','prog','2026-12-29',null,'2026-01-02',27,26],
     ['GD902-536','Mejoras Filenet para motor','hecho','2026-12-29','2026-01-30'],
-    ['GD902-1310','Ajustes y Evolutivos Motor 2026','prog','2026-12-31'],
-    ['GD902-1329','Modulo de parametrizacion de reglas','prog','2026-07-07']
+    ['GD902-1310','Ajustes y Evolutivos Motor 2026','prog','2026-12-31',null,'2026-06-26',3,1],
+    ['GD902-1329','Modulo de parametrizacion de reglas','prog','2026-07-07',null,'2026-03-19',68,61]
   ]},
   {id:'gd903',c:'GD-903',n:'PRY Autogestión Pólizas Individuales (Simon ventas)',e:[
-    ['GD903-310','Vida - Migración Cotización y Emisión','prog','2026-06-12'],
-    ['GD903-321','Autos - Migración Cotización y Emisión','prog','2026-05-22'],
+    ['GD903-310','Vida - Migración Cotización y Emisión','prog','2026-06-12',null,'2026-04-01',15,0],
+    ['GD903-321','Autos - Migración Cotización y Emisión','prog','2026-05-22',null,'2026-04-06',10,0],
     ['GD903-402','Autos - Modificaciones Autogestión','porhacer',null],
     ['GD903-403','Vida - Modificaciones Autogestión','porhacer',null],
     ['GD903-404','Salud - Modificaciones Autogestión','porhacer',null],
     ['GD903-405','Hogar - Modificaciones Autogestión','porhacer',null],
     ['GD903-406','Transversal - Módulo Consulta Cotiz','porhacer',null],
-    ['GD903-407','Salud - Migración Cotización y Emisión','prog','2026-06-19'],
+    ['GD903-407','Salud - Migración Cotización y Emisión','prog','2026-06-19',null,'2026-04-20',5,0],
     ['GD903-408','Transversal - Unificación Firma Elect','porhacer',null],
-    ['GD903-409','Hogar - Migración Cotización y Emisión','prog','2026-07-10']
+    ['GD903-409','Hogar - Migración Cotización y Emisión','prog','2026-07-10',null,'2026-04-27',5,0]
   ]},
   {id:'gd905',c:'GD-905',n:'PRY Carpeta Única de Cliente',e:[
     ['GD905-39','Módulo parametrización docs dominio','hecho','2026-06-30','2026-07-08'],
-    ['GD905-44','Integración gestor documental Oleary','prog','2026-05-31'],
+    ['GD905-44','Integración gestor documental Oleary','prog','2026-05-31',null,'2026-03-01',5,1],
     ['GD905-49','API componente para integraciones','hecho','2026-06-01','2026-05-14'],
     ['GD905-259','Integración Filenet visualizar doc','cancel','2026-06-01','2026-04-27'],
-    ['GD905-261','Creación del OCR y API OPERACIONAL','prog','2026-10-31'],
-    ['GD905-390','Evolutivos/mejoras CUC - Oleary 2026','prog','2026-10-31'],
+    ['GD905-261','Creación del OCR y API OPERACIONAL','prog','2026-10-31',null,'2026-04-01',19,2],
+    ['GD905-390','Evolutivos/mejoras CUC - Oleary 2026','prog','2026-10-31',null,'2026-06-16',21,3],
     ['GD905-477','Nuevo Gestor documental Oleary POC','hecho','2026-05-29','2026-07-08']
   ]},
   {id:'gd907',c:'GD-907',n:'Unificación de Plataformas',e:[
-    ['GD907-26','Autoservicio creación/actualiz empleados','prog','2026-05-31'],
-    ['GD907-27','Autogestión actualización de datos','prog','2026-05-31'],
+    ['GD907-26','Autoservicio creación/actualiz empleados','prog','2026-05-31',null,'2025-10-01',8,8],
+    ['GD907-27','Autogestión actualización de datos','prog','2026-05-31',null,'2025-10-01',10,10],
     ['GD907-620','Ajustes vulnerabilidades IDOR','porhacer',null],
     ['GD907-631','Ajustes Portal Migración Simon','hecho',null,'2026-03-31'],
-    ['GD907-658','Modal Informativo Admin Usuarios','prog','2026-07-31'],
-    ['GD907-664','Migración módulo Gestión Humana','prog','2026-09-30'],
-    ['GD907-901','Desarrollos backend Sagui Portal','prog','2026-08-28']
+    ['GD907-658','Modal Informativo Admin Usuarios','prog','2026-07-31',null,'2026-03-13',1,1],
+    ['GD907-664','Migración módulo Gestión Humana','prog','2026-09-30',null,'2026-05-04',27,0],
+    ['GD907-901','Desarrollos backend Sagui Portal','prog','2026-08-28',null,'2026-06-16',5,0]
   ]},
   {id:'gd929',c:'GD-929',n:'PRY Gestión en Bienestar - Autorizaciones ARL/Salud',e:[
-    ['GD929-729','Despliegue P1 – Homologaciones Core de Salud (Tipos de Servicio, CUPS y Restricciones)','prog','2026-05-30'],
-    ['GD929-1395','Despliegue P2 – Flujo de Autorizaciones n8n (Exclusiones, Deducibles, Períodos de Carencia y Coberturas)','prog','2026-07-09'],
-    ['GD929-1396','Despliegue P3 – Flujo de Autorizaciones n8n (Controles, Programas y Modelo Autorizador)','prog','2026-08-14'],
+    ['GD929-729','Despliegue P1 – Homologaciones Core de Salud (Tipos de Servicio, CUPS y Restricciones)','prog','2026-05-30',null,'2026-01-01',61,53],
+    ['GD929-1395','Despliegue P2 – Flujo de Autorizaciones n8n (Exclusiones, Deducibles, Períodos de Carencia y Coberturas)','prog','2026-07-09',null,null,22,14],
+    ['GD929-1396','Despliegue P3 – Flujo de Autorizaciones n8n (Controles, Programas y Modelo Autorizador)','prog','2026-08-14',null,null,8,0],
     ['GD929-1688','Automatización de pruebas','porhacer',null]
   ]},
   {id:'gd971',c:'GD-971',n:'Ciber 5.0 WAPP Multinube',e:[
     ['GD971-43','Kickoff proveedor y plan trabajo','hecho','2026-01-19'],
     ['GD971-44','Requisitos','hecho','2026-01-30'],
-    ['GD971-45','Implementacion Cloudflare 27 dominios','prog','2026-03-27'],
-    ['GD971-46','Monitoreo y estabilización dominios','prog','2026-07-09'],
-    ['GD971-47','Cierre del proyecto','prog','2026-07-09'],
+    ['GD971-45','Implementacion Cloudflare 27 dominios','prog','2026-03-27',null,'2026-01-19',5,0],
+    ['GD971-46','Monitoreo y estabilización dominios','prog','2026-07-09',null,'2026-02-09',0,0],
+    ['GD971-47','Cierre del proyecto','prog','2026-07-09',null,'2026-03-30',0,0],
     ['GD971-57','Plan de Choque 9 Dominios','hecho','2026-07-09'],
     ['GD971-58','Control cambios SegurosBolivar.com','porhacer',null]
   ]},
@@ -641,47 +669,47 @@ const P = [
     ['GD981-1038','Actividades de IA para el proyecto','hecho','2026-04-30','2026-04-15'],
     // Fase II (GD981-1037)
     ['GD981-733','Aplicación automática sobrecomisión','hecho','2026-06-10','2026-06-19'],
-    ['GD981-1412','Atención solicitudes email','prog','2026-07-09'],
+    ['GD981-1412','Atención solicitudes email','prog','2026-07-09',null,'2026-06-01',null,null],
     ['GD981-1506','Retoma solicitudes no finalizadas','porhacer','2026-07-22'],
-    ['GD981-1507','Modificación de tasa','prog','2026-07-10'],
+    ['GD981-1507','Modificación de tasa','prog','2026-07-10',null,'2026-06-15',null,null],
     // ANT 2026 Fase II Nueva Plataforma (GD981-1705)
     ['GD981-1018','Modificación pólizas Cumplimiento au','porhacer',null],
     ['GD981-1850','Evolutivos de la Autogestión fase I','porhacer',null],
     ['GD981-1851','Modificación pólizas RC autogestionada','porhacer',null]
   ]},
   {id:'gd1130',c:'GD-1130',n:'PRY Cuentas Médicas',e:[
-    ['GD1130-19','Front radicación facturas proveedores','prog','2026-07-16'],
-    ['GD1130-81','Front Gestor Cuentas Medicas','prog','2026-07-16'],
-    ['GD1130-82','Flujo Cuentas Medicas IPS Baja/Media','prog','2026-07-16'],
-    ['GD1130-83','Paramétricas y parámetros Ctas Médicas','prog','2026-07-16'],
-    ['GD1130-281','SIIFA Cuentas Medicas - Fase 1','prog','2026-09-07']
+    ['GD1130-19','Front radicación facturas proveedores','prog','2026-07-16',null,'2026-03-09',2,0],
+    ['GD1130-81','Front Gestor Cuentas Medicas','prog','2026-07-16',null,'2026-03-09',1,0],
+    ['GD1130-82','Flujo Cuentas Medicas IPS Baja/Media','prog','2026-07-16',null,'2026-03-09',42,11],
+    ['GD1130-83','Paramétricas y parámetros Ctas Médicas','prog','2026-07-16',null,'2026-03-09',5,0],
+    ['GD1130-281','SIIFA Cuentas Medicas - Fase 1','prog','2026-09-07',null,'2026-07-06',5,0]
   ]},
   {id:'gd1136',c:'GD-1136',n:'Migración e Implementación Bizagi / BPMS',e:[
     ['GD1136-2','Bizagi - Setup cloud','hecho','2026-03-31'],
-    ['GD1136-34','Entregable Paquete 1 - Radicación','prog','2026-05-08'],
-    ['GD1136-35','Entregable Paquete 2 - Análisis','prog','2026-05-25'],
-    ['GD1136-36','Entregable Paquete 3 - Cierre','prog','2026-06-19']
+    ['GD1136-34','Entregable Paquete 1 - Radicación','prog','2026-05-08',null,'2026-02-19',50,5],
+    ['GD1136-35','Entregable Paquete 2 - Análisis','prog','2026-05-25',null,'2026-03-10',10,0],
+    ['GD1136-36','Entregable Paquete 3 - Cierre','prog','2026-06-19',null,'2026-03-27',12,0]
   ]},
   {id:'gd1141',c:'GD-1141',n:'PRY Access Policy Management (APM)',e:[
     ['GD1141-4','Plan de Migracion Ambiente Bajos','hecho','2026-05-25'],
     ['GD1141-11','Migración ambiente de Producción','hecho','2026-06-30'],
-    ['GD1141-28','Migracion APM ambiente DRP','prog','2026-07-31']
+    ['GD1141-28','Migracion APM ambiente DRP','prog','2026-07-31',null,'2026-07-01',3,0]
   ]},
   {id:'gd904',c:'GD-904',n:'PRY Transformación de Indemnizaciones',e:[
     ['GD904-379','MVP Habilitar Vida-renta formularios','hecho','2025-11-28','2026-03-11'],
     ['GD904-518','Retomar indemnización multicanal','porhacer',null],
     ['GD904-633','Activar botón trazabilidad indemn','porhacer',null],
-    ['GD904-663','Automatizar correos indemnizaciones','prog','2026-05-15'],
-    ['GD904-720','Flujo Trabajo Rentas','prog','2026-05-28'],
+    ['GD904-663','Automatizar correos indemnizaciones','prog','2026-05-15',null,'2026-04-21',4,4],
+    ['GD904-720','Flujo Trabajo Rentas','prog','2026-05-28',null,'2026-04-21',40,4],
     ['GD904-778','Flujo trabajo Patrimoniales','porhacer',null]
   ]},
   {id:'gd1129',c:'GD-1129',n:'PRY Nuevo Core de Seguros',e:[
     ['GD1129-80','Borrar Particionamiento y Depuración','cancel',null],
     ['GD1129-90','Observabilidad-Trazabilidad COREX','hecho','2026-06-11'],
-    ['GD1129-175','Estabilización tronador - 2026','prog','2026-12-31'],
-    ['GD1129-444','Integración - 2026','prog','2026-12-31'],
+    ['GD1129-175','Estabilización tronador - 2026','prog','2026-12-31',null,'2026-02-28',25,14],
+    ['GD1129-444','Integración - 2026','prog','2026-12-31',null,'2026-01-01',45,21],
     ['GD1129-445','Desacople - 2026','porhacer','2026-12-31'],
-    ['GD1129-877','Particionamiento y Depuración DBA','prog','2026-09-30'],
+    ['GD1129-877','Particionamiento y Depuración DBA','prog','2026-09-30',null,'2026-01-06',15,10],
     ['GD1129-879','Observabilidad-Trazabilidad Fenix','hecho','2026-12-31']
   ]}
 ];
