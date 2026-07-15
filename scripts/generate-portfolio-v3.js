@@ -565,6 +565,8 @@ function copyTable(tableId){var t=document.getElementById(tableId);var rows=t.qu
 
 const P = [
   {id:'gd902',c:'GD-902',n:'PRY Transformación de Suscripción (Motor suscripción)',e:[
+    ['GD902-330','Integrar Filenet - Motor Suscripción','hecho','2025-12-31','2025-12-30'],
+    ['GD902-436','Extracción Reglas Negocio Core Suscripc','hecho','2025-10-31','2025-10-30'],
     ['GD902-534','Extracción reglas tronador y Migración','prog','2026-06-30'],
     ['GD902-535','Creación de APIS necesarias para motor','prog','2026-12-29'],
     ['GD902-536','Mejoras Filenet para motor','hecho','2026-12-29','2026-01-30'],
