@@ -38,12 +38,11 @@
 <div class="filter-bar">
 <label>Ordenar:</label>
 <button class="sort-btn active" onclick="sortTable('epicas')">Por # Épicas</button>
-<button class="sort-btn" onclick="sortTable('avance')">Por % Avance</button>
 <button class="sort-btn" onclick="sortTable('nombre')">Por Nombre</button>
 <button class="sort-btn" onclick="sortTable('hu')">Por HU EnProg</button>
 <input type="text" id="filtro" placeholder="Filtrar por nombre..." oninput="filtrarTabla()" style="margin-left:auto;width:200px">
 </div>
-<div class="tw"><table id="eoTable"><thead><tr><th>#</th><th>Key</th><th>Nombre EO</th><th>Épicas</th><th>Done</th><th>En Prog</th><th>Backlog</th><th>% Avance</th><th>HU EnProg</th></tr></thead><tbody id="tbody"></tbody></table></div>
+<div class="tw"><table id="eoTable"><thead><tr><th>#</th><th>Key</th><th>Nombre EO</th><th>Épicas</th><th>Done</th><th>En Prog</th><th>Backlog</th><th>HU EnProg</th></tr></thead><tbody id="tbody"></tbody></table></div>
 
 </div>
 
@@ -129,10 +128,6 @@ function renderTable(data){
 const tbody=document.getElementById('tbody');
 tbody.innerHTML='';
 data.forEach((eo,i)=>{
-const p=pct(eo.done,eo.total);
-const pp=eo.total===0?0:Math.round((eo.prog/eo.total)*100);
-const pb=eo.total===0?0:Math.round((eo.back/eo.total)*100);
-const pd=eo.total===0?0:100-pp-pb;
 tbody.innerHTML+=`<tr>
 <td>${i+1}</td>
 <td><a href="https://jirasegurosbolivar.atlassian.net/browse/${eo.key}" target="_blank">${eo.key}</a></td>
@@ -141,7 +136,6 @@ tbody.innerHTML+=`<tr>
 <td style="text-align:center"><span class="badge badge-done">${eo.done}</span></td>
 <td style="text-align:center"><span class="badge badge-prog">${eo.prog}</span></td>
 <td style="text-align:center"><span class="badge badge-back">${eo.back}</span></td>
-<td style="text-align:center;font-weight:600">${p}%</td>
 <td style="text-align:center;font-weight:700;color:${eo.hu>50?'var(--danger)':eo.hu>20?'var(--warning)':'var(--gray-800)'}">${eo.hu}</td>
 </tr>`;
 });
