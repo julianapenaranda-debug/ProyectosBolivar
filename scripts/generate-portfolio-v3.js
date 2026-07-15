@@ -444,7 +444,7 @@ function generateHtml(P, BLOCKED, inconsData) {
     if (p) { p.e.forEach((e) => { total++; if (e[2] === 'hecho' || e[2] === 'cancel') done++; }); }
     const pct = total > 0 ? ((done / total) * 100) : 0;
     const dueStr = idue && new Date(idue) < TODAY ? `<span class="due-vencida">${idue} ⚠️</span>` : idue || '—';
-    html += `<tr><td><a href="#${id}">${code}</a></td><td>${name}</td><td><a href="${JIRA}/${ikey}" target="_blank">${ikey}</a></td><td>${dueStr}</td><td><div class="progress-bar"><div class="progress-fill ${pct < 30 ? 'low' : pct <= 60 ? 'mid' : 'high'}" style="width:${pct}%"></div></div>${pct.toFixed(0)}% (${done}/${total})</td><td>${total}</td></tr>`;
+    html += `<tr><td><a href="#${id}">${code}</a></td><td>${name}</td><td><a href="${JIRA}/${ikey}" target="_blank">${ikey}</a></td><td>${dueStr}</td><td><div class="progress-bar"><div class="progress-fill ${pct > 0 ? 'high' : ''}" style="width:${pct}%;${pct === 0 ? 'background:var(--gray-400)' : ''}""></div></div>${pct.toFixed(0)}% (${done}/${total})</td><td>${total}</td></tr>`;
   });
   html += `</tbody></table></div>`;
 
