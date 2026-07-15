@@ -10,6 +10,7 @@
 <div class="kpi-card s"><div class="v">289</div><div class="l">Épicas Done (30%)</div></div>
 <div class="kpi-card w"><div class="v">409</div><div class="l">Épicas En Progreso (42%)</div></div>
 <div class="kpi-card n"><div class="v">264</div><div class="l">Épicas Backlog (27%)</div></div>
+<div class="kpi-card w"><div class="v">1,370</div><div class="l">HU En Progreso (total)</div></div>
 <div class="kpi-card s"><div class="v">3</div><div class="l">EOs Completadas</div></div>
 </div>
 
@@ -39,9 +40,10 @@
 <button class="sort-btn active" onclick="sortTable('epicas')">Por # Épicas</button>
 <button class="sort-btn" onclick="sortTable('avance')">Por % Avance</button>
 <button class="sort-btn" onclick="sortTable('nombre')">Por Nombre</button>
+<button class="sort-btn" onclick="sortTable('hu')">Por HU EnProg</button>
 <input type="text" id="filtro" placeholder="Filtrar por nombre..." oninput="filtrarTabla()" style="margin-left:auto;width:200px">
 </div>
-<div class="tw"><table id="eoTable"><thead><tr><th>#</th><th>Key</th><th>Nombre EO</th><th>Épicas</th><th>Done</th><th>En Prog</th><th>Backlog</th><th>% Avance</th><th>Progreso</th></tr></thead><tbody id="tbody"></tbody></table></div>
+<div class="tw"><table id="eoTable"><thead><tr><th>#</th><th>Key</th><th>Nombre EO</th><th>Épicas</th><th>Done</th><th>En Prog</th><th>Backlog</th><th>% Avance</th><th>HU EnProg</th><th>Progreso Épicas</th></tr></thead><tbody id="tbody"></tbody></table></div>
 
 <h2 class="st">Top 10 por Volumen de Trabajo</h2>
 <div class="tw"><table><thead><tr><th>#</th><th>EO</th><th>Épicas</th><th>Done</th><th>En Prog</th><th>Backlog</th><th>% Done</th></tr></thead><tbody>
@@ -68,78 +70,78 @@
 
 <script>
 const EO_DATA=[
-{key:"GD991-190",name:"Pensiones",total:5,done:0,prog:5,back:0},
-{key:"GD990-95",name:"FrontEnd",total:6,done:0,prog:6,back:0},
-{key:"GD988-391",name:"Reaseguros",total:7,done:1,prog:2,back:4},
-{key:"GD987-677",name:"Siniestros",total:6,done:0,prog:1,back:4},
-{key:"GD986-823",name:"Emisión",total:8,done:0,prog:0,back:6},
-{key:"GD985-250",name:"AutoGestión",total:3,done:0,prog:0,back:3},
-{key:"GD984-650",name:"All risk",total:0,done:0,prog:0,back:0},
-{key:"GD984-465",name:"Masivos Digitales",total:2,done:0,prog:0,back:2},
-{key:"GD984-466",name:"PWA",total:2,done:0,prog:0,back:2},
-{key:"GD978-1410",name:"Portales Grupo Saghi, Social Skin, COF",total:18,done:0,prog:17,back:1},
-{key:"GD976-48",name:"SSE (Security service edge)",total:1,done:0,prog:1,back:0},
-{key:"GD974-65",name:"Ciber (DAM)",total:1,done:1,prog:0,back:0},
-{key:"GD963-107",name:"E-Masivos (MBM)",total:5,done:5,prog:0,back:0},
-{key:"GD958-13",name:"GB - Nueva experiencia Página Grupo Bolívar",total:20,done:20,prog:0,back:0},
-{key:"GD947-1901",name:"Bolivar Conmigo",total:24,done:9,prog:5,back:10},
-{key:"GD946-946",name:"Impresión de póliza electrónica",total:13,done:3,prog:4,back:6},
-{key:"GD945-125",name:"Flujos de trabajo",total:4,done:0,prog:1,back:3},
-{key:"GD944-1808",name:"Hogar",total:10,done:0,prog:1,back:9},
-{key:"GD943-551",name:"Transporte",total:4,done:0,prog:4,back:0},
-{key:"GD943-550",name:"Agro",total:3,done:0,prog:0,back:3},
-{key:"GD942-566",name:"Maquinaria",total:2,done:0,prog:0,back:2},
-{key:"GD942-567",name:"Decenal",total:7,done:0,prog:7,back:0},
-{key:"GD941-1173",name:"Cumplimiento",total:12,done:0,prog:4,back:8},
-{key:"GD940-2381",name:"Movilidad",total:55,done:8,prog:19,back:28},
-{key:"GD938-1047",name:"Finanseguros y Pagos Digitales",total:35,done:17,prog:12,back:6},
-{key:"GD937-473",name:"Contabilidad financiero y tributario",total:9,done:0,prog:8,back:1},
-{key:"GD934-1041",name:"Jurídico",total:22,done:3,prog:12,back:7},
-{key:"GD933-2099",name:"Arrendamiento",total:9,done:0,prog:7,back:2},
-{key:"GD932-1711",name:"Bancaseguros Davivienda",total:22,done:3,prog:18,back:1},
-{key:"GD930-1215",name:"Facturación electrónica y administrativo",total:42,done:22,prog:8,back:12},
-{key:"GD928-1378",name:"IPS- Front Interactivo de salud",total:3,done:0,prog:3,back:0},
-{key:"GD927-1608",name:"SIPAB",total:9,done:2,prog:5,back:2},
-{key:"GD926-1641",name:"Sisalud ARL",total:11,done:0,prog:8,back:3},
-{key:"GD925-788",name:"Vida Individual y Colectiva",total:10,done:0,prog:9,back:1},
-{key:"GD923-1002",name:"Salud Individual y Colectiva Emision",total:8,done:0,prog:2,back:6},
-{key:"GD919-1990",name:"Incidencias Tronador ARL",total:22,done:11,prog:3,back:8},
-{key:"GD918-266",name:"Acceso Lógico",total:1,done:0,prog:0,back:1},
-{key:"GD917-4061",name:"Hub de Seguros Digitales",total:14,done:0,prog:3,back:11},
-{key:"GD916-608",name:"Salud Ind. y Colectiva Indemnizaciones",total:4,done:0,prog:3,back:1},
-{key:"GD914-426",name:"Canales de Apoyo Comercial",total:22,done:5,prog:12,back:5},
-{key:"GD911-1574",name:"Jelpit Conjuntos / Jelpit Pagos",total:17,done:7,prog:3,back:7},
-{key:"GD898-2775",name:"PORTAL ARL Y CONECTA+",total:22,done:7,prog:5,back:10},
-{key:"GD870-2792",name:"Procesos asistencia",total:4,done:0,prog:4,back:0},
-{key:"GD863-583",name:"Capitalizadora",total:32,done:24,prog:6,back:2},
-{key:"GD820-5115",name:"Fácil-Pro / Gestión en Línea / Banca / Renting",total:40,done:10,prog:23,back:7},
-{key:"GD815-2808",name:"Middleware Transversal Servicios",total:16,done:11,prog:5,back:0},
-{key:"GD771-1677",name:"Mejoras autogestión colectivas",total:3,done:1,prog:2,back:0},
-{key:"GD768-10984",name:"Ciencuadras / Ecosistema Home / MIA",total:29,done:2,prog:22,back:5},
-{key:"GD426-1881",name:"Facturación Electrónica",total:2,done:0,prog:0,back:2},
-{key:"GD426-1880",name:"Precobros Transversal",total:2,done:0,prog:2,back:0},
-{key:"GD218-11542",name:"Guardian",total:10,done:0,prog:9,back:1},
-{key:"GD198-3220",name:"Obsolescencia línea médica",total:2,done:0,prog:1,back:1},
-{key:"GD1149-1",name:"DAIA - Ventas",total:2,done:0,prog:2,back:0},
-{key:"GD1139-1",name:"OlivIA correos",total:8,done:5,prog:1,back:0},
-{key:"GD1139-202",name:"Olivia canales",total:15,done:0,prog:8,back:7},
-{key:"GD1138-8",name:"Mercadeo y Relacionamiento Contextual",total:12,done:0,prog:9,back:3},
-{key:"GD1137-12",name:"Proyectiva y El Libertador",total:11,done:0,prog:5,back:6},
-{key:"GD1132-1162",name:"Cuotas al día",total:7,done:0,prog:7,back:0},
-{key:"GD1132-1161",name:"Obra al día",total:11,done:0,prog:10,back:1},
-{key:"GD1132-1163",name:"Zonas Comunes",total:2,done:0,prog:2,back:0},
-{key:"GD1132-2",name:"EO 2025 Cuotas al día",total:6,done:5,prog:1,back:0},
-{key:"GD1132-1",name:"EO 2025 Obra al día",total:8,done:7,prog:1,back:0},
-{key:"GD1131-445",name:"Pymes",total:6,done:0,prog:6,back:0},
-{key:"FIYE-5089",name:"Ingresos y Egresos",total:37,done:5,prog:8,back:24},
-{key:"E2ARPA-303",name:"IA automation RPA",total:11,done:5,prog:6,back:0},
-{key:"CONECTA-4666",name:"Middleware transversal Core",total:31,done:17,prog:12,back:2},
-{key:"AC-6041",name:"Acceso a Clientes",total:28,done:13,prog:1,back:14},
-{key:"WHATSAPP-5116",name:"Canales de atención chat y voz",total:17,done:7,prog:10,back:0},
-{key:"WHATSAPP-5117",name:"Sieble y Smart Supervision",total:4,done:2,prog:2,back:0},
-{key:"SEG-7201",name:"segurosbolivar.com",total:33,done:13,prog:8,back:12},
-{key:"PERF-598",name:"PERFORMANCE QC",total:20,done:10,prog:10,back:0},
-{key:"JELHRC-21371",name:"Jelpit Conjuntos y Jelpit Pagos",total:4,done:0,prog:4,back:0}
+{key:"GD991-190",name:"Pensiones",total:5,done:0,prog:5,back:0,hu:8},
+{key:"GD990-95",name:"FrontEnd",total:6,done:0,prog:6,back:0,hu:9},
+{key:"GD988-391",name:"Reaseguros",total:7,done:1,prog:2,back:4,hu:11},
+{key:"GD987-677",name:"Siniestros",total:6,done:0,prog:1,back:4,hu:34},
+{key:"GD986-823",name:"Emisión",total:8,done:0,prog:0,back:6,hu:36},
+{key:"GD985-250",name:"AutoGestión",total:3,done:0,prog:0,back:3,hu:2},
+{key:"GD984-650",name:"All risk",total:0,done:0,prog:0,back:0,hu:0},
+{key:"GD984-465",name:"Masivos Digitales",total:2,done:0,prog:0,back:2,hu:0},
+{key:"GD984-466",name:"PWA",total:2,done:0,prog:0,back:2,hu:3},
+{key:"GD978-1410",name:"Portales Grupo Saghi, Social Skin, COF",total:18,done:0,prog:17,back:1,hu:51},
+{key:"GD976-48",name:"SSE (Security service edge)",total:1,done:0,prog:1,back:0,hu:0},
+{key:"GD974-65",name:"Ciber (DAM)",total:1,done:1,prog:0,back:0,hu:0},
+{key:"GD963-107",name:"E-Masivos (MBM)",total:5,done:5,prog:0,back:0,hu:0},
+{key:"GD958-13",name:"GB - Nueva experiencia Página Grupo Bolívar",total:20,done:20,prog:0,back:0,hu:0},
+{key:"GD947-1901",name:"Bolivar Conmigo",total:24,done:9,prog:5,back:10,hu:11},
+{key:"GD946-946",name:"Impresión de póliza electrónica",total:13,done:3,prog:4,back:6,hu:15},
+{key:"GD945-125",name:"Flujos de trabajo",total:4,done:0,prog:1,back:3,hu:4},
+{key:"GD944-1808",name:"Hogar",total:10,done:0,prog:1,back:9,hu:11},
+{key:"GD943-551",name:"Transporte",total:4,done:0,prog:4,back:0,hu:44},
+{key:"GD943-550",name:"Agro",total:3,done:0,prog:0,back:3,hu:6},
+{key:"GD942-566",name:"Maquinaria",total:2,done:0,prog:0,back:2,hu:1},
+{key:"GD942-567",name:"Decenal",total:7,done:0,prog:7,back:0,hu:20},
+{key:"GD941-1173",name:"Cumplimiento",total:12,done:0,prog:4,back:8,hu:62},
+{key:"GD940-2381",name:"Movilidad",total:55,done:8,prog:19,back:28,hu:60},
+{key:"GD938-1047",name:"Finanseguros y Pagos Digitales",total:35,done:17,prog:12,back:6,hu:56},
+{key:"GD937-473",name:"Contabilidad financiero y tributario",total:9,done:0,prog:8,back:1,hu:79},
+{key:"GD934-1041",name:"Jurídico",total:22,done:3,prog:12,back:7,hu:52},
+{key:"GD933-2099",name:"Arrendamiento",total:9,done:0,prog:7,back:2,hu:84},
+{key:"GD932-1711",name:"Bancaseguros Davivienda",total:22,done:3,prog:18,back:1,hu:90},
+{key:"GD930-1215",name:"Facturación electrónica y administrativo",total:42,done:22,prog:8,back:12,hu:12},
+{key:"GD928-1378",name:"IPS- Front Interactivo de salud",total:3,done:0,prog:3,back:0,hu:14},
+{key:"GD927-1608",name:"SIPAB",total:9,done:2,prog:5,back:2,hu:31},
+{key:"GD926-1641",name:"Sisalud ARL",total:11,done:0,prog:8,back:3,hu:36},
+{key:"GD925-788",name:"Vida Individual y Colectiva",total:10,done:0,prog:9,back:1,hu:10},
+{key:"GD923-1002",name:"Salud Individual y Colectiva Emision",total:8,done:0,prog:2,back:6,hu:20},
+{key:"GD919-1990",name:"Incidencias Tronador ARL",total:22,done:11,prog:3,back:8,hu:20},
+{key:"GD918-266",name:"Acceso Lógico",total:1,done:0,prog:0,back:1,hu:5},
+{key:"GD917-4061",name:"Hub de Seguros Digitales",total:14,done:0,prog:3,back:11,hu:51},
+{key:"GD916-608",name:"Salud Ind. y Colectiva Indemnizaciones",total:4,done:0,prog:3,back:1,hu:24},
+{key:"GD914-426",name:"Canales de Apoyo Comercial",total:22,done:5,prog:12,back:5,hu:16},
+{key:"GD911-1574",name:"Jelpit Conjuntos / Jelpit Pagos",total:17,done:7,prog:3,back:7,hu:48},
+{key:"GD898-2775",name:"PORTAL ARL Y CONECTA+",total:22,done:7,prog:5,back:10,hu:19},
+{key:"GD870-2792",name:"Procesos asistencia",total:4,done:0,prog:4,back:0,hu:36},
+{key:"GD863-583",name:"Capitalizadora",total:32,done:24,prog:6,back:2,hu:25},
+{key:"GD820-5115",name:"Fácil-Pro / Gestión en Línea / Banca / Renting",total:40,done:10,prog:23,back:7,hu:46},
+{key:"GD815-2808",name:"Middleware Transversal Servicios",total:16,done:11,prog:5,back:0,hu:3},
+{key:"GD771-1677",name:"Mejoras autogestión colectivas",total:3,done:1,prog:2,back:0,hu:3},
+{key:"GD768-10984",name:"Ciencuadras / Ecosistema Home / MIA",total:29,done:2,prog:22,back:5,hu:45},
+{key:"GD426-1881",name:"Facturación Electrónica",total:2,done:0,prog:0,back:2,hu:2},
+{key:"GD426-1880",name:"Precobros Transversal",total:2,done:0,prog:2,back:0,hu:3},
+{key:"GD218-11542",name:"Guardian",total:10,done:0,prog:9,back:1,hu:62},
+{key:"GD198-3220",name:"Obsolescencia línea médica",total:2,done:0,prog:1,back:1,hu:18},
+{key:"GD1149-1",name:"DAIA - Ventas",total:2,done:0,prog:2,back:0,hu:9},
+{key:"GD1139-1",name:"OlivIA correos",total:8,done:5,prog:1,back:0,hu:7},
+{key:"GD1139-202",name:"Olivia canales",total:15,done:0,prog:8,back:7,hu:19},
+{key:"GD1138-8",name:"Mercadeo y Relacionamiento Contextual",total:12,done:0,prog:9,back:3,hu:12},
+{key:"GD1137-12",name:"Proyectiva y El Libertador",total:11,done:0,prog:5,back:6,hu:40},
+{key:"GD1132-1162",name:"Cuotas al día",total:7,done:0,prog:7,back:0,hu:10},
+{key:"GD1132-1161",name:"Obra al día",total:11,done:0,prog:10,back:1,hu:28},
+{key:"GD1132-1163",name:"Zonas Comunes",total:2,done:0,prog:2,back:0,hu:0},
+{key:"GD1132-2",name:"EO 2025 Cuotas al día",total:6,done:5,prog:1,back:0,hu:0},
+{key:"GD1132-1",name:"EO 2025 Obra al día",total:8,done:7,prog:1,back:0,hu:1},
+{key:"GD1131-445",name:"Pymes",total:6,done:0,prog:6,back:0,hu:12},
+{key:"FIYE-5089",name:"Ingresos y Egresos",total:37,done:5,prog:8,back:24,hu:27},
+{key:"E2ARPA-303",name:"IA automation RPA",total:11,done:5,prog:6,back:0,hu:48},
+{key:"CONECTA-4666",name:"Middleware transversal Core",total:31,done:17,prog:12,back:2,hu:31},
+{key:"AC-6041",name:"Acceso a Clientes",total:28,done:13,prog:1,back:14,hu:22},
+{key:"WHATSAPP-5116",name:"Canales de atención chat y voz",total:17,done:7,prog:10,back:0,hu:23},
+{key:"WHATSAPP-5117",name:"Sieble y Smart Supervision",total:4,done:2,prog:2,back:0,hu:7},
+{key:"SEG-7201",name:"segurosbolivar.com",total:33,done:13,prog:8,back:12,hu:3},
+{key:"PERF-598",name:"PERFORMANCE QC",total:20,done:10,prog:10,back:0,hu:34},
+{key:"JELHRC-21371",name:"Jelpit Conjuntos y Jelpit Pagos",total:4,done:0,prog:4,back:0,hu:5}
 ];
 
 let currentSort='epicas';
@@ -161,6 +163,7 @@ tbody.innerHTML+=`<tr>
 <td style="text-align:center"><span class="badge badge-prog">${eo.prog}</span></td>
 <td style="text-align:center"><span class="badge badge-back">${eo.back}</span></td>
 <td style="text-align:center;font-weight:600">${p}%</td>
+<td style="text-align:center;font-weight:700;color:${eo.hu>50?'var(--danger)':eo.hu>20?'var(--warning)':'var(--gray-800)'}">${eo.hu}</td>
 <td><div class="progress-bar"><div class="progress-fill-done" style="width:${pd}%"></div><div class="progress-fill-prog" style="width:${pp}%"></div><div class="progress-fill-back" style="width:${pb}%"></div></div></td>
 </tr>`;
 });
@@ -172,6 +175,7 @@ event.target.classList.add('active');
 let sorted=[...EO_DATA];
 if(by==='epicas')sorted.sort((a,b)=>b.total-a.total);
 else if(by==='avance')sorted.sort((a,b)=>pct(b.done,b.total)-pct(a.done,a.total));
+else if(by==='hu')sorted.sort((a,b)=>b.hu-a.hu);
 else sorted.sort((a,b)=>a.name.localeCompare(b.name));
 renderTable(sorted);
 }
@@ -181,6 +185,7 @@ const filtered=EO_DATA.filter(eo=>eo.name.toLowerCase().includes(f)||eo.key.toLo
 let sorted=[...filtered];
 if(currentSort==='epicas')sorted.sort((a,b)=>b.total-a.total);
 else if(currentSort==='avance')sorted.sort((a,b)=>pct(b.done,b.total)-pct(a.done,a.total));
+else if(currentSort==='hu')sorted.sort((a,b)=>b.hu-a.hu);
 else sorted.sort((a,b)=>a.name.localeCompare(b.name));
 renderTable(sorted);
 }
