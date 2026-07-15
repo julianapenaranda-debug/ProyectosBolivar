@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Informe Ejecutivo — Portafolio de Proyectos 2026</title>
+<style>
+:root {
+  --primary: #1a237e;
+  --primary-light: #283593;
+  --primary-dark: #0d1642;
+  --white: #fff;
+  --gray-50: #f8f9fa;
+  --gray-100: #f1f3f5;
+  --gray-200: #e9ecef;
+  --gray-400: #ced4da;
+  --gray-500: #adb5bd;
+  --gray-600: #868e96;
+  --gray-800: #343a40;
+  --success: #2e7d32;
+  --success-bg: #e8f5e9;
+  --warning: #f57f17;
+  --warning-bg: #fff8e1;
+  --danger: #c62828;
+  --danger-bg: #ffebee;
+  --neutral: #546e7a;
+  --neutral-bg: #eceff1;
+  --font: system-ui, -apple-system, sans-serif;
+  --radius: 10px;
+  --shadow: 0 2px 12px rgba(26,35,126,.07);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--font); background: var(--gray-50); color: var(--gray-800); line-height: 1.6; }
+a { color: var(--primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Header */
+.header {
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+  color: var(--white);
+  padding: 3rem 2rem 2.5rem;
+  text-align: center;
+}
+.header h1 { font-size: 2rem; font-weight: 700; margin-bottom: .35rem; }
+.header .sub { font-size: 1.05rem; opacity: .85; }
+.header .date { font-size: .9rem; opacity: .7; margin-top: .75rem; }
+.header .badge-exec {
+  display: inline-block;
+  background: rgba(255,255,255,.15);
+  padding: .3rem .8rem;
+  border-radius: 14px;
+  font-size: .8rem;
+  margin-top: .6rem;
+  letter-spacing: .3px;
+}
+
+/* Container */
+.container { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+/* Section titles */
+.st {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin: 2.5rem 0 1.25rem;
+  padding-bottom: .5rem;
+  border-bottom: 2px solid var(--gray-200);
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.st .icon { font-size: 1.4rem; }
+
+/* KPI Cards */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.kpi-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 1.5rem 1.25rem;
+  box-shadow: var(--shadow);
+  text-align: center;
+  border-top: 4px solid var(--primary);
+  transition: transform .15s;
+}
+.kpi-card:hover { transform: translateY(-2px); }
+.kpi-card .v { font-size: 2.2rem; font-weight: 700; color: var(--primary); }
+.kpi-card .l { font-size: .85rem; color: var(--gray-600); margin-top: .3rem; }
+.kpi-card.s { border-top-color: var(--success); }
+.kpi-card.s .v { color: var(--success); }
+.kpi-card.w { border-top-color: var(--warning); }
+.kpi-card.w .v { color: var(--warning); }
+.kpi-card.d { border-top-color: var(--danger); }
+.kpi-card.d .v { color: var(--danger); }
+
+/* Achievement cards */
+.logro-grid { display: flex; flex-direction: column; gap: 1.25rem; }
+.logro-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  border-left: 5px solid var(--success);
+  position: relative;
+}
+.logro-card h3 { font-size: 1.05rem; color: var(--primary-dark); margin-bottom: .6rem; }
+.logro-card .logro-desc { font-size: .92rem; color: var(--gray-800); margin-bottom: .6rem; }
+.logro-card .logro-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+  font-size: .82rem;
+  color: var(--gray-600);
+}
+.logro-card .logro-meta span {
+  background: var(--gray-100);
+  padding: .2rem .6rem;
+  border-radius: 6px;
+}
+.logro-card .logro-meta .pct {
+  background: var(--success-bg);
+  color: var(--success);
+  font-weight: 600;
+}
+
+/* Tables */
+.tw {
+  overflow-x: auto;
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+table { width: 100%; border-collapse: collapse; font-size: .875rem; }
+thead { background: var(--primary); color: var(--white); }
+th { padding: .75rem 1rem; text-align: left; font-weight: 600; white-space: nowrap; }
+td { padding: .7rem 1rem; border-bottom: 1px solid var(--gray-200); }
+tbody tr:hover { background: var(--gray-100); }
+tbody tr:last-child td { border-bottom: none; }
+
+/* Risk colors */
+.risk-high { background: var(--danger-bg); }
+.risk-med { background: var(--warning-bg); }
+
+/* Timeline */
+.timeline { position: relative; padding-left: 2rem; margin: 1.5rem 0; }
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 8px;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--gray-200);
+  border-radius: 2px;
+}
+.tl-item {
+  position: relative;
+  margin-bottom: 1.25rem;
+  padding-left: .75rem;
+}
+.tl-item::before {
+  content: '';
+  position: absolute;
+  left: -1.75rem;
+  top: .5rem;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--primary);
+  border: 2px solid var(--white);
+  box-shadow: 0 0 0 2px var(--primary);
+}
+.tl-item .tl-date {
+  font-size: .8rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: .15rem;
+}
+.tl-item .tl-text { font-size: .9rem; color: var(--gray-800); }
+
+/* Challenges */
+.challenge-list { list-style: none; padding: 0; }
+.challenge-list li {
+  padding: 1rem 1.25rem;
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin-bottom: .75rem;
+  border-left: 4px solid var(--primary-light);
+  font-size: .92rem;
+}
+.challenge-list li strong { color: var(--primary-dark); }
+
+/* Copy button */
+.btn-copy {
+  position: absolute;
+  top: .5rem;
+  right: .5rem;
+  background: var(--gray-100);
+  border: 1px solid var(--gray-200);
+  border-radius: 6px;
+  padding: .3rem .6rem;
+  font-size: .75rem;
+  cursor: pointer;
+  color: var(--gray-600);
+  transition: all .15s;
+  z-index: 2;
+}
+.btn-copy:hover { background: var(--primary); color: var(--white); border-color: var(--primary); }
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 2rem 1rem;
+  font-size: .82rem;
+  color: var(--gray-500);
+  border-top: 1px solid var(--gray-200);
+  margin-top: 3rem;
+}
+
+/* Print */
+@media print {
+  .btn-copy { display: none; }
+  .header { padding: 1.5rem; }
+  body { background: white; }
+  .container { padding: 1rem; }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .header h1 { font-size: 1.4rem; }
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  th, td { padding: .5rem .6rem; font-size: .8rem; }
+  .logro-card { padding: 1rem; }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <h1>Informe Ejecutivo — Portafolio de Proyectos 2026</h1>
+  <div class="sub">Gestión de la Demanda · Seguros Bolívar · Vicepresidencia de Tecnología</div>
+  <div class="date">Corte: 14 de julio de 2026</div>
+  <div class="badge-exec">Documento para Presidencia</div>
+</header>
+
+<div class="container">
+
+  <!-- 1. KPIs -->
+  <h2 class="st"><span class="icon">📊</span> Resumen Ejecutivo</h2>
+  <div class="kpi-grid">
+    <div class="kpi-card"><div class="v">12</div><div class="l">Proyectos Activos</div></div>
+    <div class="kpi-card"><div class="v">92</div><div class="l">Épicas Totales</div></div>
+    <div class="kpi-card s"><div class="v">42</div><div class="l">Completadas (46%)</div></div>
+    <div class="kpi-card w"><div class="v">32</div><div class="l">En Progreso (35%)</div></div>
+    <div class="kpi-card"><div class="v">18</div><div class="l">Por Hacer (19%)</div></div>
+  </div>
+
+  <!-- 2. Logros Destacados -->
+  <h2 class="st"><span class="icon">🏆</span> Logros Destacados del Primer Semestre</h2>
+  <div class="logro-grid">
+
+    <div class="logro-card">
+      <h3>Plataforma Cumplimiento Autogestión 0-500M</h3>
+      <div class="logro-desc">Primera plataforma digital para autogestión de pólizas de cumplimiento ≤500M por intermediarios. Emisión digital end-to-end, tablero de control y sobrecomisión automática en producción.</div>
+      <div class="logro-meta">
+        <span class="pct">76% completado (19/25 épicas)</span>
+        <span>94% entregas a tiempo</span>
+        <span>Proyecto líder del portafolio</span>
+      </div>
+    </div>
+
+    <div class="logro-card">
+      <h3>Carpeta Única de Cliente (Gestor Documental O'Leary)</h3>
+      <div class="logro-desc">POC exitoso del gestor documental O'Leary + 13 módulos de configuración entregados. API de integraciones operativa y parametrización de documentos completada. OCR en desarrollo.</div>
+      <div class="logro-meta">
+        <span class="pct">71% completado (5/7 épicas)</span>
+        <span>3 proyectos dependen de este</span>
+        <span>Habilitador transversal</span>
+      </div>
+    </div>
+
+    <div class="logro-card">
+      <h3>Access Policy Management (APM)</h3>
+      <div class="logro-desc">2 de 3 ambientes migrados a APM (Bajos + Producción). Políticas de acceso migradas y operando en producción sin incidentes.</div>
+      <div class="logro-meta">
+        <span class="pct">67% completado (2/3 épicas)</span>
+        <span>Próximo: Ambiente DRP (julio 31)</span>
+        <span>Seguridad y cumplimiento</span>
+      </div>
+    </div>
+
+    <div class="logro-card">
+      <h3>Nuevo Core de Seguros</h3>
+      <div class="logro-desc">Observabilidad y trazabilidad implementadas (COREX + Fenix). Visibilidad en tiempo real de transacciones del core de seguros.</div>
+      <div class="logro-meta">
+        <span class="pct">43% completado (3/7 épicas)</span>
+        <span>Infraestructura crítica</span>
+      </div>
+    </div>
+
+    <div class="logro-card">
+      <h3>WAAP Multinube (Cloudflare)</h3>
+      <div class="logro-desc">9 dominios críticos protegidos con Plan de Choque. Implementación de 27 dominios en curso. Kickoff y requisitos completados.</div>
+      <div class="logro-meta">
+        <span class="pct">43% completado (3/7 épicas)</span>
+        <span>Ciberseguridad</span>
+        <span>Protección de activos digitales</span>
+      </div>
+    </div>
+
+    <div class="logro-card">
+      <h3>Motor de Suscripción</h3>
+      <div class="logro-desc">Integración Filenet completada + Reglas de negocio del Core extraídas. Motor de suscripción con integración documental operativa y reglas del Core extraídas para automatización.</div>
+      <div class="logro-meta">
+        <span class="pct">29% completado (2/7 épicas)</span>
+        <span>Logros principales en 2025</span>
+        <span>Transformación core</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 3. Proyectos en Progreso -->
+  <h2 class="st"><span class="icon">🚀</span> Proyectos en Progreso — Segundo Semestre</h2>
+  <div class="tw">
+    <button class="btn-copy" onclick="copyTable(this)">📋 Copiar para Sheets</button>
+    <table>
+      <thead>
+        <tr><th>Proyecto</th><th>Próximo Hito</th><th>Fecha Estimada</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Plataforma Cumplimiento</td><td>Fase II: Atención por email + Retoma solicitudes</td><td>Jul — Ago 2026</td></tr>
+        <tr><td>Carpeta Única de Cliente</td><td>Integración completa O'Leary + OCR operacional</td><td>Oct 2026</td></tr>
+        <tr><td>Access Policy Management</td><td>Migración ambiente DRP</td><td>Jul 31, 2026</td></tr>
+        <tr><td>Motor de Suscripción</td><td>Extracción reglas Tronador + APIs motor + Parametrización</td><td>Dic 2026</td></tr>
+        <tr><td>Autorizaciones ARL/Salud</td><td>Despliegues P2 (Exclusiones) y P3 (Controles) de autorizaciones n8n</td><td>Jul — Ago 2026</td></tr>
+        <tr><td>Nuevo Core de Seguros</td><td>Estabilización Tronador + Integración + Particionamiento DBA</td><td>Dic 2026</td></tr>
+        <tr><td>Cuentas Médicas</td><td>Radicación facturas + Gestor Cuentas Médicas + Flujos IPS</td><td>Jul — Sep 2026</td></tr>
+        <tr><td>Simon Ventas (Autogestión)</td><td>Migración cotización autos/vida/salud/hogar a Angular 17+</td><td>Jun — Jul 2026</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 4. Desafíos Superados -->
+  <h2 class="st"><span class="icon">💪</span> Desafíos Superados</h2>
+  <ul class="challenge-list">
+    <li><strong>Reestructuración Motor de Reglas:</strong> Cancelación estratégica de 7 épicas no viables — enfoque redefinido en 5 entregables concretos. Se priorizó la parametrización sobre módulos secundarios para maximizar valor en el semestre.</li>
+    <li><strong>Dependencia de backend externo (Saghi):</strong> El backend externo quedó bloqueado. Se aisló la dependencia para evitar impacto en otros proyectos y se definieron alternativas internas.</li>
+    <li><strong>Jerarquía inconsistente en gestión de proyectos:</strong> Se reorganizaron relaciones entre épicas en múltiples proyectos para mejorar la trazabilidad y confiabilidad de las métricas de avance.</li>
+    <li><strong>Automatización de métricas no confiable:</strong> Se detectaron valores erróneos en indicadores calculados automáticamente. Se implementó un cálculo propio basado en datos objetivos para reportes confiables.</li>
+  </ul>
+
+  <!-- 5. Riesgos Activos -->
+  <h2 class="st"><span class="icon">⚠️</span> Riesgos Activos</h2>
+  <div class="tw">
+    <button class="btn-copy" onclick="copyTable(this)">📋 Copiar para Sheets</button>
+    <table>
+      <thead>
+        <tr><th>Riesgo</th><th>Proyectos Afectados</th><th>Impacto</th><th>Recomendación</th></tr>
+      </thead>
+      <tbody>
+        <tr class="risk-high">
+          <td>Fecha límite vencida (julio 16)</td>
+          <td>Cuentas Médicas</td>
+          <td>5 épicas sin completar al vencer</td>
+          <td>Escalar y replanificar</td>
+        </tr>
+        <tr class="risk-high">
+          <td>Scope extenso con avance mínimo</td>
+          <td>Simon Ventas</td>
+          <td>4 épicas vencidas, 6 sin fecha</td>
+          <td>Evaluar viabilidad 2026</td>
+        </tr>
+        <tr class="risk-med">
+          <td>Proyecto detenido sin progreso</td>
+          <td>Bizagi/BPMS</td>
+          <td>3 paquetes vencidos sin avance</td>
+          <td>Verificar bloqueo contractual</td>
+        </tr>
+        <tr class="risk-med">
+          <td>Dependencia del Core (Tronador)</td>
+          <td>Cumplimiento, Cuentas Médicas, Bizagi</td>
+          <td>3 proyectos dependen de estabilidad del core</td>
+          <td>Monitorear estabilidad activamente</td>
+        </tr>
+        <tr class="risk-med">
+          <td>8 de 12 proyectos con fechas vencidas</td>
+          <td>Portafolio general</td>
+          <td>Problema sistémico de actualización de fechas</td>
+          <td>Hacer obligatoria la Fecha de Fin Real</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 6. Timeline -->
+  <h2 class="st"><span class="icon">📅</span> Próximos Hitos — Julio a Diciembre 2026</h2>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-date">Julio 2026</div>
+      <div class="tl-text">APM: Migración ambiente DRP · Autorizaciones: Despliegue P2 (Exclusiones) · Cumplimiento: Inicio Fase II</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Agosto 2026</div>
+      <div class="tl-text">Autorizaciones: Despliegue P3 (Controles y Modelo Autorizador) · Cumplimiento: Atención por email + Retoma solicitudes</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Septiembre 2026</div>
+      <div class="tl-text">Cuentas Médicas: Radicación facturas + Flujos IPS · Carpeta Única: Evolutivos O'Leary</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Octubre 2026</div>
+      <div class="tl-text">Carpeta Única: Integración O'Leary completa + OCR operacional · Unificación Plataformas: Migración Gestión Humana</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Noviembre 2026</div>
+      <div class="tl-text">Cuentas Médicas: Gestor Cuentas Médicas completo · Core: Particionamiento DBA avanzado</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Diciembre 2026</div>
+      <div class="tl-text">Motor Suscripción: APIs + Parametrización completas · Core: Estabilización Tronador + Integración · Cierre de portafolio 2026</div>
+    </div>
+  </div>
+
+</div>
+
+<footer class="footer">
+  Gestión de la Demanda · Seguros Bolívar · Vicepresidencia de Tecnología · Julio 2026
+</footer>
+
+<script>
+function copyTable(btn) {
+  const table = btn.parentElement.querySelector('table');
+  const rows = table.querySelectorAll('tr');
+  let tsv = '';
+  rows.forEach(row => {
+    const cells = row.querySelectorAll('th, td');
+    const rowData = [];
+    cells.forEach(cell => rowData.push(cell.textContent.trim()));
+    tsv += rowData.join('\t') + '\n';
+  });
+  navigator.clipboard.writeText(tsv).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '✓ Copiado';
+    setTimeout(() => btn.textContent = orig, 2000);
+  });
+}
+</script>
+
+</body>
+</html>
