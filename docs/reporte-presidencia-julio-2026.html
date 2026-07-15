@@ -348,14 +348,30 @@ tbody tr:last-child td { border-bottom: none; }
     </table>
   </div>
 
-  <!-- 4. Desafíos Superados -->
-  <h2 class="st"><span class="icon">💪</span> Desafíos Superados</h2>
-  <ul class="challenge-list">
-    <li><strong>Reestructuración Motor de Reglas:</strong> Cancelación estratégica de 7 épicas no viables — enfoque redefinido en 5 entregables concretos. Se priorizó la parametrización sobre módulos secundarios para maximizar valor en el semestre.</li>
-    <li><strong>Dependencia de backend externo (Saghi):</strong> El backend externo quedó bloqueado. Se aisló la dependencia para evitar impacto en otros proyectos y se definieron alternativas internas.</li>
-    <li><strong>Jerarquía inconsistente en gestión de proyectos:</strong> Se reorganizaron relaciones entre épicas en múltiples proyectos para mejorar la trazabilidad y confiabilidad de las métricas de avance.</li>
-    <li><strong>Automatización de métricas no confiable:</strong> Se detectaron valores erróneos en indicadores calculados automáticamente. Se implementó un cálculo propio basado en datos objetivos para reportes confiables.</li>
-  </ul>
+  <!-- 4. Mapa de Dependencias -->
+  <h2 class="st"><span class="icon">🔗</span> Mapa de Dependencias Inter-Proyecto</h2>
+  <p style="font-size:.9rem;color:var(--gray-600);margin-bottom:1.25rem">12 relaciones documentadas entre proyectos del portafolio. Las flechas indican dirección de la dependencia (A depende de B).</p>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 530" style="width:100%;max-width:900px;height:auto;display:block;margin:0 auto 1.5rem"><defs><marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#546e7a"/></marker></defs><line x1="655.3" y1="128.1" x2="494.7" y2="221.9" stroke="#90a4ae" stroke-width="1.5" marker-end="url(#arrowhead)"/><line x1="655.3" y1="128.1" x2="244.7" y2="128.1" stroke="#90a4ae" stroke-width="1.5" marker-end="url(#arrowhead)"/><line x1="237.5" y1="132.5" x2="412.5" y2="217.5" stroke="#90a4ae" stroke-width="1.5" marker-end="url(#arrowhead)"/><line x1="200" y1="142" x2="200" y2="358" stroke="#90a4ae" stroke-width="1.5" marker-end="url(#arrowhead)"/><line x1="117.5" y1="278.1" x2="162.5" y2="131.9" stroke="#90a4ae" stroke-width="1.5" marker-end="url(#arrowhead)"/><line x1="80" y1="292" x2="80" y2="358" stroke="#90a4ae" stroke-width="1.5" marker-end="url(#arrowhead)"/><line x1="237.5" y1="371.9" x2="412.5" y2="371.9" stroke="#90a4ae" stroke-width="1.5" marker-end="url(#arrowhead)"/><line x1="237.5" y1="428.1" x2="412.5" y2="428.1" stroke="#90a4ae" stroke-width="1.5" marker-end="url(#arrowhead)"/><line x1="655.3" y1="371.9" x2="494.7" y2="371.9" stroke="#90a4ae" stroke-width="1.5" marker-end="url(#arrowhead)"/><line x1="662.5" y1="428.1" x2="487.5" y2="428.1" stroke="#90a4ae" stroke-width="1.5" marker-end="url(#arrowhead)"/><line x1="700" y1="442" x2="700" y2="358" stroke="#90a4ae" stroke-width="1.5" marker-end="url(#arrowhead)"/><line x1="450" y1="442" x2="450" y2="438" stroke="#90a4ae" stroke-width="1.5" marker-end="url(#arrowhead)"/><circle cx="450" cy="250" r="40" fill="#2e7d32" opacity="0.9" stroke="#fff" stroke-width="2"/><text x="450" y="254" text-anchor="middle" font-size="9" font-weight="600" fill="#fff" font-family="system-ui,sans-serif">Carpeta Única</text><circle cx="200" cy="100" r="40" fill="#c62828" opacity="0.9" stroke="#fff" stroke-width="2"/><text x="200" y="104" text-anchor="middle" font-size="9" font-weight="600" fill="#fff" font-family="system-ui,sans-serif">P. Intermediarios</text><circle cx="700" cy="100" r="40" fill="#2e7d32" opacity="0.9" stroke="#fff" stroke-width="2"/><text x="700" y="104" text-anchor="middle" font-size="10" font-weight="600" fill="#fff" font-family="system-ui,sans-serif">Suscripción</text><circle cx="200" cy="400" r="40" fill="#f57f17" opacity="0.9" stroke="#fff" stroke-width="2"/><text x="200" y="404" text-anchor="middle" font-size="9" font-weight="600" fill="#fff" font-family="system-ui,sans-serif">Gestión Bienestar</text><circle cx="450" cy="400" r="40" fill="#c62828" opacity="0.9" stroke="#fff" stroke-width="2"/><text x="450" y="404" text-anchor="middle" font-size="10" font-weight="600" fill="#fff" font-family="system-ui,sans-serif">Bizagi</text><circle cx="700" cy="400" r="40" fill="#f57f17" opacity="0.9" stroke="#fff" stroke-width="2"/><text x="700" y="404" text-anchor="middle" font-size="9" font-weight="600" fill="#fff" font-family="system-ui,sans-serif">Cuentas Médicas</text><circle cx="80" cy="250" r="40" fill="#f57f17" opacity="0.9" stroke="#fff" stroke-width="2"/><text x="80" y="254" text-anchor="middle" font-size="9" font-weight="600" fill="#fff" font-family="system-ui,sans-serif">Cumplimiento</text><circle cx="450" cy="480" r="40" fill="#78909c" opacity="0.9" stroke="#fff" stroke-width="2"/><text x="450" y="484" text-anchor="middle" font-size="10" font-weight="600" fill="#fff" font-family="system-ui,sans-serif">Tronador</text><circle cx="450" cy="50" r="40" fill="#78909c" opacity="0.9" stroke="#fff" stroke-width="2"/><text x="450" y="54" text-anchor="middle" font-size="10" font-weight="600" fill="#fff" font-family="system-ui,sans-serif">Saghi</text><rect x="750" y="430" width="140" height="95" rx="6" fill="#fff" stroke="#e0e0e0"/><text x="758" y="447" font-size="10" font-weight="700" fill="#333" font-family="system-ui,sans-serif">Leyenda</text><circle cx="766" cy="460" r="6" fill="#2e7d32"/><text x="778" y="464" font-size="9" fill="#333" font-family="system-ui,sans-serif">Buena completitud</text><circle cx="766" cy="478" r="6" fill="#f57f17"/><text x="778" y="482" font-size="9" fill="#333" font-family="system-ui,sans-serif">En riesgo</text><circle cx="766" cy="496" r="6" fill="#c62828"/><text x="778" y="500" font-size="9" fill="#333" font-family="system-ui,sans-serif">Requiere normalización</text><circle cx="766" cy="514" r="6" fill="#78909c"/><text x="778" y="518" font-size="9" fill="#333" font-family="system-ui,sans-serif">Core / Externo</text></svg>
+  <div class="tw">
+    <button class="btn-copy" onclick="copyTable(this)">📋 Copiar para Sheets</button>
+    <table>
+      <thead><tr><th>Proyecto</th><th>Depende de</th><th>Tipo de dependencia</th></tr></thead>
+      <tbody>
+        <tr><td>Motor Suscripción</td><td>Carpeta Única</td><td>Gestión documental</td></tr>
+        <tr><td>Motor Suscripción</td><td>P. Intermediarios</td><td>Canal de solicitudes</td></tr>
+        <tr><td>P. Intermediarios</td><td>Carpeta Única</td><td>Integración Gestor Documental</td></tr>
+        <tr><td>P. Intermediarios</td><td>Saghi</td><td>Backend externo — Bloqueado</td></tr>
+        <tr><td>Cumplimiento</td><td>P. Intermediarios</td><td>Tribu Portal de Intermediarios</td></tr>
+        <tr><td>Cumplimiento</td><td>Tronador</td><td>Core seguros para emisión</td></tr>
+        <tr><td>Gestión Bienestar</td><td>Bizagi</td><td>BPMS para back-office</td></tr>
+        <tr><td>Gestión Bienestar</td><td>Carpeta Única</td><td>O'Leary para soportes médicos</td></tr>
+        <tr><td>Cuentas Médicas</td><td>Bizagi</td><td>BPMS para flujos de pago</td></tr>
+        <tr><td>Cuentas Médicas</td><td>Carpeta Única</td><td>O'Leary para gestión documental</td></tr>
+        <tr><td>Cuentas Médicas</td><td>Tronador</td><td>Liquidación de pólizas</td></tr>
+        <tr><td>Bizagi</td><td>Tronador</td><td>Pólizas y reservas (proceso 70)</td></tr>
+      </tbody>
+    </table>
+  </div>
 
   <!-- 5. Riesgos Activos -->
   <h2 class="st"><span class="icon">⚠️</span> Riesgos Activos</h2>
