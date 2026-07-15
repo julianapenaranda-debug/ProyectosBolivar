@@ -600,7 +600,7 @@ const P = [
     ['GD907-620','Ajustes vulnerabilidades IDOR','porhacer',null],
     ['GD907-631','Ajustes Portal Migración Simon','hecho',null,'2026-03-31'],
     ['GD907-658','Modal Informativo Admin Usuarios','prog','2026-07-31'],
-    ['GD907-664','Migración módulo Gestión Humana','prog',null],
+    ['GD907-664','Migración módulo Gestión Humana','prog','2026-09-30'],
     ['GD907-901','Desarrollos backend Sagui Portal','prog','2026-08-28']
   ]},
   {id:'gd929',c:'GD-929',n:'PRY Gestión en Bienestar - Autorizaciones ARL/Salud',e:[
