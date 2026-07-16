@@ -203,7 +203,7 @@ async function searchEpics(projectKey, iniKey, authHeader) {
     const params = new URLSearchParams({
       jql, fields, startAt: String(startAt), maxResults: '100'
     });
-    const url = `${JIRA_BASE}/rest/api/3/search?${params}`;
+    const url = `${JIRA_BASE}/rest/api/3/search/jql?${params}`;
     const resp = await jiraFetch(url, authHeader);
     total = resp.total;
     allIssues.push(...resp.issues);
@@ -222,7 +222,7 @@ async function searchEpics(projectKey, iniKey, authHeader) {
 async function countHuByEpic(epicKey, authHeader) {
   const jql = `parent = ${epicKey}`;
   const params = new URLSearchParams({ jql, fields: 'status', maxResults: '100' });
-  const url = `${JIRA_BASE}/rest/api/3/search?${params}`;
+  const url = `${JIRA_BASE}/rest/api/3/search/jql?${params}`;
   const resp = await jiraFetch(url, authHeader);
   let done = 0;
   resp.issues.forEach((i) => {
@@ -268,7 +268,7 @@ async function fetchBlocked(authHeader) {
   const jql = `project in (${projectKeys}) AND issuetype = Epic AND status = Bloqueado ORDER BY key ASC`;
   const fields = 'summary,status,project,created,labels';
   const params = new URLSearchParams({ jql, fields, maxResults: '100' });
-  const url = `${JIRA_BASE}/rest/api/3/search?${params}`;
+  const url = `${JIRA_BASE}/rest/api/3/search/jql?${params}`;
   const resp = await jiraFetch(url, authHeader);
   return resp.issues.map((issue) => {
     const projCode = issue.fields.project.key.replace(/(\D+)(\d+)/, '$1-$2');
