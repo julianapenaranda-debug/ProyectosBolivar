@@ -254,7 +254,7 @@ async function countHuByEpic(epicKey, authHeader) {
     }
   });
   const ar = countForWeight > 0 ? Math.round(weightedSum / countForWeight) : 0;
-  return { total: resp.total, done, cancel, ar };
+  return { total: resp.issues.length, done, cancel, ar };
 }
 
 /**
@@ -849,13 +849,13 @@ async function main() {
         await delay(RATE_LIMIT_MS);
       }
 
-      // Contar HU para épicas en progreso
+      // Contar HU para épicas activas (prog y porhacer con hijos)
       const huData = {};
       for (const issue of allIssues) {
         const st = mapStatus(issue.fields.status);
-        if (st === 'prog') {
+        if (st === 'prog' || st === 'porhacer') {
           const hu = await countHuByEpic(issue.key, authHeader);
-          huData[issue.key] = hu;
+          if (hu.total > 0) huData[issue.key] = hu;
           await delay(RATE_LIMIT_MS);
         }
       }
