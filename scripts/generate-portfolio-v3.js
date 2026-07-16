@@ -502,9 +502,18 @@ function generateHtml(P, BLOCKED, inconsData) {
   INI.forEach((ini) => {
     const due = ini[4];
     const p = P.find((x) => x.id === ini[0]);
-    let done = 0, total = 0;
-    if (p) { p.e.forEach((e) => { total++; if (e[2] === 'hecho' || e[2] === 'cancel') done++; }); }
-    const pct = total > 0 ? ((done / total) * 100) : 0;
+    let arSum = 0, arCount = 0;
+    if (p) {
+      p.e.forEach((e) => {
+        const st = e[2];
+        if (st === 'cancel') return;
+        arCount++;
+        if (st === 'hecho') { arSum += 100; }
+        else if (e[8] != null) { arSum += e[8]; }
+        else if (e[6] && e[6] > 0) { arSum += Math.round((e[7] / e[6]) * 100); }
+      });
+    }
+    const pct = arCount > 0 ? Math.round(arSum / arCount) : 0;
     const sm = iniSem(pct, due);
     if (sm === 'verde') iniAdelantado++;
     else if (sm === 'amarillo') iniRiesgo++;
@@ -525,21 +534,21 @@ function generateHtml(P, BLOCKED, inconsData) {
   INI.forEach((ini) => {
     const [id, code, name, ikey, idue] = ini;
     const p = P.find((x) => x.id === id);
-    let done = 0, total = 0;
-    if (p) { p.e.forEach((e) => { total++; if (e[2] === 'hecho' || e[2] === 'cancel') done++; }); }
-    const pct = total > 0 ? ((done / total) * 100) : 0;
+    let arS = 0, arC = 0;
+    if (p) { p.e.forEach((e) => { const st = e[2]; if (st === 'cancel') return; arC++; if (st === 'hecho') { arS += 100; } else if (e[8] != null) { arS += e[8]; } else if (e[6] && e[6] > 0) { arS += Math.round((e[7] / e[6]) * 100); } }); }
+    const pct = arC > 0 ? Math.round(arS / arC) : 0;
     const dueStr = idue && new Date(idue) < TODAY ? `<span class="due-vencida">${idue} ⚠️</span>` : idue || '—';
-    html += `<tr><td><a href="#${id}">${code}</a></td><td>${name}</td><td><a href="${JIRA}/${ikey}" target="_blank">${ikey}</a></td><td>${dueStr}</td><td><div class="progress-bar"><div class="progress-fill ${pct > 0 ? 'high' : ''}" style="width:${pct}%;${pct === 0 ? 'background:var(--gray-400)' : ''}""></div></div>${pct.toFixed(0)}% (${done}/${total})</td><td>${total}</td></tr>`;
+    html += `<tr><td><a href="#${id}">${code}</a></td><td>${name}</td><td><a href="${JIRA}/${ikey}" target="_blank">${ikey}</a></td><td>${dueStr}</td><td><div class="progress-bar"><div class="progress-fill ${pct > 0 ? 'high' : ''}" style="width:${pct}%;${pct === 0 ? 'background:var(--gray-400)' : ''}""></div></div>${pct}% AR</td><td>${arC}</td></tr>`;
   });
   html += `</tbody></table></div>`;
 
   // Detail sections
   html += `<h2 class="st">Detalle por Proyecto</h2><div class="nav-top">${P.map((p) => `<a href="#${p.id}">${p.c}</a>`).join('')}</div>`;
   P.forEach((p) => {
-    let doneD = 0, totalD = 0;
-    p.e.forEach((e) => { totalD++; if (e[2] === 'hecho' || e[2] === 'cancel') doneD++; });
-    const pctD = totalD > 0 ? ((doneD / totalD) * 100).toFixed(0) : 0;
-    html += `<div class="ds" id="${p.id}"><div class="dh" onclick="toggleDetail(this)"><h3>${p.c} — ${p.n} (${p.e.length} épicas) · <span style="font-size:.85rem;color:var(--gray-600)">Completitud: ${pctD}% (${doneD}/${totalD})</span></h3><span class="tg">▼</span></div><div class="dc"><div class="tw"><table><thead><tr><th>Key</th><th>Resumen</th><th>Estado</th><th>Semáforo</th><th>Due Date</th><th title="Avance Real Ponderado por estado de HU">% AR</th><th>% Esperado</th><th>Delta</th></tr></thead><tbody>`;
+    let arSD = 0, arCD = 0;
+    p.e.forEach((e) => { const st = e[2]; if (st === 'cancel') return; arCD++; if (st === 'hecho') { arSD += 100; } else if (e[8] != null) { arSD += e[8]; } else if (e[6] && e[6] > 0) { arSD += Math.round((e[7] / e[6]) * 100); } });
+    const pctD = arCD > 0 ? Math.round(arSD / arCD) : 0;
+    html += `<div class="ds" id="${p.id}"><div class="dh" onclick="toggleDetail(this)"><h3>${p.c} — ${p.n} (${p.e.length} épicas) · <span style="font-size:.85rem;color:var(--gray-600)">AR: ${pctD}%</span></h3><span class="tg">▼</span></div><div class="dc"><div class="tw"><table><thead><tr><th>Key</th><th>Resumen</th><th>Estado</th><th>Semáforo</th><th>Due Date</th><th title="Avance Real Ponderado por estado de HU">% AR</th><th>% Esperado</th><th>Delta</th></tr></thead><tbody>`;
     p.e.forEach((e) => {
       const [k, s, st, due, finReal, startDate, huTotal, huDone] = e;
       const sm2 = sem(st, due);
