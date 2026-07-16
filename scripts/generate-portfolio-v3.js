@@ -38,7 +38,8 @@ const INI = [
   ['gd1136','GD-1136','Migración e Implementación Bizagi / BPMS','GD1136-18','2026-12-31'],
   ['gd1141','GD-1141','PRY Access Policy Management (APM)','GD1141-3','2026-08-31'],
   ['gd904','GD-904','PRY Transformación de Indemnizaciones','GD904-509','2026-12-31'],
-  ['gd1129','GD-1129','PRY Nuevo Core de Seguros','GD1129-174','2026-12-31']
+  ['gd1129','GD-1129','PRY Nuevo Core de Seguros','GD1129-174','2026-12-31'],
+  ['gd1145','GD-1145','PRY Mesa de Transformación de Canales','GD1145-1','2026-12-31']
 ];
 
 const DEPS = [
@@ -61,7 +62,7 @@ const KEY_TO_NAME = {
   'GD-907':'P. Intermediarios','GD-929':'Gestión Bienestar','GD-971':'Ciber WAPP',
   'GD-981':'Cumplimiento','GD-1130':'Cuentas Médicas',
   'GD-1136':'Bizagi','GD-1141':'APM','GD-904':'Indemnizaciones',
-  'GD-1129':'Core Seguros',
+  'GD-1129':'Core Seguros','GD-1145':'Transf. Canales',
   'Tronador':'Tronador','Saghi':'Saghi'
 };
 
@@ -711,6 +712,18 @@ const P = [
     ['GD1129-445','Desacople - 2026','porhacer','2026-12-31'],
     ['GD1129-877','Particionamiento y Depuración DBA','prog','2026-09-30',null,'2026-01-06',15,10],
     ['GD1129-879','Observabilidad-Trazabilidad Fenix','hecho','2026-12-31']
+  ]},
+  {id:'gd1145',c:'GD-1145',n:'PRY Mesa de Transformación de Canales',e:[
+    ['GD1145-2','IVR · Agente IA - Autorizaciones Médicas','prog','2026-05-15',null,'2026-01-05',2,0],
+    ['GD1145-3','IVR · Agente IA - IVR Líquido','prog','2026-05-15',null,'2026-01-05',5,0],
+    ['GD1145-4','WSP · Agente IA - Estado de Producto','prog','2026-07-31',null,'2026-01-05',8,0],
+    ['GD1145-5','WSP · Agente IA - Estado de Servicio (Asistencia)','prog',null,null,null,1,0],
+    ['GD1145-6','WSP · Agente IA - Confirmación y Cancelación Citas','prog',null,null,null,3,0],
+    ['GD1145-7','WSP · Agente IA - Agendamiento Citas (Mejoras)','prog',null,null,null,3,0],
+    ['GD1145-8','TRANSVERSAL · SuperOrquestador OlivIA','prog',null,null,'2026-02-02',8,0],
+    ['GD1145-9','TRANSVERSAL · Observabilidad y Monitoreo','prog','2026-05-29',null,'2026-02-02',3,0],
+    ['GD1145-14','WSP · Nivelación canal intermediarios (Orquestadora)','prog',null,null,null,1,0],
+    ['GD1145-15','WSP · Nivelación canal intermediarios (agentes)','prog',null,null,'2026-07-01',3,0]
   ]}
 ];
 
