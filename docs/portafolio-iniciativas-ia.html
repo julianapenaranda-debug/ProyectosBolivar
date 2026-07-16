@@ -1,0 +1,236 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Dashboard Iniciativas IA — POs Gerencia Portafolio Digital</title>
+<style>
+:root{--primary:#1a237e;--primary-light:#283593;--primary-dark:#0d1642;--white:#fff;--gray-50:#f8f9fa;--gray-100:#f1f3f5;--gray-200:#e9ecef;--gray-400:#ced4da;--gray-500:#adb5bd;--gray-600:#868e96;--gray-800:#343a40;--success:#2e7d32;--success-bg:#e8f5e9;--warning:#f57f17;--warning-bg:#fff8e1;--danger:#c62828;--danger-bg:#ffebee;--info:#1565c0;--info-bg:#e3f2fd;--neutral:#546e7a;--neutral-bg:#eceff1;--purple:#6a1b9a;--purple-bg:#f3e5f5;--font:system-ui,-apple-system,sans-serif;--radius:8px;--shadow:0 2px 8px rgba(26,35,126,.08)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);background:var(--gray-50);color:var(--gray-800);line-height:1.5}
+a{color:var(--primary);text-decoration:none}a:hover{text-decoration:underline}
+.header{background:linear-gradient(135deg,var(--primary-dark),var(--primary));color:var(--white);padding:2rem 1.5rem;text-align:center}
+.header h1{font-size:1.75rem;font-weight:700;margin-bottom:.25rem}
+.header .sub{font-size:1rem;opacity:.85}
+.header .date{font-size:.85rem;opacity:.7;margin-top:.5rem}
+.header .vb{display:inline-block;background:rgba(255,255,255,.15);padding:.2rem .6rem;border-radius:12px;font-size:.75rem;margin-top:.5rem}
+.container{max-width:1400px;margin:0 auto;padding:1.5rem}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin-bottom:2rem}
+.kpi-card{background:var(--white);border-radius:var(--radius);padding:1.25rem;box-shadow:var(--shadow);text-align:center;border-top:3px solid var(--primary)}
+.kpi-card .v{font-size:2rem;font-weight:700;color:var(--primary)}
+.kpi-card .l{font-size:.82rem;color:var(--gray-600);margin-top:.25rem}
+.kpi-card.s{border-top-color:var(--success)}.kpi-card.s .v{color:var(--success)}
+.kpi-card.w{border-top-color:var(--warning)}.kpi-card.w .v{color:var(--warning)}
+.kpi-card.i{border-top-color:var(--info)}.kpi-card.i .v{color:var(--info)}
+.kpi-card.p{border-top-color:var(--purple)}.kpi-card.p .v{color:var(--purple)}
+.kpi-card.n{border-top-color:var(--neutral)}.kpi-card.n .v{color:var(--neutral)}
+.st{font-size:1.25rem;font-weight:700;color:var(--primary);margin:2rem 0 1rem;padding-bottom:.5rem;border-bottom:2px solid var(--gray-200)}
+.tw{overflow-x:auto;background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:2rem}
+table{width:100%;border-collapse:collapse;font-size:.85rem}
+thead{background:var(--primary);color:var(--white)}
+th{padding:.7rem .8rem;text-align:left;font-weight:600;white-space:nowrap}
+td{padding:.6rem .8rem;border-bottom:1px solid var(--gray-200)}
+tbody tr:hover{background:var(--gray-100)}
+.badge{display:inline-block;padding:.15rem .5rem;border-radius:12px;font-size:.72rem;font-weight:600;white-space:nowrap}
+.badge-prod{background:var(--success-bg);color:var(--success)}
+.badge-prog{background:var(--warning-bg);color:var(--warning)}
+.badge-ini{background:var(--info-bg);color:var(--info)}
+.badge-idea{background:var(--neutral-bg);color:var(--neutral)}
+.badge-fin{background:var(--purple-bg);color:var(--purple)}
+.filter-bar{display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:1rem;align-items:center}
+.filter-bar label{font-size:.85rem;color:var(--gray-600)}
+.filter-bar select,.filter-bar input{padding:.4rem .6rem;border:1px solid var(--gray-400);border-radius:var(--radius);font-size:.85rem}
+.dl-btn{padding:.4rem .8rem;border:1px solid var(--primary);border-radius:var(--radius);background:var(--white);color:var(--primary);cursor:pointer;font-size:.8rem;font-weight:600;transition:all .2s}
+.dl-btn:hover{background:var(--primary);color:var(--white)}
+.progress-bar{background:var(--gray-200);border-radius:14px;height:28px;width:100%;overflow:hidden;display:flex;font-size:.8rem;margin-bottom:2rem}
+.chart-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;margin-bottom:2rem}
+.chart-card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);padding:1.25rem}
+.chart-card h3{font-size:.95rem;font-weight:600;color:var(--primary);margin-bottom:1rem}
+.bar-h{display:flex;align-items:center;margin-bottom:.6rem}
+.bar-h .lb{width:140px;font-size:.8rem;color:var(--gray-800);flex-shrink:0}
+.bar-h .track{flex:1;background:var(--gray-200);border-radius:6px;height:18px;overflow:hidden;margin:0 .5rem}
+.bar-h .fill{height:100%;border-radius:6px}
+.bar-h .val{font-size:.8rem;font-weight:600;width:30px;text-align:right}
+.footer{text-align:center;padding:2rem 1rem;font-size:.8rem;color:var(--gray-500);border-top:1px solid var(--gray-200);margin-top:2rem}
+@media(max-width:768px){.header h1{font-size:1.3rem}.kpi-grid{grid-template-columns:repeat(2,1fr)}th,td{padding:.4rem .5rem;font-size:.78rem}}
+</style></head><body>
+
+<header class="header">
+<h1>🤖 Dashboard Iniciativas IA — POs</h1>
+<div class="sub">Seguros Bolívar · Gerencia Portafolio Digital · Vicepresidencia de Tecnología</div>
+<div class="date">16 de julio de 2026</div>
+<div class="vb">45 Iniciativas · 28 POs</div>
+</header>
+<div class="container">
+<h2 class="st">Indicadores Clave</h2>
+<div class="kpi-grid">
+<div class="kpi-card"><div class="v">45</div><div class="l">Total Iniciativas</div></div>
+<div class="kpi-card i"><div class="v">28</div><div class="l">POs Participantes</div></div>
+<div class="kpi-card s"><div class="v">8</div><div class="l">En Producción</div></div>
+<div class="kpi-card w"><div class="v">30</div><div class="l">En Progreso</div></div>
+<div class="kpi-card"><div class="v">33</div><div class="l">Impacto Negocio (73%)</div></div>
+<div class="kpi-card p"><div class="v">12</div><div class="l">Gestión PO (27%)</div></div>
+<div class="kpi-card i"><div class="v">12</div><div class="l">Próximas Prod (Jul-Ago)</div></div>
+<div class="kpi-card n"><div class="v">5</div><div class="l">Candidatas Squad IA</div></div>
+</div>
+<h2 class="st">Distribución por Estado</h2>
+<div class="progress-bar">
+<div style="width:18%;background:var(--success);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600">Prod 18%</div>
+<div style="width:67%;background:var(--warning);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600">En Progreso 67%</div>
+<div style="width:9%;background:var(--info);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600">Iniciar</div>
+<div style="width:6%;background:var(--neutral);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600">Idea</div>
+</div>
+<div class="chart-grid">
+<div class="chart-card"><h3>Por Tipo de Impacto</h3>
+<div class="bar-h"><div class="lb">Impacto Negocio</div><div class="track"><div class="fill" style="width:73%;background:var(--info)"></div></div><div class="val">33</div></div>
+<div class="bar-h"><div class="lb">Gestión PO</div><div class="track"><div class="fill" style="width:27%;background:var(--purple)"></div></div><div class="val">12</div></div>
+</div>
+<div class="chart-card"><h3>Top POs por Iniciativas</h3>
+<div class="bar-h"><div class="lb">Sonia P. Mora</div><div class="track"><div class="fill" style="width:100%;background:var(--primary)"></div></div><div class="val">5</div></div>
+<div class="bar-h"><div class="lb">Jesse Jones</div><div class="track"><div class="fill" style="width:80%;background:var(--primary-light)"></div></div><div class="val">4</div></div>
+<div class="bar-h"><div class="lb">Marcela Duarte</div><div class="track"><div class="fill" style="width:80%;background:var(--primary-light)"></div></div><div class="val">4</div></div>
+<div class="bar-h"><div class="lb">Estefhania Osorio</div><div class="track"><div class="fill" style="width:60%;background:var(--info)"></div></div><div class="val">3</div></div>
+<div class="bar-h"><div class="lb">Otros (24 POs)</div><div class="track"><div class="fill" style="width:58%;background:var(--neutral)"></div></div><div class="val">29</div></div>
+</div>
+</div>
+
+<h2 class="st">Tabla Completa de Iniciativas</h2>
+<div class="filter-bar">
+<label>Filtrar:</label>
+<select id="fEstado" onchange="filtrar()"><option value="">Todos los estados</option><option value="Producción">Producción</option><option value="En progreso">En progreso</option><option value="Por iniciar">Por iniciar</option><option value="Ideación">Ideación</option><option value="Finalizado">Finalizado</option></select>
+<select id="fImpacto" onchange="filtrar()"><option value="">Todo impacto</option><option value="negocio">Negocio</option><option value="gestión PO">Gestión PO</option></select>
+<input type="text" id="fTexto" placeholder="Buscar PO o iniciativa..." oninput="filtrar()" style="width:220px">
+<button class="dl-btn" onclick="descargarCSV('all')">📥 Descargar CSV</button>
+</div>
+<div class="tw"><table><thead><tr><th>#</th><th>PO</th><th>Iniciativa</th><th>Impacto</th><th>Estado</th><th>Fecha Compromiso</th><th>Observaciones</th></tr></thead><tbody id="tbAll"></tbody></table></div>
+
+<h2 class="st">En Producción (8)</h2>
+<div class="filter-bar"><button class="dl-btn" onclick="descargarCSV('prod')">📥 CSV Producción</button></div>
+<div class="tw"><table><thead><tr><th>#</th><th>PO</th><th>Iniciativa</th><th>Impacto</th><th>Fecha</th></tr></thead><tbody id="tbProd"></tbody></table></div>
+
+<h2 class="st">Próximas a Producción — Jul/Ago 2026 (12)</h2>
+<div class="filter-bar"><button class="dl-btn" onclick="descargarCSV('prox')">📥 CSV Próximas</button></div>
+<div class="tw"><table><thead><tr><th>#</th><th>PO</th><th>Iniciativa</th><th>Impacto</th><th>Fecha</th></tr></thead><tbody id="tbProx"></tbody></table></div>
+
+<h2 class="st">Candidatas Squad de Agentes IA (5)</h2>
+<div class="filter-bar"><button class="dl-btn" onclick="descargarCSV('squad')">📥 CSV Squad IA</button></div>
+<div class="tw"><table><thead><tr><th>#</th><th>PO</th><th>Iniciativa</th><th>Impacto</th><th>Estado</th></tr></thead><tbody id="tbSquad"></tbody></table></div>
+</div>
+<footer class="footer">Dashboard Iniciativas IA — Gerencia Portafolio Digital · Seguros Bolívar · Generado 16 julio 2026</footer>
+
+<script>
+const D=[
+["Isabel Cristina Robayo","Web Scrapping para motores avaluos de Ingenieria de Patrimoniales","Impacto negocio","En progreso","noviembre 2026",""],
+["Estefhania Osorio","Ticketera Biometria (Boliver)","Impacto negocio","En progreso","septiembre 2026",""],
+["Estefhania Osorio","Agente de PO - Gestor de compromisos","Impacto gestión PO","En progreso","septiembre 2026","Incluir en el Squad de Agentes IA"],
+["Isabel Cristina Robayo","Agente de PO - Gestor de Sanity","Impacto gestión PO","En progreso","agosto 2026","Incluir en el Squad de Agentes IA"],
+["Estefhania Osorio","Tablero de Análisis de costos de infraestructura","Impacto gestión PO","En progreso","septiembre 2026","Incluir en el Squad de Agentes IA"],
+["Marcela Duarte","Tablero de estatus de proyectos y Excelencia Operativa","Impacto gestión PO","Producción","mayo 2026",""],
+["Marcela Duarte","Agente de PO - Creación de Mockups de plataformas digitales","Impacto gestión PO","En progreso","septiembre 2026",""],
+["Marcela Duarte","Agente PO - Generación de OPs automática","Impacto gestión PO","En progreso","agosto 2026","Incluir en el Squad de Agentes IA"],
+["Marcela Duarte","Agente PO - Generador de casos de prueba","Impacto gestión PO","En progreso","septiembre 2026","Incluir en el Squad de Agentes IA"],
+["Diana Carolina","Módulo de creación de oferta de movilidad (Visión transversal)","Impacto negocio","En progreso","septiembre 2026",""],
+["Cristian Carreño","Emisor de pólizas basadas en Slips","Impacto negocio","En progreso","julio 2026",""],
+["Jesse Jones Cortes","Portal Facilities","Impacto negocio","Producción","mayo 2026",""],
+["Jesse Jones Cortes","Dashboard seguimientos Servicios Davibank","Impacto negocio","Producción","junio 2026",""],
+["Jesse Jones Cortes","Hoja de vida de Oficinas","Impacto negocio","En progreso","julio 2026",""],
+["Jesse Jones Cortes","Dashboard Mantenimiento Preventivo","Impacto negocio","En progreso","julio 2026",""],
+["Camilo Andrés Solano González","Dashboard Seguimiento Performance Ciencuadras","Impacto gestión PO","En progreso","julio 2026",""],
+["Camilo Andrés Solano González","Migración Micrositios Inmobiliarias","Impacto negocio","Por iniciar","agosto 2026",""],
+["Lina Marcela Sánchez Borda","CMS Portal El Libertador","Impacto negocio","En progreso","",""],
+["Carlos Andrés Patiño Vélez","Enjambre Squad Agentes IA","Impacto gestión PO","Producción","junio 2026",""],
+["Sonia Patricia Mora Ramírez","Gestión comercial (WebApp comercial)","Impacto negocio","En progreso","",""],
+["Sonia Patricia Mora Ramírez","HUB de recaudos (Integración con ERPs)","Impacto negocio","En progreso","",""],
+["Sonia Patricia Mora Ramírez","BREB","Impacto negocio","En progreso","",""],
+["Sonia Patricia Mora Ramírez","Multipago","Impacto negocio","En progreso","",""],
+["Sonia Patricia Mora Ramírez","Débito automático a cuentas","Impacto negocio","En progreso","",""],
+["Claudia Margarita Cortés","Front reenvío de PDF de pólizas colectivas","Impacto negocio","En progreso","noviembre 2026",""],
+["Claudia Margarita Cortés","Front consulta estado facturación electrónica","Impacto negocio","En progreso","agosto 2026",""],
+["Omar Arcila","Agente de Apoyo Intermediarios / Conocimiento Clientes / Gestión Cartera","Impacto negocio","Por iniciar","",""],
+["Cesar Benavides","Solicitud de Servicios desde Acceso Clientes","Impacto negocio","Por iniciar","",""],
+["Maye Lopez","Módulo de Parametrización de Flujos","Impacto negocio","Ideación","",""],
+["Carolina Prada","Portal de Gestión de Proveedores Asistencia","Impacto negocio","Por iniciar","","Pendiente definir iniciativa con Kiro"],
+["John Caicedo","Front Autos, Vida, Salud Autogestión de Pólizas Colectivas","Impacto negocio","En progreso","",""],
+["William Romero","Nueva experiencia Grupo Bolívar módulo administrador zona privada","Impacto negocio","Producción","junio 2026",""],
+["Angela Mora","Nueva experiencia Social Skin","Impacto negocio","Ideación","",""],
+["Ruby Triana","Módulo de idoneidades","Impacto negocio","Ideación","",""],
+["Fabian Rubiano","Tablero comparación saldos Sunsystem, SITRI y Auxiliares","Impacto negocio","En progreso","",""],
+["Felipe Diaz","Tablero de Jira - Yarbis (Modelo mental Gestión proyectos)","Impacto gestión PO","Finalizado","marzo 2026",""],
+["Felipe Diaz","Helena","Impacto negocio","Producción","mayo 2026",""],
+["Juan David Martínez","Front de Cuentas médicas","Impacto negocio","En progreso","agosto 2026",""],
+["Paula Corredor","Front de SIPAB - Transformado","Impacto negocio","En progreso","noviembre 2026",""],
+["Diana Velásquez","Front aviso siniestros protección de pagos","Impacto negocio","En progreso","agosto 2026",""],
+["Cristhian Hurtado","Chat bot mesa de soporte","Impacto negocio","En progreso","julio 2026",""],
+["Jesus Duarte","Dashboard migración Coboles","Impacto gestión PO","Producción","mayo 2026",""],
+["Alejandro Llamas","Construcción de experiencias digitales","Impacto negocio","Producción","mayo 2026",""],
+["Jesus Duarte / Ruby Triana","Gestión usuarios Humand n8n","Impacto negocio","En progreso","",""],
+["Mónica Rojas","Cotizador Salud Colectivo","Impacto negocio","En progreso","agosto 2026",""],
+["Mónica Rojas","Cotizador Vida Colectivo","Impacto negocio","En progreso","agosto 2026",""]
+];
+
+function badgeEstado(e){
+  if(e==='Producción') return '<span class="badge badge-prod">Producción</span>';
+  if(e==='En progreso') return '<span class="badge badge-prog">En progreso</span>';
+  if(e==='Por iniciar') return '<span class="badge badge-ini">Por iniciar</span>';
+  if(e==='Ideación') return '<span class="badge" style="background:#eceff1;color:#546e7a">Ideación</span>';
+  if(e==='Finalizado') return '<span class="badge badge-fin">Finalizado</span>';
+  return e;
+}
+function badgeImpacto(i){
+  if(i.includes('negocio')) return '<span class="badge" style="background:#e3f2fd;color:#1565c0">Negocio</span>';
+  return '<span class="badge" style="background:#f3e5f5;color:#6a1b9a">Gestión PO</span>';
+}
+function renderAll(data){
+  const tb=document.getElementById('tbAll');
+  tb.innerHTML=data.map((r,i)=>'<tr><td>'+(i+1)+'</td><td>'+r[0]+'</td><td>'+r[1]+'</td><td>'+badgeImpacto(r[2])+'</td><td>'+badgeEstado(r[3])+'</td><td>'+r[4]+'</td><td>'+r[5]+'</td></tr>').join('');
+}
+function renderProd(){
+  const prod=D.filter(function(r){return r[3]==='Producción';});
+  const tb=document.getElementById('tbProd');
+  tb.innerHTML=prod.map(function(r,i){return '<tr><td>'+(i+1)+'</td><td>'+r[0]+'</td><td>'+r[1]+'</td><td>'+badgeImpacto(r[2])+'</td><td>'+r[4]+'</td></tr>';}).join('');
+}
+function renderProx(){
+  const prox=D.filter(function(r){return r[3]==='En progreso'&&(r[4].includes('julio 2026')||r[4].includes('agosto 2026'));});
+  const tb=document.getElementById('tbProx');
+  tb.innerHTML=prox.map(function(r,i){return '<tr><td>'+(i+1)+'</td><td>'+r[0]+'</td><td>'+r[1]+'</td><td>'+badgeImpacto(r[2])+'</td><td>'+r[4]+'</td></tr>';}).join('');
+}
+function renderSquad(){
+  const sq=D.filter(function(r){return r[5].includes('Squad');});
+  const tb=document.getElementById('tbSquad');
+  tb.innerHTML=sq.map(function(r,i){return '<tr><td>'+(i+1)+'</td><td>'+r[0]+'</td><td>'+r[1]+'</td><td>'+badgeImpacto(r[2])+'</td><td>'+badgeEstado(r[3])+'</td></tr>';}).join('');
+}
+function filtrar(){
+  var est=document.getElementById('fEstado').value;
+  var imp=document.getElementById('fImpacto').value;
+  var txt=document.getElementById('fTexto').value.toLowerCase();
+  var f=D.filter(function(r){
+    if(est&&r[3]!==est) return false;
+    if(imp&&r[2].toLowerCase().indexOf(imp)===-1) return false;
+    if(txt&&r[0].toLowerCase().indexOf(txt)===-1&&r[1].toLowerCase().indexOf(txt)===-1) return false;
+    return true;
+  });
+  renderAll(f);
+}
+function descargarCSV(tipo){
+  var rows,headers;
+  if(tipo==='all'){
+    headers=['PO','Iniciativa','Impacto','Estado','Fecha Compromiso','Observaciones'];
+    rows=D;
+  } else if(tipo==='prod'){
+    headers=['PO','Iniciativa','Impacto','Fecha Produccion'];
+    rows=D.filter(function(r){return r[3]==='Producción';}).map(function(r){return [r[0],r[1],r[2],r[4]];});
+  } else if(tipo==='prox'){
+    headers=['PO','Iniciativa','Impacto','Fecha Compromiso'];
+    rows=D.filter(function(r){return r[3]==='En progreso'&&(r[4].includes('julio 2026')||r[4].includes('agosto 2026'));}).map(function(r){return [r[0],r[1],r[2],r[4]];});
+  } else if(tipo==='squad'){
+    headers=['PO','Iniciativa','Impacto','Estado'];
+    rows=D.filter(function(r){return r[5].includes('Squad');}).map(function(r){return [r[0],r[1],r[2],r[3]];});
+  }
+  var csv='\uFEFF'+headers.join(',')+'\n';
+  rows.forEach(function(r){csv+=r.map(function(c){return '"'+(c||'').replace(/"/g,'""')+'"';}).join(',')+'\n';});
+  var blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url;a.download='iniciativas-ia-'+tipo+'.csv';a.click();
+  URL.revokeObjectURL(url);
+}
+renderAll(D);renderProd();renderProx();renderSquad();
+</script>
+</body></html>
