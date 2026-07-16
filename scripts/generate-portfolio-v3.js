@@ -596,23 +596,23 @@ const P = [
   {id:'gd902',c:'GD-902',n:'PRY Transformación de Suscripción (Motor suscripción)',e:[
     ['GD902-330','Integrar Filenet - Motor Suscripción','hecho','2025-12-31','2025-12-30'],
     ['GD902-436','Extracción Reglas Negocio Core Suscripc','hecho','2025-10-31','2025-10-30'],
-    ['GD902-534','Extracción reglas tronador y Migración','prog','2026-06-30',null,'2026-03-02',40,32],
-    ['GD902-535','Creación de APIS necesarias para motor','prog','2026-12-29',null,'2026-01-02',27,26],
+    ['GD902-534','Extracción reglas tronador y Migración','prog','2026-06-30',null,'2026-03-02',28,27],
+    ['GD902-535','Creación de APIS necesarias para motor','prog','2026-12-29',null,'2026-01-02',42,37],
     ['GD902-536','Mejoras Filenet para motor','hecho','2026-12-29','2026-01-30'],
     ['GD902-1310','Ajustes y Evolutivos Motor 2026','prog','2026-12-31',null,'2026-06-26',3,1],
-    ['GD902-1329','Modulo de parametrizacion de reglas','prog','2026-07-07',null,'2026-03-19',68,61]
+    ['GD902-1329','Modulo de parametrizacion de reglas','prog','2026-07-07',null,'2026-03-19',57,50]
   ]},
   {id:'gd903',c:'GD-903',n:'PRY Autogestión Pólizas Individuales (Simon ventas)',e:[
-    ['GD903-310','Vida - Migración Cotización y Emisión','prog','2026-06-12',null,'2026-04-01',15,0],
-    ['GD903-321','Autos - Migración Cotización y Emisión','prog','2026-05-22',null,'2026-04-06',10,0],
+    ['GD903-310','Vida - Migración Cotización y Emisión','prog','2026-06-12',null,'2026-04-01',10,0],
+    ['GD903-321','Autos - Migración Cotización y Emisión','prog','2026-05-22',null,'2026-04-06',15,12],
     ['GD903-402','Autos - Modificaciones Autogestión','porhacer',null],
     ['GD903-403','Vida - Modificaciones Autogestión','porhacer',null],
     ['GD903-404','Salud - Modificaciones Autogestión','porhacer',null],
     ['GD903-405','Hogar - Modificaciones Autogestión','porhacer',null],
     ['GD903-406','Transversal - Módulo Consulta Cotiz','porhacer',null],
-    ['GD903-407','Salud - Migración Cotización y Emisión','prog','2026-06-19',null,'2026-04-20',5,0],
+    ['GD903-407','Salud - Migración Cotización y Emisión','prog','2026-06-19',null,'2026-04-20',6,4],
     ['GD903-408','Transversal - Unificación Firma Elect','porhacer',null],
-    ['GD903-409','Hogar - Migración Cotización y Emisión','prog','2026-07-10',null,'2026-04-27',5,0]
+    ['GD903-409','Hogar - Migración Cotización y Emisión','prog','2026-07-10',null,'2026-04-27',5,3]
   ]},
   {id:'gd905',c:'GD-905',n:'PRY Carpeta Única de Cliente',e:[
     ['GD905-39','Módulo parametrización docs dominio','hecho','2026-06-30','2026-07-08'],
@@ -670,24 +670,24 @@ const P = [
     ['GD981-1038','Actividades de IA para el proyecto','hecho','2026-04-30','2026-04-15'],
     // Fase II (GD981-1037)
     ['GD981-733','Aplicación automática sobrecomisión','hecho','2026-06-10','2026-06-19'],
-    ['GD981-1412','Atención solicitudes email','prog','2026-07-09',null,'2026-06-01',null,null],
+    ['GD981-1412','Atención solicitudes email','prog','2026-07-09',null,'2026-05-19',1,1],
     ['GD981-1506','Retoma solicitudes no finalizadas','porhacer','2026-07-22'],
-    ['GD981-1507','Modificación de tasa','prog','2026-07-10',null,'2026-06-15',null,null],
+    ['GD981-1507','Modificación de tasa','prog','2026-07-10',null,'2026-05-28',18,6],
     // ANT 2026 Fase II Nueva Plataforma (GD981-1705)
     ['GD981-1018','Modificación pólizas Cumplimiento au','porhacer',null],
     ['GD981-1850','Evolutivos de la Autogestión fase I','porhacer',null],
     ['GD981-1851','Modificación pólizas RC autogestionada','porhacer',null]
   ]},
   {id:'gd1130',c:'GD-1130',n:'PRY Cuentas Médicas',e:[
-    ['GD1130-19','Front radicación facturas proveedores','prog','2026-07-16',null,'2026-03-09',2,0],
+    ['GD1130-19','Front radicación facturas proveedores','prog','2026-07-16',null,'2026-03-09',5,0],
     ['GD1130-81','Front Gestor Cuentas Medicas','prog','2026-07-16',null,'2026-03-09',1,0],
-    ['GD1130-82','Flujo Cuentas Medicas IPS Baja/Media','prog','2026-07-16',null,'2026-03-09',42,11],
-    ['GD1130-83','Paramétricas y parámetros Ctas Médicas','prog','2026-07-16',null,'2026-03-09',5,0],
+    ['GD1130-82','Flujo Cuentas Medicas IPS Baja/Media','prog','2026-07-16',null,'2026-03-09',40,11],
+    ['GD1130-83','Paramétricas y parámetros Ctas Médicas','prog','2026-07-16',null,'2026-03-09',1,0],
     ['GD1130-281','SIIFA Cuentas Medicas - Fase 1','prog','2026-09-07',null,'2026-07-06',5,0]
   ]},
   {id:'gd1136',c:'GD-1136',n:'Migración e Implementación Bizagi / BPMS',e:[
     ['GD1136-2','Bizagi - Setup cloud','hecho','2026-03-31'],
-    ['GD1136-34','Entregable Paquete 1 - Radicación','prog','2026-05-08',null,'2026-02-19',50,5],
+    ['GD1136-34','Entregable Paquete 1 - Radicación','prog','2026-05-08',null,'2026-02-19',45,7],
     ['GD1136-35','Entregable Paquete 2 - Análisis','prog','2026-05-25',null,'2026-03-10',10,0],
     ['GD1136-36','Entregable Paquete 3 - Cierre','prog','2026-06-19',null,'2026-03-27',12,0]
   ]},
@@ -701,16 +701,17 @@ const P = [
     ['GD904-518','Retomar indemnización multicanal','porhacer',null],
     ['GD904-633','Activar botón trazabilidad indemn','porhacer',null],
     ['GD904-663','Automatizar correos indemnizaciones','prog','2026-05-15',null,'2026-04-21',4,4],
-    ['GD904-720','Flujo Trabajo Rentas','prog','2026-05-28',null,'2026-04-21',40,4],
+    ['GD904-683','MVP Proceso Pac conversacional','hecho','2025-12-11','2025-12-02'],
+    ['GD904-720','Flujo Trabajo Rentas','prog','2026-05-28',null,'2026-04-21',40,3],
     ['GD904-778','Flujo trabajo Patrimoniales','porhacer',null]
   ]},
   {id:'gd1129',c:'GD-1129',n:'PRY Nuevo Core de Seguros',e:[
     ['GD1129-80','Borrar Particionamiento y Depuración','cancel',null],
     ['GD1129-90','Observabilidad-Trazabilidad COREX','hecho','2026-06-11'],
-    ['GD1129-175','Estabilización tronador - 2026','prog','2026-12-31',null,'2026-02-28',25,14],
-    ['GD1129-444','Integración - 2026','prog','2026-12-31',null,'2026-01-01',45,21],
+    ['GD1129-175','Estabilización tronador - 2026','prog','2026-12-31',null,'2026-02-28',13,9],
+    ['GD1129-444','Integración - 2026','prog','2026-12-31',null,'2026-01-01',46,16],
     ['GD1129-445','Desacople - 2026','porhacer','2026-12-31'],
-    ['GD1129-877','Particionamiento y Depuración DBA','prog','2026-09-30',null,'2026-01-06',15,10],
+    ['GD1129-877','Particionamiento y Depuración DBA','prog','2026-09-30',null,'2026-01-06',17,11],
     ['GD1129-879','Observabilidad-Trazabilidad Fenix','hecho','2026-12-31']
   ]},
   {id:'gd1145',c:'GD-1145',n:'PRY Mesa de Transformación de Canales',e:[
