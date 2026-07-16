@@ -53,7 +53,7 @@ const INI = [
   ['gd929','GD-929','PRY Gestión en Bienestar - Autorizaciones ARL/Salud','GD929-716','2026-12-31'],
   ['gd971','GD-971','Ciber 5.0 WAPP Multinube','GD971-42','2026-03-31'],
 
-  ['gd981','GD-981','Plataforma Cumplimiento Autogestión 0-500M','GD981-1007','2026-12-31'],
+  ['gd981','GD-981','Plataforma Cumplimiento Autogestión 0-500M','GD981-1007,GD981-1037,GD981-1705','2026-12-31'],
   ['gd1130','GD-1130','PRY Cuentas Médicas','GD1130-75','2026-11-09'],
   ['gd1136','GD-1136','Migración e Implementación Bizagi / BPMS','GD1136-18','2026-12-31'],
   ['gd1141','GD-1141','PRY Access Policy Management (APM)','GD1141-3','2026-08-31'],
@@ -790,12 +790,19 @@ async function main() {
       const [id, code, name, iniKey] = ini;
       const projectKey = code.replace('-', '');
       console.log(`  → ${code} (${iniKey})...`);
-      const issues = await searchEpics(projectKey, iniKey, authHeader);
-      await delay(RATE_LIMIT_MS);
+
+      // Soporte para múltiples iniciativas separadas por coma
+      const iniKeys = iniKey.split(',');
+      let allIssues = [];
+      for (const key of iniKeys) {
+        const issues = await searchEpics(projectKey, key.trim(), authHeader);
+        allIssues.push(...issues);
+        await delay(RATE_LIMIT_MS);
+      }
 
       // Contar HU para épicas en progreso
       const huData = {};
-      for (const issue of issues) {
+      for (const issue of allIssues) {
         const st = mapStatus(issue.fields.status);
         if (st === 'prog') {
           const hu = await countHuByEpic(issue.key, authHeader);
@@ -803,7 +810,7 @@ async function main() {
           await delay(RATE_LIMIT_MS);
         }
       }
-      projects.push(buildProjectData(ini, issues, huData));
+      projects.push(buildProjectData(ini, allIssues, huData));
     }
 
     console.log('  → Consultando épicas bloqueadas...');
