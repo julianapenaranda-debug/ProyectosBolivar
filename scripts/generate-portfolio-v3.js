@@ -174,8 +174,8 @@ function formatDate(dateStr) {
  * @returns {Promise<Array>} Lista de issues épicas.
  */
 async function searchEpics(projectKey, iniKey, authHeader) {
-  const jql = `project = ${projectKey} AND issuetype = Epic AND parent = ${iniKey} ORDER BY key ASC`;
-  const fields = 'summary,status,duedate,customfield_25346';
+  const jql = `parent = ${iniKey} AND issuetype = Epic ORDER BY key ASC`;
+  const fields = 'summary,status,duedate,customfield_25346,customfield_24701';
   const allIssues = [];
   let startAt = 0;
   let total = 1;
@@ -194,12 +194,32 @@ async function searchEpics(projectKey, iniKey, authHeader) {
 }
 
 /**
+ * Cuenta HU por estado dentro de una épica.
+ * @param {string} epicKey - Key de la épica.
+ * @param {string} authHeader - Header de autorización.
+ * @returns {Promise<{total: number, done: number}>}
+ */
+async function countHuByEpic(epicKey, authHeader) {
+  const jql = `parent = ${epicKey}`;
+  const params = new URLSearchParams({ jql, fields: 'status', maxResults: '100' });
+  const url = `${JIRA_BASE}/rest/api/3/search?${params}`;
+  const resp = await jiraFetch(url, authHeader);
+  let done = 0;
+  resp.issues.forEach((i) => {
+    const cat = (i.fields.status.statusCategory || {}).key;
+    if (cat === 'done') done++;
+  });
+  return { total: resp.total, done };
+}
+
+/**
  * Construye el objeto de proyecto para el array P desde issues de Jira.
  * @param {Array} iniEntry - Entrada del array INI [id, code, name, ini_key, due].
  * @param {Array} issues - Issues épicas de Jira.
+ * @param {object} huData - Map de epicKey → {total, done}.
  * @returns {object} Objeto con id, c, n y array e de épicas.
  */
-function buildProjectData(iniEntry, issues) {
+function buildProjectData(iniEntry, issues, huData) {
   const [id, code, name] = iniEntry;
   const epics = issues.map((issue) => {
     const key = issue.key;
@@ -207,6 +227,11 @@ function buildProjectData(iniEntry, issues) {
     const status = mapStatus(issue.fields.status);
     const duedate = formatDate(issue.fields.duedate);
     const finReal = formatDate(issue.fields.customfield_25346);
+    const startDate = formatDate(issue.fields.customfield_24701);
+    const hu = huData[key];
+    if (hu && hu.total > 0) {
+      return [key, summary, status, duedate, finReal, startDate, hu.total, hu.done];
+    }
     return finReal ? [key, summary, status, duedate, finReal]
       : [key, summary, status, duedate];
   });
@@ -728,8 +753,57 @@ const inconsData = buildInconsData(P);
 // EJECUCIÓN PRINCIPAL
 // ═══════════════════════════════════════════════════════════════════
 
-const outPath = path.join(__dirname, '..', 'docs', 'portafolio-proyectos.html');
-const html = generateHtml(P, BLOCKED, inconsData);
-fs.writeFileSync(outPath, html, 'utf8');
-console.log(`✅ Dashboard generado: ${outPath}`);
-console.log(`   Proyectos: ${P.length} | Épicas totales: ${P.reduce((s, p) => s + p.e.length, 0)} | Inconsistencias: ${inconsData.length}`);
+const P_STATIC = P;
+
+async function main() {
+  const useDynamic = process.env.JIRA_EMAIL && process.env.JIRA_API_TOKEN;
+
+  let projects, blocked;
+
+  if (useDynamic) {
+    console.log('🔄 Modo dinámico: consultando Jira en tiempo real...');
+    const { email, token } = validateCredentials();
+    const authHeader = buildAuthHeader(email, token);
+
+    projects = [];
+    for (const ini of INI) {
+      const [id, code, name, iniKey] = ini;
+      const projectKey = code.replace('-', '');
+      console.log(`  → ${code} (${iniKey})...`);
+      const issues = await searchEpics(projectKey, iniKey, authHeader);
+      await delay(RATE_LIMIT_MS);
+
+      // Contar HU para épicas en progreso
+      const huData = {};
+      for (const issue of issues) {
+        const st = mapStatus(issue.fields.status);
+        if (st === 'prog') {
+          const hu = await countHuByEpic(issue.key, authHeader);
+          huData[issue.key] = hu;
+          await delay(RATE_LIMIT_MS);
+        }
+      }
+      projects.push(buildProjectData(ini, issues, huData));
+    }
+
+    console.log('  → Consultando épicas bloqueadas...');
+    blocked = await fetchBlocked(authHeader);
+    console.log(`  ✓ ${projects.length} proyectos, ${projects.reduce((s, p) => s + p.e.length, 0)} épicas cargadas desde Jira`);
+  } else {
+    console.log('📋 Modo estático: usando datos del array P[] (sin JIRA_EMAIL/JIRA_API_TOKEN)');
+    projects = P_STATIC;
+    blocked = BLOCKED;
+  }
+
+  const incons = buildInconsData(projects);
+  const outPath = path.join(__dirname, '..', 'docs', 'portafolio-proyectos.html');
+  const html = generateHtml(projects, blocked, incons);
+  fs.writeFileSync(outPath, html, 'utf8');
+  console.log(`✅ Dashboard generado: ${outPath}`);
+  console.log(`   Proyectos: ${projects.length} | Épicas totales: ${projects.reduce((s, p) => s + p.e.length, 0)} | Inconsistencias: ${incons.length}`);
+}
+
+main().catch((err) => {
+  console.error('❌ Error:', err.message);
+  process.exit(1);
+});
