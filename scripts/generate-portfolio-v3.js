@@ -291,8 +291,7 @@ function buildProjectData(iniEntry, issues, huData) {
     if (hu && hu.total > 0) {
       return [key, summary, status, duedate, finReal, startDate, hu.total, hu.done, hu.ar];
     }
-    return finReal ? [key, summary, status, duedate, finReal]
-      : [key, summary, status, duedate];
+    return [key, summary, status, duedate, finReal, startDate];
   });
   return { id, c: code, n: name, e: epics };
 }
@@ -584,7 +583,14 @@ function generateHtml(P, BLOCKED, inconsData) {
           deltaCell = `<span style="color:${color};font-weight:600">${delta >= 0 ? '+' : ''}${delta}pp</span>`;
         } else { deltaCell = '—'; }
       } else {
-        realPct = '—'; esperadoPct = '—'; deltaCell = '—';
+        realPct = '<span style="color:var(--gray-500);font-size:.75rem">Sin HU</span>';
+        if (startDate && due) {
+          const total = new Date(due) - new Date(startDate);
+          const elapsed = TODAY - new Date(startDate);
+          const esp = Math.min(100, Math.max(0, Math.round((elapsed / total) * 100)));
+          esperadoPct = `${esp}%`;
+          deltaCell = '—';
+        } else { esperadoPct = '—'; deltaCell = '—'; }
       }
       html += `<tr><td><a href="${JIRA}/${k}" target="_blank">${k}</a></td><td>${s}</td><td>${badge(st)}</td><td><span class="sem sem-${sm2}"></span></td><td>${dueCell}</td><td style="text-align:center;font-weight:600">${realPct}</td><td style="text-align:center">${esperadoPct}</td><td style="text-align:center">${deltaCell}</td></tr>`;
     });
