@@ -214,6 +214,20 @@ async function searchEpics(projectKey, iniKey, authHeader) {
 }
 
 /**
+ * Descubre todas las iniciativas activas dentro de un proyecto.
+ * @param {string} projectKey - Key del proyecto (ej. 'GD981').
+ * @param {string} authHeader - Header de autorización.
+ * @returns {Promise<string[]>} Lista de keys de iniciativas encontradas.
+ */
+async function discoverInitiatives(projectKey, authHeader) {
+  const jql = `project = ${projectKey} AND issuetype = Iniciativa AND statusCategory != Done ORDER BY key ASC`;
+  const params = new URLSearchParams({ jql, fields: 'summary', maxResults: '20' });
+  const url = `${JIRA_BASE}/rest/api/3/search/jql?${params}`;
+  const resp = await jiraFetch(url, authHeader);
+  return resp.issues.map((i) => i.key);
+}
+
+/**
  * Cuenta HU por estado dentro de una épica.
  * @param {string} epicKey - Key de la épica.
  * @param {string} authHeader - Header de autorización.
@@ -791,11 +805,20 @@ async function main() {
       const projectKey = code.replace('-', '');
       console.log(`  → ${code} (${iniKey})...`);
 
-      // Soporte para múltiples iniciativas separadas por coma
-      const iniKeys = iniKey.split(',');
+      // Auto-descubrimiento de iniciativas activas en el proyecto
+      const iniKeys = iniKey.includes(',') ? iniKey.split(',').map(k => k.trim()) : null;
+      let discoveredKeys;
+      if (iniKeys) {
+        discoveredKeys = iniKeys;
+      } else {
+        discoveredKeys = await discoverInitiatives(projectKey, authHeader);
+        if (discoveredKeys.length === 0) discoveredKeys = [iniKey];
+        await delay(RATE_LIMIT_MS);
+      }
+
       let allIssues = [];
-      for (const key of iniKeys) {
-        const issues = await searchEpics(projectKey, key.trim(), authHeader);
+      for (const key of discoveredKeys) {
+        const issues = await searchEpics(projectKey, key, authHeader);
         allIssues.push(...issues);
         await delay(RATE_LIMIT_MS);
       }
