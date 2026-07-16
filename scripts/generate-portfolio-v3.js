@@ -239,11 +239,36 @@ async function countHuByEpic(epicKey, authHeader) {
   const url = `${JIRA_BASE}/rest/api/3/search/jql?${params}`;
   const resp = await jiraFetch(url, authHeader);
   let done = 0;
+  let cancel = 0;
+  let weightedSum = 0;
+  let countForWeight = 0;
   resp.issues.forEach((i) => {
     const cat = (i.fields.status.statusCategory || {}).key;
-    if (cat === 'done') done++;
+    const sName = (i.fields.status.name || '').toLowerCase();
+    if (cat === 'done') {
+      if (sName === 'cancelado') { cancel++; }
+      else { done++; weightedSum += 100; countForWeight++; }
+    } else {
+      countForWeight++;
+      weightedSum += statusWeight(sName, cat);
+    }
   });
-  return { total: resp.total, done };
+  const ar = countForWeight > 0 ? Math.round(weightedSum / countForWeight) : 0;
+  return { total: resp.total, done, cancel, ar };
+}
+
+/**
+ * Retorna el peso ponderado de un estado según nombre y categoría.
+ * @param {string} sName - Nombre del estado en minúsculas.
+ * @param {string} cat - statusCategory key (new, indeterminate, done).
+ * @returns {number} Peso entre 0 y 100.
+ */
+function statusWeight(sName, cat) {
+  if (cat === 'done') return 100;
+  if (sName.includes('bloqueado') || sName === 'blocked') return 5;
+  if (sName === 'por hacer' || sName === 'to do') return 10;
+  if (cat === 'indeterminate') return 50;
+  return 0;
 }
 
 /**
@@ -264,7 +289,7 @@ function buildProjectData(iniEntry, issues, huData) {
     const startDate = formatDate(issue.fields.customfield_24701);
     const hu = huData[key];
     if (hu && hu.total > 0) {
-      return [key, summary, status, duedate, finReal, startDate, hu.total, hu.done];
+      return [key, summary, status, duedate, finReal, startDate, hu.total, hu.done, hu.ar];
     }
     return finReal ? [key, summary, status, duedate, finReal]
       : [key, summary, status, duedate];
@@ -514,7 +539,7 @@ function generateHtml(P, BLOCKED, inconsData) {
     let doneD = 0, totalD = 0;
     p.e.forEach((e) => { totalD++; if (e[2] === 'hecho' || e[2] === 'cancel') doneD++; });
     const pctD = totalD > 0 ? ((doneD / totalD) * 100).toFixed(0) : 0;
-    html += `<div class="ds" id="${p.id}"><div class="dh" onclick="toggleDetail(this)"><h3>${p.c} — ${p.n} (${p.e.length} épicas) · <span style="font-size:.85rem;color:var(--gray-600)">Completitud: ${pctD}% (${doneD}/${totalD})</span></h3><span class="tg">▼</span></div><div class="dc"><div class="tw"><table><thead><tr><th>Key</th><th>Resumen</th><th>Estado</th><th>Semáforo</th><th>Due Date</th><th>% Real</th><th>% Esperado</th><th>Delta</th></tr></thead><tbody>`;
+    html += `<div class="ds" id="${p.id}"><div class="dh" onclick="toggleDetail(this)"><h3>${p.c} — ${p.n} (${p.e.length} épicas) · <span style="font-size:.85rem;color:var(--gray-600)">Completitud: ${pctD}% (${doneD}/${totalD})</span></h3><span class="tg">▼</span></div><div class="dc"><div class="tw"><table><thead><tr><th>Key</th><th>Resumen</th><th>Estado</th><th>Semáforo</th><th>Due Date</th><th title="Avance Real Ponderado por estado de HU">% AR</th><th>% Esperado</th><th>Delta</th></tr></thead><tbody>`;
     p.e.forEach((e) => {
       const [k, s, st, due, finReal, startDate, huTotal, huDone] = e;
       const sm2 = sem(st, due);
@@ -534,7 +559,8 @@ function generateHtml(P, BLOCKED, inconsData) {
         esperadoPct = '—';
         deltaCell = '—';
       } else if (huTotal && huTotal > 0) {
-        const real = Math.round((huDone / huTotal) * 100);
+        const huAr = e[8] != null ? e[8] : Math.round((huDone / huTotal) * 100);
+        const real = huAr;
         realPct = `${real}%`;
         let esp = 0;
         if (startDate && due) {
