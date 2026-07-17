@@ -65,6 +65,7 @@ const INI = [
 const DEPS = [
   ['GD-902','GD-905','Carpeta Única para gestión documental'],
   ['GD-902','GD-907','Portal Intermediarios como canal de solicitudes'],
+  ['GD-902','GD-1136','Bizagi BPMS para flujos de suscripción'],
   ['GD-907','GD-905','Integración Carpeta Única y Gestor Documental'],
   ['GD-907','Saghi','Backend externo — Bloqueado'],
   ['GD-981','GD-907','Tribu Portal de Intermediarios'],
@@ -74,7 +75,9 @@ const DEPS = [
   ['GD-1130','GD-1136','Bizagi BPMS para flujos de pago'],
   ['GD-1130','GD-905','O\'Leary para gestión documental'],
   ['GD-1130','Tronador','Liquidación de pólizas'],
-  ['GD-1136','Tronador','Pólizas y reservas (proceso 70)']
+  ['GD-1136','Tronador','Pólizas y reservas (proceso 70)'],
+  ['GD-904','GD-1136','Bizagi BPMS para flujos de indemnización'],
+  ['GD-904','GD-905','O\'Leary para documentos siniestros']
 ];
 
 const KEY_TO_NAME = {
@@ -89,13 +92,14 @@ const KEY_TO_NAME = {
 const nodePositions = {
   'GD-905':{x:450,y:250},'GD-907':{x:200,y:100},'GD-902':{x:700,y:100},
   'GD-929':{x:200,y:400},'GD-1136':{x:450,y:400},'GD-1130':{x:700,y:400},
-  'GD-981':{x:80,y:250},'Tronador':{x:450,y:480},'Saghi':{x:450,y:50}
+  'GD-981':{x:80,y:250},'Tronador':{x:450,y:480},'Saghi':{x:450,y:50},
+  'GD-904':{x:820,y:250}
 };
 
 const nodeColors = {
   'GD-902':'#1a237e','GD-905':'#1a237e','GD-904':'#1a237e',
   'GD-929':'#1a237e','GD-981':'#1a237e','GD-971':'#1a237e',
-  'GD-1130':'#1a237e',
+  'GD-1130':'#1a237e','GD-1145':'#1a237e',
   'GD-907':'#1a237e','GD-1136':'#1a237e','GD-1141':'#1a237e',
   'Tronador':'#1a237e','Saghi':'#1a237e'
 };
