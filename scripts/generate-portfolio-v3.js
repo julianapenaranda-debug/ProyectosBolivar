@@ -536,8 +536,10 @@ function generateHtml(P, BLOCKED, inconsData) {
     let arS = 0, arC = 0;
     if (p) { p.e.forEach((e) => { const st = e[2]; if (st === 'cancel') return; arC++; if (st === 'hecho') { arS += 100; } else if (e[8] != null) { arS += e[8]; } else if (e[6] && e[6] > 0) { arS += Math.round((e[7] / e[6]) * 100); } }); }
     const pct = arC > 0 ? Math.round(arS / arC) : 0;
+    const sm = iniSem(pct, idue);
+    const smColor = sm === 'verde' ? 'var(--success)' : sm === 'amarillo' ? 'var(--warning)' : sm === 'rojo' ? 'var(--danger)' : 'var(--gray-400)';
     const dueStr = idue && new Date(idue) < TODAY ? `<span class="due-vencida">${idue} ⚠️</span>` : idue || '—';
-    html += `<tr><td><a href="#${id}">${code}</a></td><td>${name}</td><td><a href="${JIRA}/${ikey}" target="_blank">${ikey}</a></td><td>${dueStr}</td><td><div class="progress-bar"><div class="progress-fill ${pct > 0 ? 'high' : ''}" style="width:${pct}%;${pct === 0 ? 'background:var(--gray-400)' : ''}""></div></div>${pct}% AR</td><td>${arC}</td></tr>`;
+    html += `<tr><td><a href="#${id}">${code}</a></td><td><span class="sem sem-${sm}" style="margin-right:6px"></span>${name}</td><td><a href="${JIRA}/${ikey}" target="_blank">${ikey}</a></td><td>${dueStr}</td><td><div class="progress-bar"><div class="progress-fill" style="width:${pct}%;background:${smColor}""></div></div>${pct}% AR</td><td>${arC}</td></tr>`;
   });
   html += `</tbody></table></div>`;
 
