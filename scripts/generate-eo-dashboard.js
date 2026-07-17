@@ -99,17 +99,20 @@ async function fetchAllEOs(auth) {
  */
 async function countEpicsByStatus(eoKey, auth) {
   const jql = `parent = ${eoKey} AND issuetype = Epic`;
-  const params = new URLSearchParams({ jql, fields: 'status', maxResults: '100' });
+  const params = new URLSearchParams({ jql, fields: 'status,customfield_29596', maxResults: '100' });
   const url = `${JIRA_BASE}/rest/api/3/search/jql?${params}`;
   const resp = await jiraFetch(url, auth);
   let done = 0, prog = 0, back = 0;
+  const tipos = {};
   resp.issues.forEach((i) => {
     const cat = (i.fields.status.statusCategory || {}).key;
     if (cat === 'done') done++;
     else if (cat === 'indeterminate') prog++;
     else back++;
+    const tipo = i.fields.customfield_29596 ? i.fields.customfield_29596.value : 'Sin clasificar';
+    tipos[tipo] = (tipos[tipo] || 0) + 1;
   });
-  return { total: resp.issues.length, done, prog, back };
+  return { total: resp.issues.length, done, prog, back, tipos };
 }
 
 /**
@@ -148,6 +151,12 @@ function generateHtml(eoData) {
   const pProg = totEpics > 0 ? Math.round((totProg / totEpics) * 100) : 0;
   const pBack = 100 - pDone - pProg;
 
+  // Consolidar tipos de requerimiento
+  const tiposGlobal = {};
+  eoData.forEach((eo) => { Object.entries(eo.tipos || {}).forEach(([t, c]) => { tiposGlobal[t] = (tiposGlobal[t] || 0) + c; }); });
+  const tiposSorted = Object.entries(tiposGlobal).sort((a, b) => b[1] - a[1]);
+  const tipoColors = { 'Entrega de Valor': '#1565c0', 'Disponibilidad y Estabilidad': '#2e7d32', 'Obsolescencia Tecnológica': '#f57f17', 'Ciberseguridad': '#c62828', 'Normativo Externo': '#6a1b9a', 'Normativo Interno': '#6a1b9a', 'Deuda Técnica': '#546e7a', 'Sin clasificar': '#bdbdbd' };
+
   const dataJson = JSON.stringify(eoData);
 
   return `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -170,6 +179,10 @@ function generateHtml(eoData) {
 <div class="progress-fill-prog" style="width:${pProg}%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600">En Progreso ${pProg}%</div>
 <div class="progress-fill-back" style="width:${pBack}%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600">Backlog ${pBack}%</div>
 </div></div>
+<h2 class="st">Distribución por Tipo de Requerimiento</h2>
+<div class="tw"><table><thead><tr><th>Tipo de Requerimiento</th><th style="text-align:center">Épicas</th><th style="text-align:center">%</th><th>Distribución</th></tr></thead><tbody>
+${tiposSorted.map(([tipo, count]) => { const pct = Math.round((count / totEpics) * 100); const color = tipoColors[tipo] || '#78909c'; return `<tr><td><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:${color};margin-right:8px;vertical-align:middle"></span>${tipo}</td><td style="text-align:center;font-weight:700">${count}</td><td style="text-align:center;font-weight:700">${pct}%</td><td><div class="progress-bar" style="height:14px"><div class="progress-fill-done" style="width:${pct}%;background:${color}"></div></div></td></tr>`; }).join('')}
+</tbody></table></div>
 <h2 class="st" id="tabla">Tabla de Excelencias Operativas</h2>
 <div class="filter-bar">
 <label>Ordenar:</label>
@@ -236,7 +249,8 @@ async function main() {
       done: epicStats.done,
       prog: epicStats.prog,
       back: epicStats.back,
-      hu
+      hu,
+      tipos: epicStats.tipos
     });
 
     if ((i + 1) % 10 === 0) console.log(`  → Procesadas ${i + 1}/${eos.length}...`);
