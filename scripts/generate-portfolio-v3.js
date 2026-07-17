@@ -46,7 +46,7 @@ const RATE_LIMIT_MS = 200;
 // ═══════════════════════════════════════════════════════════════════
 // [id, code, name, ini_key, ini_duedate]
 const INI = [
-  ['gd902','GD-902','PRY Transformación de Suscripción (Motor suscripción)','GD902-533','2026-12-30'],
+  ['gd902','GD-902','PRY Transformación de Suscripción (Motor suscripción)','GD902-533,GD902-329','2026-12-30'],
   ['gd903','GD-903','PRY Autogestión Pólizas Individuales (Simon ventas)','GD903-246','2026-12-31'],
   ['gd905','GD-905','PRY Carpeta Única de Cliente','GD905-38','2026-09-30'],
   ['gd907','GD-907','Unificación de Plataformas','GD907-613','2026-12-31'],
