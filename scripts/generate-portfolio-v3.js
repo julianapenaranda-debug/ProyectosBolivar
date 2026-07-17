@@ -93,11 +93,11 @@ const nodePositions = {
 };
 
 const nodeColors = {
-  'GD-902':'#1565c0','GD-905':'#1565c0','GD-904':'#1565c0',
-  'GD-929':'#1565c0','GD-981':'#1565c0','GD-971':'#1565c0',
-  'GD-1130':'#1565c0',
+  'GD-902':'#1a237e','GD-905':'#1a237e','GD-904':'#1a237e',
+  'GD-929':'#1a237e','GD-981':'#1a237e','GD-971':'#1a237e',
+  'GD-1130':'#1a237e',
   'GD-907':'#1a237e','GD-1136':'#1a237e','GD-1141':'#1a237e',
-  'Tronador':'#546e7a','Saghi':'#546e7a'
+  'Tronador':'#1a237e','Saghi':'#1a237e'
 };
 
 // ═══════════════════════════════════════════════════════════════════
@@ -473,11 +473,10 @@ function buildDependencySvg() {
     svg += `<circle cx="${pos.x}" cy="${pos.y}" r="40" fill="${color}" opacity="0.9" stroke="#fff" stroke-width="2"/>`;
     svg += `<text x="${pos.x}" y="${pos.y + 4}" text-anchor="middle" font-size="${fontSize}" font-weight="600" fill="#fff" font-family="system-ui,sans-serif">${name}</text>`;
   });
-  svg += `<rect x="750" y="430" width="140" height="95" rx="6" fill="#fff" stroke="#e0e0e0"/>`;
-  svg += `<text x="758" y="447" font-size="10" font-weight="700" fill="#333" font-family="system-ui,sans-serif">Leyenda</text>`;
-  svg += `<circle cx="766" cy="460" r="6" fill="#1565c0"/><text x="778" y="464" font-size="9" fill="#333" font-family="system-ui,sans-serif">Proyecto portafolio</text>`;
-  svg += `<circle cx="766" cy="478" r="6" fill="#1a237e"/><text x="778" y="482" font-size="9" fill="#333" font-family="system-ui,sans-serif">Proyecto dependencia</text>`;
-  svg += `<circle cx="766" cy="496" r="6" fill="#546e7a"/><text x="778" y="500" font-size="9" fill="#333" font-family="system-ui,sans-serif">Sistema externo</text>`;
+  svg += `<rect x="750" y="450" width="140" height="60" rx="6" fill="#fff" stroke="#e0e0e0"/>`;
+  svg += `<text x="758" y="467" font-size="10" font-weight="700" fill="#333" font-family="system-ui,sans-serif">Leyenda</text>`;
+  svg += `<circle cx="766" cy="483" r="6" fill="#1a237e"/><text x="778" y="487" font-size="9" fill="#333" font-family="system-ui,sans-serif">Proyecto / Sistema</text>`;
+  svg += `<line x1="758" y1="500" x2="780" y2="500" stroke="#90a4ae" stroke-width="1.5" marker-end="url(#arrowhead)"/><text x="784" y="504" font-size="9" fill="#333" font-family="system-ui,sans-serif">Depende de</text>`;
   svg += `</svg>`;
   return svg;
 }
