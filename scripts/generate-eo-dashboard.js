@@ -32,6 +32,7 @@ const TODAY = new Date();
 const TODAY_STR = TODAY.toLocaleDateString('es-CO', { day: 'numeric', month: 'long', year: 'numeric' });
 const RATE_LIMIT_MS = 250;
 const EXCLUDED_EO = 'GD989-192';
+const EXCLUDED_EOS = ['GD989-192', 'AUTQA-7987', 'E2ARPA-303', 'GD815-2808', 'CONECTA-4666', 'PERF-598'];
 
 // ═══════════════════════════════════════════════════════════════════
 // FUNCIONES DE API
@@ -87,7 +88,7 @@ async function fetchAllEOs(auth) {
     hasMore = resp.issues.length === 100;
     if (hasMore) await delay(RATE_LIMIT_MS);
   }
-  return allIssues.filter((i) => i.key !== EXCLUDED_EO);
+  return allIssues.filter((i) => !EXCLUDED_EOS.includes(i.key));
 }
 
 /**
@@ -243,8 +244,12 @@ async function main() {
 
   console.log(`  ✓ ${eoData.length} EOs procesadas`);
 
+  // Filtrar EOs sin actividad (sin HU en progreso, sin épicas prog o backlog)
+  const activeEOs = eoData.filter((eo) => eo.hu > 0 || eo.prog > 0 || eo.back > 0);
+  console.log(`  → ${activeEOs.length} EOs activas (excluidas ${eoData.length - activeEOs.length} sin actividad)`);
+
   const outPath = path.join(__dirname, '..', 'docs', 'portafolio-excelencias-operativas.html');
-  const html = generateHtml(eoData);
+  const html = generateHtml(activeEOs);
   fs.writeFileSync(outPath, html, 'utf8');
   console.log(`✅ Dashboard EO generado: ${outPath}`);
   console.log(`   EOs: ${eoData.length} | Épicas: ${eoData.reduce((s, e) => s + e.total, 0)} | HU EnProg: ${eoData.reduce((s, e) => s + e.hu, 0)}`);
