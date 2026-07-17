@@ -93,11 +93,11 @@ const nodePositions = {
 };
 
 const nodeColors = {
-  'GD-902':'#2e7d32','GD-905':'#2e7d32','GD-904':'#2e7d32',
-  'GD-929':'#f57f17','GD-981':'#f57f17','GD-971':'#f57f17',
-  'GD-1130':'#f57f17',
-  'GD-907':'#c62828','GD-1136':'#c62828','GD-1141':'#c62828',
-  'Tronador':'#78909c','Saghi':'#78909c'
+  'GD-902':'#1565c0','GD-905':'#1565c0','GD-904':'#1565c0',
+  'GD-929':'#1565c0','GD-981':'#1565c0','GD-971':'#1565c0',
+  'GD-1130':'#1565c0',
+  'GD-907':'#1a237e','GD-1136':'#1a237e','GD-1141':'#1a237e',
+  'Tronador':'#546e7a','Saghi':'#546e7a'
 };
 
 // ═══════════════════════════════════════════════════════════════════
@@ -475,10 +475,9 @@ function buildDependencySvg() {
   });
   svg += `<rect x="750" y="430" width="140" height="95" rx="6" fill="#fff" stroke="#e0e0e0"/>`;
   svg += `<text x="758" y="447" font-size="10" font-weight="700" fill="#333" font-family="system-ui,sans-serif">Leyenda</text>`;
-  svg += `<circle cx="766" cy="460" r="6" fill="#2e7d32"/><text x="778" y="464" font-size="9" fill="#333" font-family="system-ui,sans-serif">Buena completitud</text>`;
-  svg += `<circle cx="766" cy="478" r="6" fill="#f57f17"/><text x="778" y="482" font-size="9" fill="#333" font-family="system-ui,sans-serif">En riesgo</text>`;
-  svg += `<circle cx="766" cy="496" r="6" fill="#c62828"/><text x="778" y="500" font-size="9" fill="#333" font-family="system-ui,sans-serif">Requiere normalización</text>`;
-  svg += `<circle cx="766" cy="514" r="6" fill="#78909c"/><text x="778" y="518" font-size="9" fill="#333" font-family="system-ui,sans-serif">Core</text>`;
+  svg += `<circle cx="766" cy="460" r="6" fill="#1565c0"/><text x="778" y="464" font-size="9" fill="#333" font-family="system-ui,sans-serif">Proyecto portafolio</text>`;
+  svg += `<circle cx="766" cy="478" r="6" fill="#1a237e"/><text x="778" y="482" font-size="9" fill="#333" font-family="system-ui,sans-serif">Proyecto dependencia</text>`;
+  svg += `<circle cx="766" cy="496" r="6" fill="#546e7a"/><text x="778" y="500" font-size="9" fill="#333" font-family="system-ui,sans-serif">Sistema externo</text>`;
   svg += `</svg>`;
   return svg;
 }
