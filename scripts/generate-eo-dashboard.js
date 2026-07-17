@@ -209,17 +209,23 @@ async function main() {
     const epicStats = await countEpicsByStatus(eo.key, auth);
     await delay(RATE_LIMIT_MS);
 
-    // Contar HU en progreso con JQL simple
+    // Contar HU en progreso por épica
     let hu = 0;
     if (epicStats.prog > 0) {
-      const jql = `parent in childIssuesOf("${eo.key}") AND statusCategory = "In Progress"`;
-      const params = new URLSearchParams({ jql, fields: 'key', maxResults: '0' });
-      const url = `${JIRA_BASE}/rest/api/3/search/jql?${params}`;
+      const epJql = `parent = ${eo.key} AND issuetype = Epic AND statusCategory = "In Progress"`;
+      const epParams = new URLSearchParams({ jql: epJql, fields: 'key', maxResults: '100' });
+      const epUrl = `${JIRA_BASE}/rest/api/3/search/jql?${epParams}`;
       try {
-        const resp = await jiraFetch(url, auth);
-        hu = resp.issues ? resp.issues.length : 0;
+        const epResp = await jiraFetch(epUrl, auth);
+        for (const ep of epResp.issues) {
+          const huJql = `parent = ${ep.key} AND statusCategory = "In Progress"`;
+          const huParams = new URLSearchParams({ jql: huJql, fields: 'key', maxResults: '100' });
+          const huUrl = `${JIRA_BASE}/rest/api/3/search/jql?${huParams}`;
+          const huResp = await jiraFetch(huUrl, auth);
+          hu += huResp.issues.length;
+          await delay(RATE_LIMIT_MS);
+        }
       } catch { hu = 0; }
-      await delay(RATE_LIMIT_MS);
     }
 
     eoData.push({
