@@ -199,7 +199,7 @@ function formatDate(dateStr) {
  */
 async function searchEpics(projectKey, iniKey, authHeader) {
   const jql = `parent = ${iniKey} AND issuetype = Epic ORDER BY key ASC`;
-  const fields = 'summary,status,duedate,customfield_25346,customfield_24701';
+  const fields = 'summary,status,duedate,customfield_13800,customfield_24701';
   const allIssues = [];
   let startAt = 0;
   let total = 1;
@@ -289,7 +289,7 @@ function buildProjectData(iniEntry, issues, huData) {
     const summary = issue.fields.summary;
     const status = mapStatus(issue.fields.status);
     const duedate = formatDate(issue.fields.duedate);
-    const finReal = formatDate(issue.fields.customfield_25346);
+    const finReal = formatDate(issue.fields.customfield_13800);
     const startDate = formatDate(issue.fields.customfield_24701);
     const hu = huData[key];
     if (hu && hu.total > 0) {
@@ -678,7 +678,7 @@ function generateHtml(P, BLOCKED, inconsData) {
 
   // Inconsistencias
   html += `<div class="ds" style="margin-top:3rem" id="inconsistencias"><div class="dh" onclick="toggleDetail(this)"><h3 style="color:var(--danger)">⚠️ Inconsistencias — Épicas finalizadas sin Fecha Fin Real (${inconsData.length})</h3><span class="tg">▼</span></div><div class="dc">`;
-  html += `<p style="font-size:.9rem;color:var(--gray-600);margin-bottom:1rem">El campo "Fecha Fin Real" (customfield_25346) no está registrado en estas ${inconsData.length} épicas. Esto impide validar si el entregable se completó dentro del plazo comprometido.</p>`;
+  html += `<p style="font-size:.9rem;color:var(--gray-600);margin-bottom:1rem">El campo "Fecha Fin Real" (customfield_13800) no está registrado en estas ${inconsData.length} épicas. Esto impide validar si el entregable se completó dentro del plazo comprometido.</p>`;
   html += `<button onclick="copyTable('tbl-incons')" style="margin-bottom:1rem;padding:.5rem 1rem;background:var(--primary);color:var(--white);border:none;border-radius:var(--radius);cursor:pointer;font-size:.85rem">📋 Copiar tabla para Sheets</button><span id="copy-msg" style="margin-left:.5rem;font-size:.8rem;color:var(--success);display:none">✓ Copiado</span>`;
   html += `<div class="tw"><table id="tbl-incons"><thead><tr><th>Proyecto</th><th>Iniciativa</th><th>Key</th><th>Épica</th><th>Estado</th><th>Duedate</th></tr></thead><tbody>`;
   inconsData.forEach((r) => { html += `<tr><td>${r[0]}</td><td>${r[1]}</td><td><a href="${JIRA}/${r[2]}" target="_blank">${r[2]}</a></td><td>${r[3]}</td><td>${r[4]}</td><td>${r[5]}</td></tr>`; });
