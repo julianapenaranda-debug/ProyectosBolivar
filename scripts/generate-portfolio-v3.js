@@ -564,8 +564,16 @@ function generateHtml(P, BLOCKED, inconsData) {
       let realPct = '', esperadoPct = '', deltaCell = '';
       if (st === 'hecho' || st === 'cancel') {
         realPct = st === 'hecho' ? '100%' : '—';
-        esperadoPct = '—';
-        deltaCell = st === 'hecho' ? '<span style="color:var(--success)">✓</span>' : '—';
+        if (st === 'hecho' && startDate && due) {
+          const total = new Date(due) - new Date(startDate);
+          const elapsed = TODAY - new Date(startDate);
+          const esp = Math.min(100, Math.max(0, Math.round((elapsed / total) * 100)));
+          esperadoPct = `${esp}%`;
+          deltaCell = '<span style="color:var(--success)">✓</span>';
+        } else {
+          esperadoPct = '—';
+          deltaCell = st === 'hecho' ? '<span style="color:var(--success)">✓</span>' : '—';
+        }
       } else if (st === 'porhacer') {
         realPct = '0%';
         esperadoPct = '—';
