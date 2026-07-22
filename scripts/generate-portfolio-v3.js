@@ -199,7 +199,7 @@ function formatDate(dateStr) {
  */
 async function searchEpics(projectKey, iniKey, authHeader) {
   const jql = `parent = ${iniKey} AND issuetype = Epic ORDER BY key ASC`;
-  const fields = 'summary,status,duedate,customfield_13800,customfield_24701';
+  const fields = 'summary,status,duedate,customfield_13800,customfield_25346,customfield_24701';
   const allIssues = [];
   let startAt = 0;
   let total = 1;
@@ -289,7 +289,7 @@ function buildProjectData(iniEntry, issues, huData) {
     const summary = issue.fields.summary;
     const status = mapStatus(issue.fields.status);
     const duedate = formatDate(issue.fields.duedate);
-    const finReal = formatDate(issue.fields.customfield_13800);
+    const finReal = formatDate(issue.fields.customfield_13800) || formatDate(issue.fields.customfield_25346);
     const startDate = formatDate(issue.fields.customfield_24701);
     const hu = huData[key];
     if (hu && hu.total > 0) {
