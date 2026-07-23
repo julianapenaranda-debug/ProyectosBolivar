@@ -56,18 +56,18 @@ tbody tr:hover{background:var(--gray-100)}
 <h1>🤖 Dashboard Iniciativas IA — POs</h1>
 <div class="sub">Seguros Bolívar · Gerencia Portafolio Digital · Vicepresidencia de Tecnología</div>
 <div class="date">16 de julio de 2026</div>
-<div class="vb">45 Iniciativas · 28 POs</div>
+<div class="vb">53 Iniciativas · 31 POs</div>
 </header>
 <div class="container">
 <h2 class="st">Indicadores Clave</h2>
 <div class="kpi-grid">
-<div class="kpi-card"><div class="v">45</div><div class="l">Total Iniciativas</div></div>
-<div class="kpi-card i"><div class="v">28</div><div class="l">POs Participantes</div></div>
-<div class="kpi-card s"><div class="v">8</div><div class="l">En Producción</div></div>
+<div class="kpi-card"><div class="v">53</div><div class="l">Total Iniciativas</div></div>
+<div class="kpi-card i"><div class="v">31</div><div class="l">POs Participantes</div></div>
+<div class="kpi-card s"><div class="v">13</div><div class="l">En Producción</div></div>
 <div class="kpi-card w"><div class="v">30</div><div class="l">En Progreso</div></div>
-<div class="kpi-card"><div class="v">33</div><div class="l">Impacto Negocio (73%)</div></div>
-<div class="kpi-card p"><div class="v">12</div><div class="l">Gestión PO (27%)</div></div>
-<div class="kpi-card i"><div class="v">12</div><div class="l">Próximas Prod (Jul-Ago)</div></div>
+<div class="kpi-card"><div class="v">38</div><div class="l">Impacto Negocio (72%)</div></div>
+<div class="kpi-card p"><div class="v">15</div><div class="l">Gestión PO (28%)</div></div>
+<div class="kpi-card i"><div class="v">14</div><div class="l">Próximas Prod (Jul-Ago)</div></div>
 <div class="kpi-card n"><div class="v">5</div><div class="l">Candidatas Squad IA</div></div>
 </div>
 <h2 class="st">Distribución por Estado</h2>
@@ -123,7 +123,7 @@ const D=[
 ["Isabel Cristina Robayo","Agente de PO - Gestor de Sanity","Impacto gestión PO","En progreso","agosto 2026","Incluir en el Squad de Agentes IA"],
 ["Estefhania Osorio","Tablero de Análisis de costos de infraestructura","Impacto gestión PO","En progreso","septiembre 2026","Incluir en el Squad de Agentes IA"],
 ["Marcela Duarte","Tablero de estatus de proyectos y Excelencia Operativa","Impacto gestión PO","Producción","mayo 2026",""],
-["Marcela Duarte","Agente de PO - Creación de Mockups de plataformas digitales","Impacto gestión PO","En progreso","septiembre 2026",""],
+["Marcela Duarte","Agente de PO - Creación de Mockups de plataformas digitales","Impacto gestión PO","En progreso","septiembre 2026","Duplicidad con alejandro.llamas@serviciosbolivar.com"],
 ["Marcela Duarte","Agente PO - Generación de OPs automática","Impacto gestión PO","En progreso","agosto 2026","Incluir en el Squad de Agentes IA"],
 ["Marcela Duarte","Agente PO - Generador de casos de prueba","Impacto gestión PO","En progreso","septiembre 2026","Incluir en el Squad de Agentes IA"],
 ["Diana Carolina","Módulo de creación de oferta de movilidad (Visión transversal)","Impacto negocio","En progreso","septiembre 2026",""],
@@ -134,35 +134,42 @@ const D=[
 ["Jesse Jones Cortes","Dashboard Mantenimiento Preventivo","Impacto negocio","En progreso","julio 2026",""],
 ["Camilo Andrés Solano González","Dashboard Seguimiento Performance Ciencuadras","Impacto gestión PO","En progreso","julio 2026",""],
 ["Camilo Andrés Solano González","Migración Micrositios Inmobiliarias","Impacto negocio","Por iniciar","agosto 2026",""],
-["Lina Marcela Sánchez Borda","CMS Portal El Libertador","Impacto negocio","En progreso","",""],
+["Lina Marcela Sánchez Borda","CMS Portal El Libertador","Impacto negocio","En progreso","por definir",""],
 ["Carlos Andrés Patiño Vélez","Enjambre Squad Agentes IA","Impacto gestión PO","Producción","junio 2026",""],
-["Sonia Patricia Mora Ramírez","Gestión comercial (WebApp comercial)","Impacto negocio","En progreso","",""],
-["Sonia Patricia Mora Ramírez","HUB de recaudos (Integración con ERPs)","Impacto negocio","En progreso","",""],
-["Sonia Patricia Mora Ramírez","BREB","Impacto negocio","En progreso","",""],
-["Sonia Patricia Mora Ramírez","Multipago","Impacto negocio","En progreso","",""],
-["Sonia Patricia Mora Ramírez","Débito automático a cuentas","Impacto negocio","En progreso","",""],
+["Sonia Patricia Mora Ramírez","Gestión comercial (WebApp comercial)","Impacto negocio","En progreso","por definir",""],
+["Sonia Patricia Mora Ramírez","HUB de recaudos (Integración con ERPs)","Impacto negocio","En progreso","por definir",""],
+["Sonia Patricia Mora Ramírez","BREB","Impacto negocio","En progreso","por definir",""],
+["Sonia Patricia Mora Ramírez","Multipago","Impacto negocio","En progreso","por definir",""],
+["Sonia Patricia Mora Ramírez","Débito automático a cuentas","Impacto negocio","En progreso","por definir",""],
 ["Claudia Margarita Cortés","Front reenvío de PDF de pólizas colectivas","Impacto negocio","En progreso","noviembre 2026",""],
 ["Claudia Margarita Cortés","Front consulta estado facturación electrónica","Impacto negocio","En progreso","agosto 2026",""],
-["Omar Arcila","Agente de Apoyo Intermediarios / Conocimiento Clientes / Gestión Cartera","Impacto negocio","Por iniciar","",""],
-["Cesar Benavides","Solicitud de Servicios desde Acceso Clientes","Impacto negocio","Por iniciar","",""],
-["Maye Lopez","Módulo de Parametrización de Flujos","Impacto negocio","Ideación","",""],
-["Carolina Prada","Portal de Gestión de Proveedores Asistencia","Impacto negocio","Por iniciar","","Pendiente definir iniciativa con Kiro"],
-["John Caicedo","Front Autos, Vida, Salud Autogestión de Pólizas Colectivas","Impacto negocio","En progreso","",""],
+["Omar Arcila","Agente de Apoyo Intermediarios / Conocimiento Clientes / Gestión Cartera / Reporte Poliza","Impacto negocio","Por iniciar","por definir",""],
+["Cesar Benavides","Solicitud de Servicios desde Acceso Clientes","Impacto negocio","Por iniciar","por definir",""],
+["Maye Lopez","Módulo de Parametrización de Flujos","Impacto negocio","Ideación","por definir",""],
+["Carolina Prada","Portal de Gestión de Proveedores Asistencia","Impacto negocio","Por iniciar","por definir","Pendiente definir iniciativa con Kiro"],
+["John Caicedo","Front Autos, Vida, Salud Autogestión de Pólizas Colectivas","Impacto negocio","En progreso","por definir",""],
 ["William Romero","Nueva experiencia Grupo Bolívar módulo administrador zona privada","Impacto negocio","Producción","junio 2026",""],
-["Angela Mora","Nueva experiencia Social Skin","Impacto negocio","Ideación","",""],
-["Ruby Triana","Módulo de idoneidades","Impacto negocio","Ideación","",""],
-["Fabian Rubiano","Tablero comparación saldos Sunsystem, SITRI y Auxiliares","Impacto negocio","En progreso","",""],
-["Felipe Diaz","Tablero de Jira - Yarbis (Modelo mental Gestión proyectos)","Impacto gestión PO","Finalizado","marzo 2026",""],
+["Angela Mora","Nueva experiencia Social Skin","Impacto negocio","Ideación","diciembre 2026",""],
+["Ruby Triana","Módulo de idoneidades","Impacto negocio","Ideación","septiembre 2026",""],
+["Fabian Rubiano","Tablero comparación saldos Sunsystem, SITRI y Auxiliares","Impacto negocio","En progreso","octubre 2026",""],
+["Felipe Diaz","Tablero de Jira - Yarbis (Modelo mental Gestión proyectos)","Impacto gestión PO","Producción","marzo 2026",""],
 ["Felipe Diaz","Helena","Impacto negocio","Producción","mayo 2026",""],
+["Felipe Diaz","Ecosistema de agentes de desarrollo","Impacto negocio","Producción","julio 2026",""],
+["Felipe Diaz","Prototipo del Hub de salud","Impacto negocio","Producción","julio 2026",""],
+["Felipe Diaz","Front de gestión en Bienestar - ARL","Impacto negocio","Producción","julio 2026",""],
 ["Juan David Martínez","Front de Cuentas médicas","Impacto negocio","En progreso","agosto 2026",""],
 ["Paula Corredor","Front de SIPAB - Transformado","Impacto negocio","En progreso","noviembre 2026",""],
 ["Diana Velásquez","Front aviso siniestros protección de pagos","Impacto negocio","En progreso","agosto 2026",""],
 ["Cristhian Hurtado","Chat bot mesa de soporte","Impacto negocio","En progreso","julio 2026",""],
 ["Jesus Duarte","Dashboard migración Coboles","Impacto gestión PO","Producción","mayo 2026",""],
 ["Alejandro Llamas","Construcción de experiencias digitales","Impacto negocio","Producción","mayo 2026",""],
-["Jesus Duarte / Ruby Triana","Gestión usuarios Humand n8n","Impacto negocio","En progreso","",""],
+["Jesus Duarte / Ruby Triana","Gestión usuarios Humand n8n","Impacto negocio","En progreso","por definir",""],
 ["Mónica Rojas","Cotizador Salud Colectivo","Impacto negocio","En progreso","agosto 2026",""],
-["Mónica Rojas","Cotizador Vida Colectivo","Impacto negocio","En progreso","agosto 2026",""]
+["Mónica Rojas","Cotizador Vida Colectivo","Impacto negocio","En progreso","agosto 2026",""],
+["Andrea Rodriguez","Módulo de novedades programadas en el portal","Impacto negocio","En progreso","septiembre 2026",""],
+["Andrea Rodriguez","Gema: Asistente de Validación de Jiras para N1","Impacto gestión PO","Producción","marzo 2026",""],
+["Viviana Oquendo","Tablero de control de la EO","Impacto gestión PO","Producción","julio 2026",""],
+["Angela Mora","Portal educación financiera (hecho con KIRO)","Impacto negocio","Ideación","por definir",""]
 ];
 
 function badgeEstado(e){
