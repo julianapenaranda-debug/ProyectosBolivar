@@ -59,7 +59,9 @@ const INI = [
   ['gd1141','GD-1141','PRY Access Policy Management (APM)','GD1141-3','2026-08-31'],
   ['gd904','GD-904','PRY Transformación de Indemnizaciones','GD904-509','2026-12-31'],
   ['gd1129','GD-1129','PRY Nuevo Core de Seguros','GD1129-174','2026-12-31'],
-  ['gd1145','GD-1145','PRY Mesa de Transformación de Canales','GD1145-1','2026-12-31']
+  ['gd1145','GD-1145','PRY Mesa de Transformación de Canales','GD1145-1','2026-12-31'],
+  ['gd951','GD-951','PRY Cambio Ecosistema de Nómina','GD951-94','2027-01-31'],
+  ['gd1147','GD-1147','PRY Cambio LMS Xplora','GD1147-1,GD1147-6','2027-01-29']
 ];
 
 const DEPS = [
@@ -86,6 +88,7 @@ const KEY_TO_NAME = {
   'GD-981':'Cumplimiento','GD-1130':'Cuentas Médicas',
   'GD-1136':'Bizagi','GD-1141':'APM','GD-904':'Indemnizaciones',
   'GD-1129':'Core Seguros','GD-1145':'Transf. Canales',
+  'GD-951':'Ecosistema Nómina','GD-1147':'LMS Xplora',
   'Tronador':'Tronador','Saghi':'Saghi'
 };
 
