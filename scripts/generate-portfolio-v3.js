@@ -320,7 +320,8 @@ async function fetchBlocked(authHeader) {
 }
 
 /**
- * Construye el array de inconsistencias: épicas Hecho/Cancel sin Fin Real.
+ * Construye el array de inconsistencias: épicas Hecho sin Fin Real.
+ * Las canceladas se excluyen — no requieren fecha fin real.
  * @param {Array} P - Array de proyectos con épicas.
  * @returns {Array} Datos de inconsistencias para la tabla HTML.
  */
@@ -330,9 +331,8 @@ function buildInconsData(P) {
     p.e.forEach((e) => {
       const [key, summary, st, due] = e;
       const finReal = e[4];
-      if ((st === 'hecho' || st === 'cancel') && !finReal) {
-        const stLabel = st === 'hecho' ? 'Hecho' : 'Cancelado';
-        result.push([p.c, p.n, key, summary, stLabel, due || '—']);
+      if (st === 'hecho' && !finReal) {
+        result.push([p.c, p.n, key, summary, 'Hecho', due || '—']);
       }
     });
   });
@@ -528,7 +528,7 @@ function generateHtml(P, BLOCKED, inconsData) {
 <header class="header"><h1>Dashboard de Portafolio V3 — Gestión de la Demanda</h1><div class="sub">Seguros Bolívar · Vicepresidencia de Tecnología</div><div class="date">${TODAY_STR}</div><div class="vb">V3 — Semáforo: % Completitud + Duedate</div></header><div class="container">`;
 
   // KPIs
-  html += `<h2 class="st">Indicadores Clave</h2><div class="kpi-grid"><div class="kpi-card"><div class="v">${P.length}</div><div class="l">Total Proyectos</div></div><div class="kpi-card s"><div class="v">${iniAdelantado}</div><div class="l">Iniciativas OK</div></div><div class="kpi-card d"><div class="v">${iniCritico}</div><div class="l">Iniciativas Retraso Crítico</div></div><div class="kpi-card w"><div class="v">${iniRiesgo}</div><div class="l">Iniciativas En Riesgo</div></div><div class="kpi-card"><div class="v">${totH + totP + totPH}</div><div class="l">Total Épicas</div></div><div class="kpi-card s"><div class="v">${totH}</div><div class="l">Épicas Completadas</div></div><div class="kpi-card w"><div class="v">${totP}</div><div class="l">Épicas En Progreso</div></div><div class="kpi-card"><div class="v">${totPH}</div><div class="l">Épicas Por Hacer</div></div></div>`;
+  html += `<h2 class="st">Indicadores Clave</h2><div class="kpi-grid"><div class="kpi-card"><div class="v">${P.length}</div><div class="l">Total Proyectos</div></div><div class="kpi-card s"><div class="v">${iniAdelantado}</div><div class="l">Iniciativas OK</div></div><div class="kpi-card d"><div class="v">${iniCritico}</div><div class="l">Iniciativas Retraso Crítico</div></div><div class="kpi-card w"><div class="v">${iniRiesgo}</div><div class="l">Iniciativas Con Alerta</div></div><div class="kpi-card"><div class="v">${totH + totP + totPH}</div><div class="l">Total Épicas</div></div><div class="kpi-card s"><div class="v">${totH}</div><div class="l">Épicas Completadas</div></div><div class="kpi-card w"><div class="v">${totP}</div><div class="l">Épicas En Progreso</div></div><div class="kpi-card"><div class="v">${totPH}</div><div class="l">Épicas Por Hacer</div></div></div>`;
 
   // Tabla de Iniciativas
   html += `<h2 class="st" id="tc">Tabla Consolidada de Iniciativas</h2><div class="tw"><table><thead><tr><th>Código</th><th>Nombre</th><th>Iniciativa</th><th>Duedate INI</th><th>Completitud</th><th>Épicas</th></tr></thead><tbody>`;
