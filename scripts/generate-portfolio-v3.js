@@ -61,7 +61,8 @@ const INI = [
   ['gd1129','GD-1129','PRY Nuevo Core de Seguros','GD1129-174','2026-12-31'],
   ['gd1145','GD-1145','PRY Mesa de Transformación de Canales','GD1145-1','2026-12-31'],
   ['gd951','GD-951','PRY Cambio Ecosistema de Nómina','GD951-94','2027-01-31'],
-  ['gd1147','GD-1147','PRY Cambio LMS Xplora','GD1147-1,GD1147-6','2027-01-29']
+  ['gd1147','GD-1147','PRY Cambio LMS Xplora','GD1147-1,GD1147-6','2027-01-29'],
+  ['gd1146','GD-1146','PRY Migración IVR (AWS)','GD1146-1','2027-02-26']
 ];
 
 const DEPS = [
@@ -89,6 +90,7 @@ const KEY_TO_NAME = {
   'GD-1136':'Bizagi','GD-1141':'APM','GD-904':'Indemnizaciones',
   'GD-1129':'Core Seguros','GD-1145':'Transf. Canales',
   'GD-951':'Ecosistema Nómina','GD-1147':'LMS Xplora',
+  'GD-1146':'Migración IVR',
   'Tronador':'Tronador','Saghi':'Saghi'
 };
 
