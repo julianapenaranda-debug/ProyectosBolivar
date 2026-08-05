@@ -31,6 +31,9 @@ El número de versión del changelog puede alinearse con `version` en `package.j
 - **Docs** Se creó reporte ejecutivo para Presidencia (`docs/reporte-presidencia-julio-2026.html`): informe narrativo con KPIs, logros del primer semestre, proyectos en progreso, desafíos superados, riesgos activos y timeline del segundo semestre 2026
 
 ### Cambiado
+- **Núcleo** Se cambió el cálculo de Avance Real (AR) en `scripts/generate-portfolio-v3.js` de peso ponderado por estado (50% fijo para "En Progreso") a ratio Done/Total real (HU Done / HU activas × 100). Se eliminó la función `statusWeight` que ya no se usa. Esto alinea el cálculo con la lógica de sub-tareas de Jira Automation.
+
+### Cambiado
 - **Núcleo** Se refactorizó `scripts/generate-portfolio-v3.js` para obtener épicas en tiempo real desde la API de Jira en lugar de usar un array estático hardcodeado. Nueva regla de alcance: incluir TODAS las épicas hijas de iniciativas activas sin filtrar por duedate (2025 o 2026). Se agregó soporte multi-iniciativa para GD981 (3 padres: GD981-1007, GD981-1037, GD981-1705).
 
 ### Eliminado
