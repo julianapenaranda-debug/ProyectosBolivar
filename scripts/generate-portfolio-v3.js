@@ -238,9 +238,11 @@ async function discoverInitiatives(projectKey, authHeader) {
 
 /**
  * Cuenta HU por estado dentro de una épica.
+ * Calcula AR como % de HU completadas (Done) sobre el total activo.
+ * HU canceladas se excluyen. HU no-Done cuentan como 0%.
  * @param {string} epicKey - Key de la épica.
  * @param {string} authHeader - Header de autorización.
- * @returns {Promise<{total: number, done: number}>}
+ * @returns {Promise<{total: number, done: number, cancel: number, ar: number}>}
  */
 async function countHuByEpic(epicKey, authHeader) {
   const jql = `parent = ${epicKey}`;
@@ -249,36 +251,22 @@ async function countHuByEpic(epicKey, authHeader) {
   const resp = await jiraFetch(url, authHeader);
   let done = 0;
   let cancel = 0;
-  let weightedSum = 0;
-  let countForWeight = 0;
+  let active = 0;
   resp.issues.forEach((i) => {
     const cat = (i.fields.status.statusCategory || {}).key;
     const sName = (i.fields.status.name || '').toLowerCase();
     if (cat === 'done') {
       if (sName === 'cancelado') { cancel++; }
-      else { done++; weightedSum += 100; countForWeight++; }
+      else { done++; active++; }
     } else {
-      countForWeight++;
-      weightedSum += statusWeight(sName, cat);
+      active++;
     }
   });
-  const ar = countForWeight > 0 ? Math.round(weightedSum / countForWeight) : 0;
+  const ar = active > 0 ? Math.round((done / active) * 100) : 0;
   return { total: resp.issues.length, done, cancel, ar };
 }
 
-/**
- * Retorna el peso ponderado de un estado según nombre y categoría.
- * @param {string} sName - Nombre del estado en minúsculas.
- * @param {string} cat - statusCategory key (new, indeterminate, done).
- * @returns {number} Peso entre 0 y 100.
- */
-function statusWeight(sName, cat) {
-  if (cat === 'done') return 100;
-  if (sName.includes('bloqueado') || sName === 'blocked') return 5;
-  if (sName === 'por hacer' || sName === 'to do') return 10;
-  if (cat === 'indeterminate') return 50;
-  return 0;
-}
+
 
 /**
  * Construye el objeto de proyecto para el array P desde issues de Jira.
