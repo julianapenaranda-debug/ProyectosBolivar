@@ -488,10 +488,51 @@ function buildDependencySvg() {
 function generateHtml(P, BLOCKED, inconsData) {
   // Count KPIs
   let totH = 0, totP = 0, totPH = 0;
+  let totalHuDone = 0, totalHuActive = 0;
   P.forEach((p) => p.e.forEach((e) => {
     const st = e[2];
     if (st === 'hecho' || st === 'cancel') totH++; else if (st === 'prog') totP++; else totPH++;
+    if (st !== 'cancel' && e[6] && e[6] > 0) {
+      totalHuDone += (e[7] || 0);
+      totalHuActive += e[6];
+    }
+    if (st === 'hecho' && (!e[6] || e[6] === 0)) {
+      totalHuDone += 1;
+      totalHuActive += 1;
+    }
   }));
+  const arConsolidado = totalHuActive > 0 ? Math.round((totalHuDone / totalHuActive) * 100) : 0;
+
+  // Avance Esperado por proyecto (temporal lineal) ponderado por HU
+  let aeWeightedSum = 0, aeWeightTotal = 0;
+  INI.forEach((ini) => {
+    const [id, , , , dueDateStr] = ini;
+    if (!dueDateStr) return;
+    const p = P.find((x) => x.id === id);
+    if (!p) return;
+    let earliestStart = null;
+    let projHuActive = 0;
+    p.e.forEach((e) => {
+      const st = e[2];
+      if (st === 'cancel') return;
+      const sd = e[5];
+      if (sd && (!earliestStart || sd < earliestStart)) earliestStart = sd;
+      if (e[6] && e[6] > 0) projHuActive += e[6];
+      else if (st === 'hecho') projHuActive += 1;
+    });
+    if (!earliestStart) earliestStart = '2026-01-01';
+    const start = new Date(earliestStart + 'T00:00:00');
+    const end = new Date(dueDateStr + 'T00:00:00');
+    const totalDays = (end - start) / 86400000;
+    if (totalDays <= 0) return;
+    const elapsed = (TODAY - start) / 86400000;
+    const ae = Math.min(100, Math.max(0, Math.round((elapsed / totalDays) * 100)));
+    const weight = projHuActive > 0 ? projHuActive : 1;
+    aeWeightedSum += ae * weight;
+    aeWeightTotal += weight;
+  });
+  const aeConsolidado = aeWeightTotal > 0 ? Math.round(aeWeightedSum / aeWeightTotal) : 0;
+  const gap = arConsolidado - aeConsolidado;
   let iniCritico = 0, iniRiesgo = 0, iniAdelantado = 0, iniSinIniciar = 0;
   INI.forEach((ini) => {
     const due = ini[4];
@@ -521,7 +562,9 @@ function generateHtml(P, BLOCKED, inconsData) {
 <header class="header"><h1>Dashboard de Portafolio V3 — Gestión de la Demanda</h1><div class="sub">Seguros Bolívar · Vicepresidencia de Tecnología</div><div class="date">${TODAY_STR}</div><div class="vb">V3 — Semáforo: % Completitud + Duedate</div></header><div class="container">`;
 
   // KPIs
-  html += `<h2 class="st">Indicadores Clave</h2><div class="kpi-grid"><div class="kpi-card"><div class="v">${P.length}</div><div class="l">Total Proyectos</div></div><div class="kpi-card s"><div class="v">${iniAdelantado}</div><div class="l">Iniciativas OK</div></div><div class="kpi-card d"><div class="v">${iniCritico}</div><div class="l">Iniciativas Retraso Crítico</div></div><div class="kpi-card w"><div class="v">${iniRiesgo}</div><div class="l">Iniciativas Con Alerta</div></div><div class="kpi-card"><div class="v">${totH + totP + totPH}</div><div class="l">Total Épicas</div></div><div class="kpi-card s"><div class="v">${totH}</div><div class="l">Épicas Completadas</div></div><div class="kpi-card w"><div class="v">${totP}</div><div class="l">Épicas En Progreso</div></div><div class="kpi-card"><div class="v">${totPH}</div><div class="l">Épicas Por Hacer</div></div></div>`;
+  const gapClass = gap >= 0 ? 's' : 'd';
+  const gapSign = gap >= 0 ? '+' : '';
+  html += `<h2 class="st">Indicadores Clave</h2><div class="kpi-grid"><div class="kpi-card"><div class="v">${arConsolidado}%</div><div class="l">Avance Real (AR)</div></div><div class="kpi-card"><div class="v">${aeConsolidado}%</div><div class="l">Avance Esperado (AE)</div></div><div class="kpi-card ${gapClass}"><div class="v">${gapSign}${gap}pp</div><div class="l">Gap (AR − AE)</div></div><div class="kpi-card"><div class="v">${P.length}</div><div class="l">Total Proyectos</div></div><div class="kpi-card s"><div class="v">${iniAdelantado}</div><div class="l">Iniciativas OK</div></div><div class="kpi-card d"><div class="v">${iniCritico}</div><div class="l">Iniciativas Retraso Crítico</div></div><div class="kpi-card w"><div class="v">${iniRiesgo}</div><div class="l">Iniciativas Con Alerta</div></div><div class="kpi-card"><div class="v">${totH + totP + totPH}</div><div class="l">Total Épicas</div></div><div class="kpi-card s"><div class="v">${totH}</div><div class="l">Épicas Completadas</div></div><div class="kpi-card w"><div class="v">${totP}</div><div class="l">Épicas En Progreso</div></div><div class="kpi-card"><div class="v">${totPH}</div><div class="l">Épicas Por Hacer</div></div></div>`;
 
   // Tabla de Iniciativas
   html += `<h2 class="st" id="tc">Tabla Consolidada de Iniciativas</h2><div class="tw"><table><thead><tr><th>Código</th><th>Nombre</th><th>Iniciativa</th><th>Duedate INI</th><th>Completitud</th><th>Épicas</th></tr></thead><tbody>`;
