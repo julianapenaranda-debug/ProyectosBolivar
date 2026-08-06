@@ -28,6 +28,7 @@ El número de versión del changelog puede alinearse con `version` en `package.j
 
 ### Agregado
 
+- **Núcleo** Se agregaron KPIs consolidados al dashboard de portafolio: Avance Real (AR%) = HU Done / HU Activas totales; Avance Esperado (AE%) = temporal lineal por proyecto ponderado por volumen de HU; Gap (AR − AE) en puntos porcentuales con semáforo visual (verde si positivo, rojo si negativo)
 - **Docs** Se creó reporte ejecutivo para Presidencia (`docs/reporte-presidencia-julio-2026.html`): informe narrativo con KPIs, logros del primer semestre, proyectos en progreso, desafíos superados, riesgos activos y timeline del segundo semestre 2026
 
 ### Cambiado
