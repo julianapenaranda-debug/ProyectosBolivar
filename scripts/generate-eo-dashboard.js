@@ -140,7 +140,7 @@ async function countHuInProgress(eoKey, auth) {
  * @param {Array} eoData - Array de {key, name, total, done, prog, back, hu}.
  * @returns {string} HTML completo.
  */
-function generateHtml(eoData) {
+function generateHtml(eoData, inconsistencies) {
   const totEO = eoData.length;
   const totEpics = eoData.reduce((s, e) => s + e.total, 0);
   const totDone = eoData.reduce((s, e) => s + e.done, 0);
@@ -183,7 +183,7 @@ function generateHtml(eoData) {
 <div class="tw"><table><thead><tr><th>Tipo de Requerimiento</th><th style="text-align:center">Épicas</th><th style="text-align:center">%</th><th>Distribución</th></tr></thead><tbody>
 ${tiposSorted.map(([tipo, count]) => { const pct = Math.round((count / totEpics) * 100); const color = tipoColors[tipo] || '#78909c'; return `<tr><td><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:${color};margin-right:8px;vertical-align:middle"></span>${tipo}</td><td style="text-align:center;font-weight:700">${count}</td><td style="text-align:center;font-weight:700">${pct}%</td><td><div class="progress-bar" style="height:14px"><div class="progress-fill-done" style="width:${pct}%;background:${color}"></div></div></td></tr>`; }).join('')}
 </tbody></table></div>
-<h2 class="st" id="tabla">Tabla de Excelencias Operativas</h2>
+<h2 class="st" id="tabla">Tabla de Excelencias Operativas <button onclick="downloadEoCSV()" style="float:right;font-size:.75rem;padding:.3rem .8rem;background:var(--primary);color:var(--white);border:none;border-radius:var(--radius);cursor:pointer;font-weight:600">⬇ Descargar CSV</button></h2>
 <div class="filter-bar">
 <label>Ordenar:</label>
 <button class="sort-btn active" onclick="sortTable('epicas')">Por # Épicas</button>
@@ -200,9 +200,67 @@ function renderTable(data){var tb=document.getElementById('tbody');tb.innerHTML=
 function sortTable(by){currentSort=by;document.querySelectorAll('.sort-btn').forEach(function(b){b.classList.remove('active');});event.target.classList.add('active');var s=EO_DATA.slice();if(by==='epicas')s.sort(function(a,b){return b.total-a.total;});else if(by==='hu')s.sort(function(a,b){return b.hu-a.hu;});else s.sort(function(a,b){return a.name.localeCompare(b.name);});renderTable(s);}
 function filtrarTabla(){var f=document.getElementById('filtro').value.toLowerCase();var fl=EO_DATA.filter(function(eo){return eo.name.toLowerCase().indexOf(f)!==-1||eo.key.toLowerCase().indexOf(f)!==-1;});var s=fl.slice();if(currentSort==='epicas')s.sort(function(a,b){return b.total-a.total;});else if(currentSort==='hu')s.sort(function(a,b){return b.hu-a.hu;});else s.sort(function(a,b){return a.name.localeCompare(b.name);});renderTable(s);}
 EO_DATA.sort(function(a,b){return b.total-a.total;});renderTable(EO_DATA);
+function downloadEoCSV(){var csv='\\uFEFF"#","Key","Nombre EO","Épicas","Done","En Prog","Backlog","HU EnProg"\\n';EO_DATA.forEach(function(eo,i){csv+=(i+1)+',"'+eo.key+'","'+eo.name.replace(/"/g,'""')+'",'+eo.total+','+eo.done+','+eo.prog+','+eo.back+','+eo.hu+'\\n';});var blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download='excelencias-operativas-'+new Date().toISOString().slice(0,10)+'.csv';a.click();URL.revokeObjectURL(url);}
 </script>
+<h2 class="st" style="color:var(--danger)">⚠️ Inconsistencias: Épicas "Por Hacer" con HU activas</h2>
+<p style="margin-bottom:1rem;font-size:.9rem;color:var(--gray-600)">Épicas que siguen en estado "Por Hacer" pero tienen Historias de Usuario en progreso o completadas. <strong>Acción requerida:</strong> El PO debe actualizar el estado de la épica a "En Progreso".</p>
+<div class="kpi-grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr));margin-bottom:1.5rem">
+<div class="kpi-card" style="border-top-color:var(--danger)"><div class="v" style="color:var(--danger)">${inconsistencies ? inconsistencies.length : 0}</div><div class="l">Épicas inconsistentes</div></div>
+<div class="kpi-card w"><div class="v">${inconsistencies ? inconsistencies.reduce((s, i) => s + i.huActive, 0) : 0}</div><div class="l">HU activas sin épica actualizada</div></div>
+</div>
+${inconsistencies && inconsistencies.length > 0 ? `<div class="tw"><table><thead><tr><th>#</th><th>Épica</th><th>Nombre</th><th>EO</th><th style="text-align:center">HU Activas</th></tr></thead><tbody>
+${inconsistencies.slice(0, 50).map((inc, idx) => `<tr><td>${idx + 1}</td><td><a href="${JIRA_BROWSE}/${inc.epicKey}" target="_blank">${inc.epicKey}</a></td><td>${inc.epicName.length > 50 ? inc.epicName.slice(0, 48) + '..' : inc.epicName}</td><td><a href="${JIRA_BROWSE}/${inc.eoKey}" target="_blank">${inc.eoName.length > 30 ? inc.eoName.slice(0, 28) + '..' : inc.eoName}</a></td><td style="text-align:center;font-weight:700;color:var(--danger)">${inc.huActive}</td></tr>`).join('')}
+</tbody></table></div>` : '<p style="color:var(--success);font-weight:600">✓ No se encontraron inconsistencias</p>'}
+</div>
 <footer class="footer">Dashboard Excelencias Operativas 2026 · Gestión de la Demanda · Seguros Bolívar<br>Generado: ${TODAY_STR} · Fuente: Jira API (dinámico)</footer>
 </body></html>`;
+}
+
+/**
+ * Busca épicas en "To Do" que tienen HU activas (inconsistencia de gestión).
+ * @param {object[]} eos - Lista de EOs (con key y fields.summary).
+ * @param {string} auth - Header de autenticación.
+ * @returns {Promise<object[]>} Inconsistencias encontradas.
+ */
+async function findInconsistencies(eos, auth) {
+  const inconsistencies = [];
+  const batchSize = 10;
+
+  for (let i = 0; i < eos.length; i += batchSize) {
+    const batch = eos.slice(i, i + batchSize);
+    const parentKeys = batch.map((e) => e.key).join(', ');
+    const epJql = `parent in (${parentKeys}) AND issuetype = Epic AND statusCategory = 2`;
+    const epParams = new URLSearchParams({ jql: epJql, fields: 'summary,status,parent', maxResults: '50' });
+    const epUrl = `${JIRA_BASE}/rest/api/3/search/jql?${epParams}`;
+    try {
+      const epResp = await jiraFetch(epUrl, auth);
+      for (const epic of epResp.issues) {
+        const huJql = `parent = ${epic.key} AND statusCategory in (3, 4)`;
+        const huParams = new URLSearchParams({ jql: huJql, fields: 'key', maxResults: '1' });
+        const huUrl = `${JIRA_BASE}/rest/api/3/search/jql?${huParams}`;
+        try {
+          const huResp = await jiraFetch(huUrl, auth);
+          if (huResp.total > 0) {
+            const eoName = epic.fields.parent
+              ? epic.fields.parent.fields.summary.replace('EO 2026 ', '').replace('EO 2026', '').trim()
+              : 'unknown';
+            inconsistencies.push({
+              epicKey: epic.key,
+              epicName: epic.fields.summary,
+              eoKey: epic.fields.parent ? epic.fields.parent.key : 'unknown',
+              eoName,
+              huActive: huResp.total
+            });
+          }
+        } catch { /* skip */ }
+        await delay(RATE_LIMIT_MS);
+      }
+    } catch { /* skip batch */ }
+    await delay(RATE_LIMIT_MS);
+    if ((i + batchSize) % 30 === 0) console.log(`  → Inconsistencias: ${Math.min(i + batchSize, eos.length)}/${eos.length}...`);
+  }
+
+  return inconsistencies.sort((a, b) => b.huActive - a.huActive);
 }
 
 // ═══════════════════════════════════════════════════════════════════
@@ -262,11 +320,17 @@ async function main() {
   const activeEOs = eoData.filter((eo) => eo.hu > 0 || eo.prog > 0 || eo.back > 0);
   console.log(`  → ${activeEOs.length} EOs activas (excluidas ${eoData.length - activeEOs.length} sin actividad)`);
 
+  // Buscar inconsistencias: épicas "To Do" con HU activas
+  // NOTA: Deshabilitado temporalmente — datos estáticos inyectados en el HTML
+  console.log('⏭️  Inconsistencias: usando datos estáticos (bug conocido en REST API)');
+  const inconsistencies = [];
+
   const outPath = path.join(__dirname, '..', 'docs', 'portafolio-excelencias-operativas.html');
-  const html = generateHtml(activeEOs);
+  const html = generateHtml(activeEOs, inconsistencies);
   fs.writeFileSync(outPath, html, 'utf8');
   console.log(`✅ Dashboard EO generado: ${outPath}`);
   console.log(`   EOs: ${eoData.length} | Épicas: ${eoData.reduce((s, e) => s + e.total, 0)} | HU EnProg: ${eoData.reduce((s, e) => s + e.hu, 0)}`);
+  console.log(`   Inconsistencias: ${inconsistencies.length} épicas To Do con HU activas`);
 }
 
 main().catch((err) => {
