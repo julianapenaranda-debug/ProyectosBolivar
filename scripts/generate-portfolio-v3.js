@@ -65,6 +65,9 @@ const INI = [
   ['gd1146','GD-1146','PRY Migración IVR (AWS)','GD1146-1','2027-02-26']
 ];
 
+// Épicas excluidas del dashboard (placeholders genéricos sin valor de seguimiento)
+const EXCLUDED_EPICS = new Set(['GD929-2007']);
+
 const DEPS = [
   ['GD-902','GD-905','Carpeta Única para gestión documental'],
   ['GD-902','GD-907','Portal Intermediarios como canal de solicitudes'],
@@ -277,7 +280,7 @@ async function countHuByEpic(epicKey, authHeader) {
  */
 function buildProjectData(iniEntry, issues, huData) {
   const [id, code, name] = iniEntry;
-  const epics = issues.map((issue) => {
+  const epics = issues.filter((issue) => !EXCLUDED_EPICS.has(issue.key)).map((issue) => {
     const key = issue.key;
     const summary = issue.fields.summary;
     const status = mapStatus(issue.fields.status);
