@@ -50,7 +50,7 @@ const INI = [
   ['gd903','GD-903','PRY Autogestión Pólizas Individuales (Simon ventas)','GD903-246','2026-12-31'],
   ['gd905','GD-905','PRY Carpeta Única de Cliente','GD905-38','2026-09-30'],
   ['gd907','GD-907','Unificación de Plataformas','GD907-613','2026-12-31'],
-  ['gd929','GD-929','PRY Gestión en Bienestar - Autorizaciones ARL/Salud','GD929-716','2026-12-31'],
+  ['gd929','GD-929','PRY Gestión en Bienestar - Autorizaciones ARL/Salud','GD929-716,GD929-94','2026-12-31'],
   ['gd971','GD-971','Ciber 5.0 WAPP Multinube','GD971-42','2026-03-31'],
 
   ['gd981','GD-981','Plataforma Cumplimiento Autogestión 0-500M','GD981-1007,GD981-1037,GD981-1705','2026-12-31'],
@@ -912,6 +912,15 @@ async function main() {
         allIssues.push(...issues);
         await delay(RATE_LIMIT_MS);
       }
+
+      // Buscar épicas huérfanas (sin parent) en el proyecto
+      const orphanJql = `project = ${projectKey} AND issuetype = Epic AND parent is EMPTY ORDER BY key ASC`;
+      const orphanParams = new URLSearchParams({ jql: orphanJql, fields: 'summary,status,duedate,customfield_13800,customfield_25346,customfield_24701', maxResults: '100' });
+      const orphanUrl = `${JIRA_BASE}/rest/api/3/search/jql?${orphanParams}`;
+      const orphanResp = await jiraFetch(orphanUrl, authHeader);
+      const existingKeys = new Set(allIssues.map(i => i.key));
+      orphanResp.issues.forEach(i => { if (!existingKeys.has(i.key)) allIssues.push(i); });
+      await delay(RATE_LIMIT_MS);
 
       // Contar HU para épicas activas (prog y porhacer con hijos)
       const huData = {};
