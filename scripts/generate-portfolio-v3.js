@@ -207,7 +207,7 @@ function formatDate(dateStr) {
  */
 async function searchEpics(projectKey, iniKey, authHeader) {
   const jql = `parent = ${iniKey} AND issuetype = Epic ORDER BY key ASC`;
-  const fields = 'summary,status,duedate,customfield_13800,customfield_25346,customfield_24701';
+  const fields = 'summary,status,duedate,customfield_13800,customfield_25346,customfield_24701,customfield_25475,customfield_25476';
   const allIssues = [];
   let startAt = 0;
   let total = 1;
@@ -287,11 +287,14 @@ function buildProjectData(iniEntry, issues, huData) {
     const duedate = formatDate(issue.fields.duedate);
     const finReal = formatDate(issue.fields.customfield_13800) || formatDate(issue.fields.customfield_25346);
     const startDate = formatDate(issue.fields.customfield_24701);
+    const jiraAr = issue.fields.customfield_25476 || 0;
+    const jiraAe = issue.fields.customfield_25475 || 0;
     const hu = huData[key];
+    const ar = jiraAr > 0 ? Math.round(jiraAr * 10) / 10 : (hu && hu.total > 0 ? hu.ar : null);
     if (hu && hu.total > 0) {
-      return [key, summary, status, duedate, finReal, startDate, hu.total, hu.done, hu.ar];
+      return [key, summary, status, duedate, finReal, startDate, hu.total, hu.done, ar, jiraAe];
     }
-    return [key, summary, status, duedate, finReal, startDate];
+    return [key, summary, status, duedate, finReal, startDate, 0, 0, ar, jiraAe];
   });
   return { id, c: code, n: name, e: epics };
 }
@@ -486,9 +489,10 @@ function buildDependencySvg() {
  * @param {Array} P - Array de proyectos con épicas.
  * @param {Array} BLOCKED - Array de épicas bloqueadas.
  * @param {Array} inconsData - Array de inconsistencias.
+ * @param {object} iniMetrics - Map de id → {ar, ae, spi} desde Jira Automation.
  * @returns {string} HTML completo del dashboard.
  */
-function generateHtml(P, BLOCKED, inconsData) {
+function generateHtml(P, BLOCKED, inconsData, iniMetrics = {}) {
   // Count KPIs
   let totH = 0, totP = 0, totPH = 0;
   let totalHuDone = 0, totalHuActive = 0;
@@ -506,36 +510,21 @@ function generateHtml(P, BLOCKED, inconsData) {
   }));
   const arConsolidado = totalHuActive > 0 ? Math.round((totalHuDone / totalHuActive) * 100) : 0;
 
-  // Avance Esperado por proyecto (temporal lineal) ponderado por HU
-  let aeWeightedSum = 0, aeWeightTotal = 0;
+  // Avance Esperado y Real consolidado desde Jira Automation (iniMetrics)
+  let aeWeightedSum = 0, aeWeightTotal = 0, arJiraSum = 0, arJiraCount = 0;
   INI.forEach((ini) => {
-    const [id, , , , dueDateStr] = ini;
-    if (!dueDateStr) return;
-    const p = P.find((x) => x.id === id);
-    if (!p) return;
-    let earliestStart = null;
-    let projHuActive = 0;
-    p.e.forEach((e) => {
-      const st = e[2];
-      if (st === 'cancel') return;
-      const sd = e[5];
-      if (sd && (!earliestStart || sd < earliestStart)) earliestStart = sd;
-      if (e[6] && e[6] > 0) projHuActive += e[6];
-      else if (st === 'hecho') projHuActive += 1;
-    });
-    if (!earliestStart) earliestStart = '2026-01-01';
-    const start = new Date(earliestStart + 'T00:00:00');
-    const end = new Date(dueDateStr + 'T00:00:00');
-    const totalDays = (end - start) / 86400000;
-    if (totalDays <= 0) return;
-    const elapsed = (TODAY - start) / 86400000;
-    const ae = Math.min(100, Math.max(0, Math.round((elapsed / totalDays) * 100)));
-    const weight = projHuActive > 0 ? projHuActive : 1;
-    aeWeightedSum += ae * weight;
-    aeWeightTotal += weight;
+    const [id] = ini;
+    const m = iniMetrics[id];
+    if (m && (m.ar > 0 || m.ae > 0)) {
+      arJiraSum += m.ar;
+      aeWeightedSum += m.ae;
+      arJiraCount++;
+      aeWeightTotal++;
+    }
   });
-  const aeConsolidado = aeWeightTotal > 0 ? Math.round(aeWeightedSum / aeWeightTotal) : 0;
-  const gap = arConsolidado - aeConsolidado;
+  const arFromJira = arJiraCount > 0 ? Math.round(arJiraSum / arJiraCount * 10) / 10 : arConsolidado;
+  const aeConsolidado = aeWeightTotal > 0 ? Math.round(aeWeightedSum / aeWeightTotal * 10) / 10 : 0;
+  const gap = Math.round((arFromJira - aeConsolidado) * 10) / 10;
   let iniCritico = 0, iniRiesgo = 0, iniAdelantado = 0, iniSinIniciar = 0;
   INI.forEach((ini) => {
     const due = ini[4];
@@ -567,7 +556,7 @@ function generateHtml(P, BLOCKED, inconsData) {
   // KPIs
   const gapClass = gap >= 0 ? 's' : 'd';
   const gapSign = gap >= 0 ? '+' : '';
-  html += `<h2 class="st">Indicadores Clave</h2><div class="kpi-grid"><div class="kpi-card"><div class="v">${arConsolidado}%</div><div class="l">Avance Real (AR)</div></div><div class="kpi-card"><div class="v">${aeConsolidado}%</div><div class="l">Avance Esperado (AE)</div></div><div class="kpi-card ${gapClass}"><div class="v">${gapSign}${gap}pp</div><div class="l">Gap (AR − AE)</div></div><div class="kpi-card"><div class="v">${P.length}</div><div class="l">Total Proyectos</div></div><div class="kpi-card s"><div class="v">${iniAdelantado}</div><div class="l">Iniciativas OK</div></div><div class="kpi-card d"><div class="v">${iniCritico}</div><div class="l">Iniciativas Retraso Crítico</div></div><div class="kpi-card w"><div class="v">${iniRiesgo}</div><div class="l">Iniciativas Con Alerta</div></div><div class="kpi-card"><div class="v">${totH + totP + totPH}</div><div class="l">Total Épicas</div></div><div class="kpi-card s"><div class="v">${totH}</div><div class="l">Épicas Completadas</div></div><div class="kpi-card w"><div class="v">${totP}</div><div class="l">Épicas En Progreso</div></div><div class="kpi-card"><div class="v">${totPH}</div><div class="l">Épicas Por Hacer</div></div></div>`;
+  html += `<h2 class="st">Indicadores Clave</h2><div class="kpi-grid"><div class="kpi-card"><div class="v">${arFromJira}%</div><div class="l">Avance Real (AR)</div></div><div class="kpi-card"><div class="v">${aeConsolidado}%</div><div class="l">Avance Esperado (AE)</div></div><div class="kpi-card ${gapClass}"><div class="v">${gapSign}${gap}pp</div><div class="l">Gap (AR − AE)</div></div><div class="kpi-card"><div class="v">${P.length}</div><div class="l">Total Proyectos</div></div><div class="kpi-card s"><div class="v">${iniAdelantado}</div><div class="l">Iniciativas OK</div></div><div class="kpi-card d"><div class="v">${iniCritico}</div><div class="l">Iniciativas Retraso Crítico</div></div><div class="kpi-card w"><div class="v">${iniRiesgo}</div><div class="l">Iniciativas Con Alerta</div></div><div class="kpi-card"><div class="v">${totH + totP + totPH}</div><div class="l">Total Épicas</div></div><div class="kpi-card s"><div class="v">${totH}</div><div class="l">Épicas Completadas</div></div><div class="kpi-card w"><div class="v">${totP}</div><div class="l">Épicas En Progreso</div></div><div class="kpi-card"><div class="v">${totPH}</div><div class="l">Épicas Por Hacer</div></div></div>`;
 
   // Tabla de Iniciativas
   html += `<h2 class="st" id="tc">Tabla Consolidada de Iniciativas <button onclick="downloadTableCSV()" style="float:right;font-size:.75rem;padding:.3rem .8rem;background:var(--primary);color:var(--white);border:none;border-radius:var(--radius);cursor:pointer;font-weight:600">⬇ Descargar CSV</button></h2><div class="tw"><table id="tabla-iniciativas"><thead><tr><th>Código</th><th>Nombre</th><th>Iniciativa</th><th>Duedate INI</th><th>Completitud</th><th>Épicas</th></tr></thead><tbody>`;
@@ -885,7 +874,7 @@ const P_STATIC = P;
 async function main() {
   const useDynamic = process.env.JIRA_EMAIL && process.env.JIRA_API_TOKEN;
 
-  let projects, blocked;
+  let projects, blocked, iniMetrics = {};
 
   if (useDynamic) {
     console.log('🔄 Modo dinámico: consultando Jira en tiempo real...');
@@ -918,7 +907,7 @@ async function main() {
 
       // Buscar épicas huérfanas (sin parent) en el proyecto
       const orphanJql = `project = ${projectKey} AND issuetype = Epic AND parent is EMPTY ORDER BY key ASC`;
-      const orphanParams = new URLSearchParams({ jql: orphanJql, fields: 'summary,status,duedate,customfield_13800,customfield_25346,customfield_24701', maxResults: '100' });
+      const orphanParams = new URLSearchParams({ jql: orphanJql, fields: 'summary,status,duedate,customfield_13800,customfield_25346,customfield_24701,customfield_25475,customfield_25476', maxResults: '100' });
       const orphanUrl = `${JIRA_BASE}/rest/api/3/search/jql?${orphanParams}`;
       const orphanResp = await jiraFetch(orphanUrl, authHeader);
       const existingKeys = new Set(allIssues.map(i => i.key));
@@ -938,6 +927,24 @@ async function main() {
       projects.push(buildProjectData(ini, allIssues, huData));
     }
 
+    // Consultar AR/AE de las iniciativas para KPIs consolidados
+    iniMetrics = {};
+    for (const ini of INI) {
+      const iniKeys = ini[3].includes(',') ? ini[3].split(',').map(k => k.trim()) : [ini[3]];
+      for (const ik of iniKeys) {
+        const ikUrl = `${JIRA_BASE}/rest/api/3/issue/${ik}?fields=customfield_25475,customfield_25476,customfield_25632`;
+        const ikResp = await jiraFetch(ikUrl, authHeader);
+        if (!iniMetrics[ini[0]]) iniMetrics[ini[0]] = { ar: 0, ae: 0, spi: 0 };
+        const ar = ikResp.fields.customfield_25476 || 0;
+        const ae = ikResp.fields.customfield_25475 || 0;
+        const spi = ikResp.fields.customfield_25632 || 0;
+        if (ar > iniMetrics[ini[0]].ar) iniMetrics[ini[0]].ar = ar;
+        if (ae > iniMetrics[ini[0]].ae) iniMetrics[ini[0]].ae = ae;
+        if (spi > iniMetrics[ini[0]].spi) iniMetrics[ini[0]].spi = spi;
+        await delay(RATE_LIMIT_MS);
+      }
+    }
+
     console.log('  → Consultando épicas bloqueadas...');
     blocked = await fetchBlocked(authHeader);
     console.log(`  ✓ ${projects.length} proyectos, ${projects.reduce((s, p) => s + p.e.length, 0)} épicas cargadas desde Jira`);
@@ -949,7 +956,7 @@ async function main() {
 
   const incons = buildInconsData(projects);
   const outPath = path.join(__dirname, '..', 'docs', 'portafolio-proyectos.html');
-  const html = generateHtml(projects, blocked, incons);
+  const html = generateHtml(projects, blocked, incons, iniMetrics);
   fs.writeFileSync(outPath, html, 'utf8');
   console.log(`✅ Dashboard generado: ${outPath}`);
   console.log(`   Proyectos: ${projects.length} | Épicas totales: ${projects.reduce((s, p) => s + p.e.length, 0)} | Inconsistencias: ${incons.length}`);
