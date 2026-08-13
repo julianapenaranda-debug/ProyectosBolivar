@@ -525,6 +525,7 @@ function generateHtml(P, BLOCKED, inconsData, iniMetrics = {}) {
   const arFromJira = arJiraCount > 0 ? Math.round(arJiraSum / arJiraCount * 10) / 10 : arConsolidado;
   const aeConsolidado = aeWeightTotal > 0 ? Math.round(aeWeightedSum / aeWeightTotal * 10) / 10 : 0;
   const gap = Math.round((arFromJira - aeConsolidado) * 10) / 10;
+
   let iniCritico = 0, iniRiesgo = 0, iniAdelantado = 0, iniSinIniciar = 0;
   INI.forEach((ini) => {
     const due = ini[4];
@@ -556,7 +557,10 @@ function generateHtml(P, BLOCKED, inconsData, iniMetrics = {}) {
   // KPIs
   const gapClass = gap >= 0 ? 's' : 'd';
   const gapSign = gap >= 0 ? '+' : '';
-  html += `<h2 class="st">Indicadores Clave</h2><div class="kpi-grid"><div class="kpi-card"><div class="v">${arFromJira}%</div><div class="l">Avance Real (AR)</div></div><div class="kpi-card"><div class="v">${aeConsolidado}%</div><div class="l">Avance Esperado (AE)</div></div><div class="kpi-card ${gapClass}"><div class="v">${gapSign}${gap}pp</div><div class="l">Gap (AR − AE)</div></div><div class="kpi-card"><div class="v">${P.length}</div><div class="l">Total Proyectos</div></div><div class="kpi-card s"><div class="v">${iniAdelantado}</div><div class="l">Iniciativas OK</div></div><div class="kpi-card d"><div class="v">${iniCritico}</div><div class="l">Iniciativas Retraso Crítico</div></div><div class="kpi-card w"><div class="v">${iniRiesgo}</div><div class="l">Iniciativas Con Alerta</div></div><div class="kpi-card"><div class="v">${totH + totP + totPH}</div><div class="l">Total Épicas</div></div><div class="kpi-card s"><div class="v">${totH}</div><div class="l">Épicas Completadas</div></div><div class="kpi-card w"><div class="v">${totP}</div><div class="l">Épicas En Progreso</div></div><div class="kpi-card"><div class="v">${totPH}</div><div class="l">Épicas Por Hacer</div></div></div>`;
+  const arDisplay = Number(arFromJira).toFixed(1);
+  const aeDisplay = Number(aeConsolidado).toFixed(1);
+  const gapDisplay = Number(gap).toFixed(1);
+  html += `<h2 class="st">Indicadores Clave</h2><div class="kpi-grid"><div class="kpi-card"><div class="v">${arDisplay}%</div><div class="l">Avance Real (AR)</div></div><div class="kpi-card"><div class="v">${aeDisplay}%</div><div class="l">Avance Esperado (AE)</div></div><div class="kpi-card ${gapClass}"><div class="v">${gapSign}${gapDisplay}pp</div><div class="l">Gap (AR − AE)</div></div><div class="kpi-card"><div class="v">${P.length}</div><div class="l">Total Proyectos</div></div><div class="kpi-card s"><div class="v">${iniAdelantado}</div><div class="l">Iniciativas OK</div></div><div class="kpi-card d"><div class="v">${iniCritico}</div><div class="l">Iniciativas Retraso Crítico</div></div><div class="kpi-card w"><div class="v">${iniRiesgo}</div><div class="l">Iniciativas Con Alerta</div></div><div class="kpi-card"><div class="v">${totH + totP + totPH}</div><div class="l">Total Épicas</div></div><div class="kpi-card s"><div class="v">${totH}</div><div class="l">Épicas Completadas</div></div><div class="kpi-card w"><div class="v">${totP}</div><div class="l">Épicas En Progreso</div></div><div class="kpi-card"><div class="v">${totPH}</div><div class="l">Épicas Por Hacer</div></div></div>`;
 
   // Tabla de Iniciativas
   html += `<h2 class="st" id="tc">Tabla Consolidada de Iniciativas <button onclick="downloadTableCSV()" style="float:right;font-size:.75rem;padding:.3rem .8rem;background:var(--primary);color:var(--white);border:none;border-radius:var(--radius);cursor:pointer;font-weight:600">⬇ Descargar CSV</button></h2><div class="tw"><table id="tabla-iniciativas"><thead><tr><th>Código</th><th>Nombre</th><th>Iniciativa</th><th>Duedate INI</th><th>Completitud</th><th>Épicas</th></tr></thead><tbody>`;
