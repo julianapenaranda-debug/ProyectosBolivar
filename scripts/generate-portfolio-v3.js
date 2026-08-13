@@ -613,7 +613,7 @@ function generateHtml(P, BLOCKED, inconsData, iniMetrics = {}) {
       } else if (huTotal && huTotal > 0) {
         const huAr = e[8] != null ? e[8] : Math.round((huDone / huTotal) * 100);
         const real = huAr;
-        realPct = `${real}%`;
+        realPct = `${Number(real).toFixed(1)}%`;
         let esp = 0;
         if (startDate && due) {
           const total = new Date(due) - new Date(startDate);
@@ -624,7 +624,7 @@ function generateHtml(P, BLOCKED, inconsData, iniMetrics = {}) {
         if (startDate && due) {
           const delta = real - esp;
           const color = delta >= 0 ? 'var(--success)' : delta >= -20 ? 'var(--warning)' : 'var(--danger)';
-          deltaCell = `<span style="color:${color};font-weight:600">${delta >= 0 ? '+' : ''}${delta}pp</span>`;
+          deltaCell = `<span style="color:${color};font-weight:600">${delta >= 0 ? '+' : ''}${Number(delta).toFixed(1)}pp</span>`;
         } else { deltaCell = '—'; }
       } else {
         realPct = '<span style="color:var(--gray-500);font-size:.75rem">Sin HU</span>';
