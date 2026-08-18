@@ -62,7 +62,11 @@ const INI = [
   ['gd1145','GD-1145','PRY Mesa de Transformación de Canales','GD1145-1','2026-12-31'],
   ['gd951','GD-951','PRY Cambio Ecosistema de Nómina','GD951-94','2027-01-31'],
   ['gd1147','GD-1147','PRY Cambio LMS Xplora','GD1147-1,GD1147-6','2027-01-29'],
-  ['gd1146','GD-1146','PRY Migración IVR (AWS)','GD1146-1','2027-02-26']
+  ['gd1146','GD-1146','PRY Migración IVR (AWS)','GD1146-1','2027-02-26'],
+  ['gd1151','GD-1151','PRY Modernización SIPAB','GD1151-1',null],
+  ['gd1152','GD-1152','ANT OLIVA - Salud','GD1152-1',null],
+  ['gd1153','GD-1153','ANT Transformación en Salud','GD1153-1',null],
+  ['gd1154','GD-1154','ANT Transformación Cuidado del Trabajador','GD1154-1',null]
 ];
 
 // Épicas excluidas del dashboard (placeholders genéricos sin valor de seguimiento)
@@ -936,15 +940,17 @@ async function main() {
     for (const ini of INI) {
       const iniKeys = ini[3].includes(',') ? ini[3].split(',').map(k => k.trim()) : [ini[3]];
       for (const ik of iniKeys) {
-        const ikUrl = `${JIRA_BASE}/rest/api/3/issue/${ik}?fields=customfield_25475,customfield_25476,customfield_25632`;
-        const ikResp = await jiraFetch(ikUrl, authHeader);
-        if (!iniMetrics[ini[0]]) iniMetrics[ini[0]] = { ar: 0, ae: 0, spi: 0 };
-        const ar = ikResp.fields.customfield_25476 || 0;
-        const ae = ikResp.fields.customfield_25475 || 0;
-        const spi = ikResp.fields.customfield_25632 || 0;
-        if (ar > iniMetrics[ini[0]].ar) iniMetrics[ini[0]].ar = ar;
-        if (ae > iniMetrics[ini[0]].ae) iniMetrics[ini[0]].ae = ae;
-        if (spi > iniMetrics[ini[0]].spi) iniMetrics[ini[0]].spi = spi;
+        try {
+          const ikUrl = `${JIRA_BASE}/rest/api/3/issue/${ik}?fields=customfield_25475,customfield_25476,customfield_25632`;
+          const ikResp = await jiraFetch(ikUrl, authHeader);
+          if (!iniMetrics[ini[0]]) iniMetrics[ini[0]] = { ar: 0, ae: 0, spi: 0 };
+          const ar = ikResp.fields.customfield_25476 || 0;
+          const ae = ikResp.fields.customfield_25475 || 0;
+          const spi = ikResp.fields.customfield_25632 || 0;
+          if (ar > iniMetrics[ini[0]].ar) iniMetrics[ini[0]].ar = ar;
+          if (ae > iniMetrics[ini[0]].ae) iniMetrics[ini[0]].ae = ae;
+          if (spi > iniMetrics[ini[0]].spi) iniMetrics[ini[0]].spi = spi;
+        } catch (e) { /* Iniciativa no existe aún en Jira */ }
         await delay(RATE_LIMIT_MS);
       }
     }
