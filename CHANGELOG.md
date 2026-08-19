@@ -26,6 +26,9 @@ El número de versión del changelog puede alinearse con `version` en `package.j
 
 ## [Unreleased]
 
+### Cambiado
+- **Docs** Se actualizó `docs/portafolio-proyectos.html` con datos de Jira a corte 19 agosto 2026: 20 proyectos, 224 épicas (AR 62.4%, AE 76.2%, Gap -13.8pp), 18 inconsistencias
+
 ### Agregado
 
 - **Núcleo** Se agregaron KPIs consolidados al dashboard de portafolio: Avance Real (AR%) = HU Done / HU Activas totales; Avance Esperado (AE%) = temporal lineal por proyecto ponderado por volumen de HU; Gap (AR − AE) en puntos porcentuales con semáforo visual (verde si positivo, rojo si negativo)
