@@ -70,7 +70,7 @@ const INI = [
 ];
 
 // Épicas excluidas del dashboard (placeholders genéricos sin valor de seguimiento)
-const EXCLUDED_EPICS = new Set(['GD929-2007']);
+const EXCLUDED_EPICS = new Set(['GD929-2007', 'GD1145-48']);
 
 const DEPS = [
   ['GD-902','GD-905','Carpeta Única para gestión documental'],
