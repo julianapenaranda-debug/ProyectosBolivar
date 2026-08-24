@@ -284,12 +284,18 @@ async function countHuByEpic(epicKey, authHeader) {
  */
 function buildProjectData(iniEntry, issues, huData) {
   const [id, code, name] = iniEntry;
-  const epics = issues.filter((issue) => !EXCLUDED_EPICS.has(issue.key)).map((issue) => {
+  const epics = issues
+    .filter((issue) => !EXCLUDED_EPICS.has(issue.key))
+    .filter((issue) => {
+      const sName = (issue.fields.status.name || '').toLowerCase();
+      return !sName.includes('cancelado') && !sName.includes('cancelled');
+    })
+    .map((issue) => {
     const key = issue.key;
     const summary = issue.fields.summary;
     const status = mapStatus(issue.fields.status);
     const duedate = formatDate(issue.fields.duedate);
-    const finReal = formatDate(issue.fields.customfield_13800) || formatDate(issue.fields.customfield_25346);
+    const finReal = formatDate(issue.fields.customfield_25346);
     const startDate = formatDate(issue.fields.customfield_24701);
     const jiraAr = issue.fields.customfield_25476 || 0;
     const jiraAe = issue.fields.customfield_25475 || 0;
@@ -592,9 +598,9 @@ function generateHtml(P, BLOCKED, inconsData, iniMetrics = {}) {
       const [k, s, st, due, finReal, startDate, huTotal, huDone] = e;
       const sm2 = sem(st, due);
       let dueCell = dueH(due, st);
-      if ((st === 'hecho' || st === 'cancel') && finReal && due && new Date(finReal) > new Date(due)) {
-        const days = Math.round((new Date(finReal) - new Date(due)) / 864e5);
-        dueCell = `<span class="due-vencida">✓ +${days}d atraso (Fin: ${finReal})</span>`;
+      if ((st === 'hecho' || st === 'cancel') && finReal && due && finReal > due) {
+        const days = businessDays(due, finReal);
+        if (days > 0) dueCell = `<span class="due-vencida">✓ +${days}d atraso (Fin: ${finReal})</span>`;
       }
       // Avance real y esperado
       let realPct = '', esperadoPct = '', deltaCell = '';

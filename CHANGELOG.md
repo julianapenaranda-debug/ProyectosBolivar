@@ -26,8 +26,13 @@ El número de versión del changelog puede alinearse con `version` en `package.j
 
 ## [Unreleased]
 
+### Agregado
+- **Tooling** Se creó `scripts/validate-portafolio.js` — script transversal que valida el dashboard de portafolio contra datos en vivo de Jira (épicas, AR, estados)
+
 ### Cambiado
-- **Docs** Se actualizó `docs/portafolio-proyectos.html` con datos de Jira a corte 19 agosto 2026: 20 proyectos, 224 épicas (AR 62.4%, AE 76.2%, Gap -13.8pp), 18 inconsistencias
+- **Docs** Se regeneró `docs/portafolio-proyectos.html` con datos frescos de Jira al 24 agosto 2026: 20 proyectos, 207 épicas (excluye canceladas), 28 inconsistencias
+- **Tooling** Se corrigió cálculo de días de atraso en `scripts/generate-portfolio-v3.js` — ahora usa días hábiles consistentemente y lee el campo correcto "Fecha fin real" (customfield_25346) en vez de "Fecha fin planeada" (customfield_13800)
+- **Tooling** Se eliminaron épicas en estado Cancelado del reporte de portafolio — ya no se cuentan ni se muestran en detalle
 
 ### Agregado
 
