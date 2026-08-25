@@ -945,9 +945,10 @@ async function main() {
     iniMetrics = {};
     for (const ini of INI) {
       const iniKeys = ini[3].includes(',') ? ini[3].split(',').map(k => k.trim()) : [ini[3]];
+      let latestDue = null;
       for (const ik of iniKeys) {
         try {
-          const ikUrl = `${JIRA_BASE}/rest/api/3/issue/${ik}?fields=customfield_25475,customfield_25476,customfield_25632`;
+          const ikUrl = `${JIRA_BASE}/rest/api/3/issue/${ik}?fields=customfield_25475,customfield_25476,customfield_25632,duedate`;
           const ikResp = await jiraFetch(ikUrl, authHeader);
           if (!iniMetrics[ini[0]]) iniMetrics[ini[0]] = { ar: 0, ae: 0, spi: 0 };
           const ar = ikResp.fields.customfield_25476 || 0;
@@ -956,9 +957,12 @@ async function main() {
           if (ar > iniMetrics[ini[0]].ar) iniMetrics[ini[0]].ar = ar;
           if (ae > iniMetrics[ini[0]].ae) iniMetrics[ini[0]].ae = ae;
           if (spi > iniMetrics[ini[0]].spi) iniMetrics[ini[0]].spi = spi;
+          const ikDue = ikResp.fields.duedate || null;
+          if (ikDue && (!latestDue || ikDue > latestDue)) latestDue = ikDue;
         } catch (e) { /* Iniciativa no existe aún en Jira */ }
         await delay(RATE_LIMIT_MS);
       }
+      if (latestDue) ini[4] = latestDue;
     }
 
     console.log('  → Consultando épicas bloqueadas...');
