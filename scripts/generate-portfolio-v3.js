@@ -564,27 +564,35 @@ function generateHtml(P, BLOCKED, inconsData, iniMetrics = {}) {
   html += `<h2 class="st">Indicadores Clave</h2><div class="kpi-grid"><div class="kpi-card"><div class="v">${arDisplay}%</div><div class="l">Avance Real (AR)</div></div><div class="kpi-card"><div class="v">${aeDisplay}%</div><div class="l">Avance Esperado (AE)</div></div><div class="kpi-card ${gapClass}"><div class="v">${gapSign}${gapDisplay}pp</div><div class="l">Gap (AR − AE)</div></div><div class="kpi-card"><div class="v">${P.length}</div><div class="l">Total Proyectos</div></div><div class="kpi-card s"><div class="v">${iniAdelantado}</div><div class="l">Iniciativas OK</div></div><div class="kpi-card d"><div class="v">${iniCritico}</div><div class="l">Iniciativas Retraso Crítico</div></div><div class="kpi-card w"><div class="v">${iniRiesgo}</div><div class="l">Iniciativas Con Alerta</div></div><div class="kpi-card"><div class="v">${totH + totP + totPH}</div><div class="l">Total Épicas</div></div><div class="kpi-card s"><div class="v">${totH}</div><div class="l">Épicas Completadas</div></div><div class="kpi-card w"><div class="v">${totP}</div><div class="l">Épicas En Progreso</div></div><div class="kpi-card"><div class="v">${totPH}</div><div class="l">Épicas Por Hacer</div></div></div>`;
 
   // Tabla de Iniciativas
-  html += `<h2 class="st" id="tc">Tabla Consolidada de Iniciativas <button onclick="downloadTableCSV()" style="float:right;font-size:.75rem;padding:.3rem .8rem;background:var(--primary);color:var(--white);border:none;border-radius:var(--radius);cursor:pointer;font-weight:600">⬇ Descargar CSV</button></h2><div class="tw"><table id="tabla-iniciativas"><thead><tr><th>Código</th><th>Nombre</th><th>Iniciativa</th><th>Duedate INI</th><th>Completitud</th><th>Épicas</th></tr></thead><tbody>`;
+  html += `<h2 class="st" id="tc">Tabla Consolidada de Iniciativas <button onclick="downloadTableCSV()" style="float:right;font-size:.75rem;padding:.3rem .8rem;background:var(--primary);color:var(--white);border:none;border-radius:var(--radius);cursor:pointer;font-weight:600">⬇ Descargar CSV</button></h2><div class="tw"><table id="tabla-iniciativas"><thead><tr><th>Código</th><th>Nombre</th><th>Iniciativa</th><th>Duedate INI</th><th>Completitud</th><th>AE</th><th>Gap</th><th>Épicas</th></tr></thead><tbody>`;
   INI.forEach((ini) => {
     const [id, code, name, ikey, idue] = ini;
     const p = P.find((x) => x.id === id);
-    let arS = 0, arC = 0;
-    if (p) { p.e.forEach((e) => { const st = e[2]; if (st === 'hecho') { arS += 100; arC++; } else { arS += (e[6] || 0); arC++; } }); }
+    let arS = 0, arC = 0, aeS = 0, aeC = 0;
+    if (p) { p.e.forEach((e) => { const st = e[2]; if (st === 'hecho') { arS += 100; arC++; aeS += 100; aeC++; } else { arS += (e[6] || 0); arC++; if (e[7] > 0) { aeS += e[7]; aeC++; } } }); }
     const pct = arC > 0 ? Math.round(arS / arC * 10) / 10 : 0;
+    const pctAe = aeC > 0 ? Math.round(aeS / aeC * 10) / 10 : 0;
+    const gapPct = pctAe > 0 ? Math.round((pct - pctAe) * 10) / 10 : 0;
     const sm = iniSem(pct, idue);
     const smColor = sm === 'verde' ? 'var(--success)' : sm === 'amarillo' ? 'var(--warning)' : sm === 'rojo' ? 'var(--danger)' : 'var(--gray-400)';
     const dueStr = idue && new Date(idue) < TODAY ? `<span class="due-vencida">${idue} ⚠️</span>` : idue || '—';
-    html += `<tr><td><a href="#${id}">${code}</a></td><td><span class="sem sem-${sm}" style="margin-right:6px"></span>${name}</td><td><a href="${JIRA}/${ikey}" target="_blank">${ikey}</a></td><td>${dueStr}</td><td><div class="progress-bar"><div class="progress-fill" style="width:${pct}%;background:${smColor}""></div></div>${pct}% AR</td><td>${arC}</td></tr>`;
+    const gapColor = gapPct >= 0 ? 'var(--success)' : gapPct >= -15 ? 'var(--warning)' : 'var(--danger)';
+    const gapStr = pctAe > 0 ? `<span style="color:${gapColor};font-weight:600">${gapPct >= 0 ? '+' : ''}${gapPct}pp</span>` : '—';
+    html += `<tr><td><a href="#${id}">${code}</a></td><td><span class="sem sem-${sm}" style="margin-right:6px"></span>${name}</td><td><a href="${JIRA}/${ikey}" target="_blank">${ikey}</a></td><td>${dueStr}</td><td><div class="progress-bar"><div class="progress-fill" style="width:${pct}%;background:${smColor}""></div></div>${pct}% AR</td><td>${pctAe}% AE</td><td>${gapStr}</td><td>${arC}</td></tr>`;
   });
   html += `</tbody></table></div>`;
 
   // Detail sections
   html += `<h2 class="st">Detalle por Proyecto</h2><div class="nav-top">${P.map((p) => `<a href="#${p.id}">${p.c}</a>`).join('')}</div>`;
   P.forEach((p) => {
-    let arSD = 0, arCD = 0;
-    p.e.forEach((e) => { const st = e[2]; if (st === 'hecho') { arSD += 100; arCD++; } else { arSD += (e[6] || 0); arCD++; } });
+    let arSD = 0, arCD = 0, aeSD = 0, aeCD = 0;
+    p.e.forEach((e) => { const st = e[2]; if (st === 'hecho') { arSD += 100; arCD++; aeSD += 100; aeCD++; } else { arSD += (e[6] || 0); arCD++; if (e[7] > 0) { aeSD += e[7]; aeCD++; } } });
     const pctD = arCD > 0 ? Math.round(arSD / arCD * 10) / 10 : 0;
-    html += `<div class="ds" id="${p.id}"><div class="dh" onclick="toggleDetail(this)"><h3>${p.c} — ${p.n} (${p.e.length} épicas) · <span style="font-size:.85rem;color:var(--gray-600)">AR: ${pctD}%</span></h3><span class="tg">▼</span></div><div class="dc"><div class="tw"><table><thead><tr><th>Key</th><th>Resumen</th><th>Estado</th><th>Semáforo</th><th>Due Date</th><th title="Avance Real Ponderado por estado de HU">% AR</th><th>% Esperado</th><th>Delta</th></tr></thead><tbody>`;
+    const pctAeD = aeCD > 0 ? Math.round(aeSD / aeCD * 10) / 10 : 0;
+    const gapD = pctAeD > 0 ? Math.round((pctD - pctAeD) * 10) / 10 : 0;
+    const gapDColor = gapD >= 0 ? 'var(--success)' : gapD >= -15 ? 'var(--warning)' : 'var(--danger)';
+    const gapDStr = pctAeD > 0 ? `<span style="font-size:.85rem;color:${gapDColor}"> | Gap: ${gapD >= 0 ? '+' : ''}${gapD}pp</span>` : '';
+    html += `<div class="ds" id="${p.id}"><div class="dh" onclick="toggleDetail(this)"><h3>${p.c} — ${p.n} (${p.e.length} épicas) · <span style="font-size:.85rem;color:var(--gray-600)">AR: ${pctD}% | AE: ${pctAeD}%${gapDStr}</span></h3><span class="tg">▼</span></div><div class="dc"><div class="tw"><table><thead><tr><th>Key</th><th>Resumen</th><th>Estado</th><th>Semáforo</th><th>Due Date</th><th title="Avance Real">% AR</th><th>% Esperado</th><th>Delta</th></tr></thead><tbody>`;
     p.e.forEach((e) => {
       const [k, s, st, due, finReal, startDate, epicAr, epicAe] = e;
       const sm2 = sem(st, due);
