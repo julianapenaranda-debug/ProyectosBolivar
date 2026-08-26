@@ -299,12 +299,9 @@ function buildProjectData(iniEntry, issues, huData) {
     const startDate = formatDate(issue.fields.customfield_24701);
     const jiraAr = issue.fields.customfield_25476 || 0;
     const jiraAe = issue.fields.customfield_25475 || 0;
-    const hu = huData[key];
-    const ar = jiraAr > 0 ? Math.round(jiraAr * 10) / 10 : (hu && hu.total > 0 ? hu.ar : null);
-    if (hu && hu.total > 0) {
-      return [key, summary, status, duedate, finReal, startDate, hu.total, hu.done, ar, jiraAe];
-    }
-    return [key, summary, status, duedate, finReal, startDate, 0, 0, ar, jiraAe];
+    const ar = Math.round(jiraAr * 10) / 10;
+    const ae = Math.round(jiraAe * 10) / 10;
+    return [key, summary, status, duedate, finReal, startDate, ar, ae];
   });
   return { id, c: code, n: name, e: epics };
 }
@@ -505,20 +502,10 @@ function buildDependencySvg() {
 function generateHtml(P, BLOCKED, inconsData, iniMetrics = {}) {
   // Count KPIs
   let totH = 0, totP = 0, totPH = 0;
-  let totalHuDone = 0, totalHuActive = 0;
   P.forEach((p) => p.e.forEach((e) => {
     const st = e[2];
-    if (st === 'hecho' || st === 'cancel') totH++; else if (st === 'prog') totP++; else totPH++;
-    if (st !== 'cancel' && e[6] && e[6] > 0) {
-      totalHuDone += (e[7] || 0);
-      totalHuActive += e[6];
-    }
-    if (st === 'hecho' && (!e[6] || e[6] === 0)) {
-      totalHuDone += 1;
-      totalHuActive += 1;
-    }
+    if (st === 'hecho') totH++; else if (st === 'prog') totP++; else totPH++;
   }));
-  const arConsolidado = totalHuActive > 0 ? Math.round((totalHuDone / totalHuActive) * 100) : 0;
 
   // Avance Esperado y Real consolidado desde Jira Automation (iniMetrics)
   let aeWeightedSum = 0, aeWeightTotal = 0, arJiraSum = 0, arJiraCount = 0;
@@ -532,7 +519,7 @@ function generateHtml(P, BLOCKED, inconsData, iniMetrics = {}) {
       aeWeightTotal++;
     }
   });
-  const arFromJira = arJiraCount > 0 ? Math.round(arJiraSum / arJiraCount * 10) / 10 : arConsolidado;
+  const arFromJira = arJiraCount > 0 ? Math.round(arJiraSum / arJiraCount * 10) / 10 : 0;
   const aeConsolidado = aeWeightTotal > 0 ? Math.round(aeWeightedSum / aeWeightTotal * 10) / 10 : 0;
   const gap = Math.round((arFromJira - aeConsolidado) * 10) / 10;
 
@@ -544,14 +531,11 @@ function generateHtml(P, BLOCKED, inconsData, iniMetrics = {}) {
     if (p) {
       p.e.forEach((e) => {
         const st = e[2];
-        if (st === 'cancel') return;
-        arCount++;
-        if (st === 'hecho') { arSum += 100; }
-        else if (e[8] != null) { arSum += e[8]; }
-        else if (e[6] && e[6] > 0) { arSum += Math.round((e[7] / e[6]) * 100); }
+        if (st === 'hecho') { arSum += 100; arCount++; }
+        else { arSum += (e[6] || 0); arCount++; }
       });
     }
-    const pct = arCount > 0 ? Math.round(arSum / arCount) : 0;
+    const pct = arCount > 0 ? Math.round(arSum / arCount * 10) / 10 : 0;
     const sm = iniSem(pct, due);
     if (sm === 'verde') iniAdelantado++;
     else if (sm === 'amarillo') iniRiesgo++;
@@ -578,8 +562,8 @@ function generateHtml(P, BLOCKED, inconsData, iniMetrics = {}) {
     const [id, code, name, ikey, idue] = ini;
     const p = P.find((x) => x.id === id);
     let arS = 0, arC = 0;
-    if (p) { p.e.forEach((e) => { const st = e[2]; if (st === 'cancel') return; arC++; if (st === 'hecho') { arS += 100; } else if (e[8] != null) { arS += e[8]; } else if (e[6] && e[6] > 0) { arS += Math.round((e[7] / e[6]) * 100); } }); }
-    const pct = arC > 0 ? Math.round(arS / arC) : 0;
+    if (p) { p.e.forEach((e) => { const st = e[2]; if (st === 'hecho') { arS += 100; arC++; } else { arS += (e[6] || 0); arC++; } }); }
+    const pct = arC > 0 ? Math.round(arS / arC * 10) / 10 : 0;
     const sm = iniSem(pct, idue);
     const smColor = sm === 'verde' ? 'var(--success)' : sm === 'amarillo' ? 'var(--warning)' : sm === 'rojo' ? 'var(--danger)' : 'var(--gray-400)';
     const dueStr = idue && new Date(idue) < TODAY ? `<span class="due-vencida">${idue} ⚠️</span>` : idue || '—';
@@ -591,60 +575,35 @@ function generateHtml(P, BLOCKED, inconsData, iniMetrics = {}) {
   html += `<h2 class="st">Detalle por Proyecto</h2><div class="nav-top">${P.map((p) => `<a href="#${p.id}">${p.c}</a>`).join('')}</div>`;
   P.forEach((p) => {
     let arSD = 0, arCD = 0;
-    p.e.forEach((e) => { const st = e[2]; if (st === 'cancel') return; arCD++; if (st === 'hecho') { arSD += 100; } else if (e[8] != null) { arSD += e[8]; } else if (e[6] && e[6] > 0) { arSD += Math.round((e[7] / e[6]) * 100); } });
-    const pctD = arCD > 0 ? Math.round(arSD / arCD) : 0;
+    p.e.forEach((e) => { const st = e[2]; if (st === 'hecho') { arSD += 100; arCD++; } else { arSD += (e[6] || 0); arCD++; } });
+    const pctD = arCD > 0 ? Math.round(arSD / arCD * 10) / 10 : 0;
     html += `<div class="ds" id="${p.id}"><div class="dh" onclick="toggleDetail(this)"><h3>${p.c} — ${p.n} (${p.e.length} épicas) · <span style="font-size:.85rem;color:var(--gray-600)">AR: ${pctD}%</span></h3><span class="tg">▼</span></div><div class="dc"><div class="tw"><table><thead><tr><th>Key</th><th>Resumen</th><th>Estado</th><th>Semáforo</th><th>Due Date</th><th title="Avance Real Ponderado por estado de HU">% AR</th><th>% Esperado</th><th>Delta</th></tr></thead><tbody>`;
     p.e.forEach((e) => {
-      const [k, s, st, due, finReal, startDate, huTotal, huDone] = e;
+      const [k, s, st, due, finReal, startDate, epicAr, epicAe] = e;
       const sm2 = sem(st, due);
       let dueCell = dueH(due, st);
       if ((st === 'hecho' || st === 'cancel') && finReal && due && finReal > due) {
         const days = businessDays(due, finReal);
         if (days > 0) dueCell = `<span class="due-vencida">✓ +${days}d atraso (Fin: ${finReal})</span>`;
       }
-      // Avance real y esperado
+      // Avance real y esperado desde Jira
       let realPct = '', esperadoPct = '', deltaCell = '';
-      if (st === 'hecho' || st === 'cancel') {
-        realPct = st === 'hecho' ? '100%' : '—';
-        if (st === 'hecho' && startDate && due) {
-          const total = new Date(due) - new Date(startDate);
-          const elapsed = TODAY - new Date(startDate);
-          const esp = Math.min(100, Math.max(0, Math.round((elapsed / total) * 100)));
-          esperadoPct = `${esp}%`;
-          deltaCell = '<span style="color:var(--success)">✓</span>';
-        } else {
-          esperadoPct = '—';
-          deltaCell = st === 'hecho' ? '<span style="color:var(--success)">✓</span>' : '—';
-        }
-      } else if (st === 'porhacer') {
-        realPct = '0%';
-        esperadoPct = '—';
-        deltaCell = '—';
-      } else if (huTotal && huTotal > 0) {
-        const huAr = e[8] != null ? e[8] : Math.round((huDone / huTotal) * 100);
-        const real = huAr;
-        realPct = `${Number(real).toFixed(1)}%`;
-        let esp = 0;
-        if (startDate && due) {
-          const total = new Date(due) - new Date(startDate);
-          const elapsed = TODAY - new Date(startDate);
-          esp = Math.min(100, Math.max(0, Math.round((elapsed / total) * 100)));
-        }
-        esperadoPct = startDate && due ? `${esp}%` : '—';
-        if (startDate && due) {
-          const delta = real - esp;
+      if (st === 'hecho') {
+        realPct = '100%';
+        esperadoPct = '100%';
+        deltaCell = '<span style="color:var(--success)">✓</span>';
+      } else if (epicAr > 0 || epicAe > 0) {
+        realPct = `${epicAr}%`;
+        esperadoPct = epicAe > 0 ? `${epicAe}%` : '—';
+        if (epicAe > 0) {
+          const delta = epicAr - epicAe;
           const color = delta >= 0 ? 'var(--success)' : delta >= -20 ? 'var(--warning)' : 'var(--danger)';
           deltaCell = `<span style="color:${color};font-weight:600">${delta >= 0 ? '+' : ''}${Number(delta).toFixed(1)}pp</span>`;
         } else { deltaCell = '—'; }
       } else {
-        realPct = '<span style="color:var(--gray-500);font-size:.75rem">Sin HU</span>';
-        if (startDate && due) {
-          const total = new Date(due) - new Date(startDate);
-          const elapsed = TODAY - new Date(startDate);
-          const esp = Math.min(100, Math.max(0, Math.round((elapsed / total) * 100)));
-          esperadoPct = `${esp}%`;
-          deltaCell = '—';
-        } else { esperadoPct = '—'; deltaCell = '—'; }
+        realPct = st === 'porhacer' ? '0%' : '—';
+        esperadoPct = '—';
+        deltaCell = '—';
       }
       html += `<tr><td><a href="${JIRA}/${k}" target="_blank">${k}</a></td><td>${s}</td><td>${badge(st)}</td><td><span class="sem sem-${sm2}"></span></td><td>${dueCell}</td><td style="text-align:center;font-weight:600">${realPct}</td><td style="text-align:center">${esperadoPct}</td><td style="text-align:center">${deltaCell}</td></tr>`;
     });
@@ -928,17 +887,7 @@ async function main() {
       orphanResp.issues.forEach(i => { if (!existingKeys.has(i.key)) allIssues.push(i); });
       await delay(RATE_LIMIT_MS);
 
-      // Contar HU para épicas activas (prog y porhacer con hijos)
-      const huData = {};
-      for (const issue of allIssues) {
-        const st = mapStatus(issue.fields.status);
-        if (st === 'prog' || st === 'porhacer') {
-          const hu = await countHuByEpic(issue.key, authHeader);
-          if (hu.total > 0) huData[issue.key] = hu;
-          await delay(RATE_LIMIT_MS);
-        }
-      }
-      projects.push(buildProjectData(ini, allIssues, huData));
+      projects.push(buildProjectData(ini, allIssues, {}));
     }
 
     // Consultar AR/AE de las iniciativas para KPIs consolidados
