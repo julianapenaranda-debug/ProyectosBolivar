@@ -301,7 +301,13 @@ function buildProjectData(iniEntry, issues, huData) {
     const jiraAe = issue.fields.customfield_25475 || 0;
     const hu = huData[key];
     const ar = jiraAr > 0 ? Math.round(jiraAr * 10) / 10 : (hu && hu.total > 0 ? hu.ar : 0);
-    const ae = Math.round(jiraAe * 10) / 10;
+    let ae = Math.round(jiraAe * 10) / 10;
+    if (ae === 0 && startDate && duedate && status !== 'hecho') {
+      const total = new Date(duedate) - new Date(startDate);
+      const elapsed = TODAY - new Date(startDate);
+      ae = total > 0 ? Math.min(100, Math.max(0, Math.round((elapsed / total) * 100))) : 0;
+    }
+    if (status === 'hecho') ae = 100;
     return [key, summary, status, duedate, finReal, startDate, ar, ae];
   });
   return { id, c: code, n: name, e: epics };
