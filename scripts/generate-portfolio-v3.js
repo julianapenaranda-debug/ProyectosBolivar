@@ -294,7 +294,7 @@ function buildProjectData(iniEntry, issues, huData) {
     const key = issue.key;
     const summary = issue.fields.summary;
     const status = mapStatus(issue.fields.status);
-    const duedate = formatDate(issue.fields.duedate);
+    const duedate = formatDate(issue.fields.duedate) || formatDate(issue.fields.customfield_13800);
     const finReal = formatDate(issue.fields.customfield_25346);
     const startDate = formatDate(issue.fields.customfield_24701);
     const jiraAr = issue.fields.customfield_25476 || 0;
