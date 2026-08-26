@@ -299,7 +299,8 @@ function buildProjectData(iniEntry, issues, huData) {
     const startDate = formatDate(issue.fields.customfield_24701);
     const jiraAr = issue.fields.customfield_25476 || 0;
     const jiraAe = issue.fields.customfield_25475 || 0;
-    const ar = Math.round(jiraAr * 10) / 10;
+    const hu = huData[key];
+    const ar = jiraAr > 0 ? Math.round(jiraAr * 10) / 10 : (hu && hu.total > 0 ? hu.ar : 0);
     const ae = Math.round(jiraAe * 10) / 10;
     return [key, summary, status, duedate, finReal, startDate, ar, ae];
   });
@@ -887,7 +888,18 @@ async function main() {
       orphanResp.issues.forEach(i => { if (!existingKeys.has(i.key)) allIssues.push(i); });
       await delay(RATE_LIMIT_MS);
 
-      projects.push(buildProjectData(ini, allIssues, {}));
+      // Contar HU como fallback para épicas sin AR en campo custom de Jira
+      const huData = {};
+      for (const issue of allIssues) {
+        const st = mapStatus(issue.fields.status);
+        const jiraAr = issue.fields.customfield_25476 || 0;
+        if ((st === 'prog' || st === 'porhacer') && jiraAr === 0) {
+          const hu = await countHuByEpic(issue.key, authHeader);
+          if (hu.total > 0) huData[issue.key] = hu;
+          await delay(RATE_LIMIT_MS);
+        }
+      }
+      projects.push(buildProjectData(ini, allIssues, huData));
     }
 
     // Consultar AR/AE de las iniciativas para KPIs consolidados
