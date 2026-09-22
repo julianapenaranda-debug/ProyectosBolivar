@@ -28,6 +28,7 @@ El número de versión del changelog puede alinearse con `version` en `package.j
 
 ### Agregado
 - **Docs** Se creó `docs/reporte-canales-comite.html` — reporte independiente para el Comité de Canales Digitales con vista por canal (segurosbolivar.com, Zona Privada, App Bolívar): propósito, métricas de negocio (meta vs. real) y funcionalidades con indicador de negocio, fecha de compromiso y estado. Datos ilustrativos basados en acta del comité (22 sep 2026)
+- **Docs** Se agregó columna de "Alineación" al reporte de canales con ejemplo dummy de funcionalidad desalineada (banner de imanes de nevera): resalta en rojo funcionalidades sin propósito ni KPI, alineado al control de gobierno acordado en comité
 - **Tooling** Se creó `scripts/validate-portafolio.js` — script transversal que valida el dashboard de portafolio contra datos en vivo de Jira (épicas, AR, estados)
 
 ### Cambiado
