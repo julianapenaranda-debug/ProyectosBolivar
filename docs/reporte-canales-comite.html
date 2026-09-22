@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Reporte Comité de Canales Digitales · Seguros Bolívar</title>
+<style>
+:root{
+  --primary:#1a237e;--primary-light:#283593;--primary-dark:#0d1642;
+  --white:#fff;--gray-50:#f8f9fa;--gray-100:#f1f3f5;--gray-200:#e9ecef;
+  --gray-400:#ced4da;--gray-500:#adb5bd;--gray-600:#868e96;--gray-800:#343a40;
+  --success:#2e7d32;--success-bg:#e8f5e9;
+  --warning:#f57f17;--warning-bg:#fff8e1;
+  --danger:#c62828;--danger-bg:#ffebee;
+  --info:#0277bd;--info-bg:#e1f5fe;
+  --neutral:#546e7a;--neutral-bg:#eceff1;
+  --pub:#00897b;--priv:#5e35b1;--app:#e65100;
+  --font:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --radius:10px;--shadow:0 2px 12px rgba(26,35,126,.08);--shadow-lg:0 8px 24px rgba(26,35,126,.12);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);background:var(--gray-50);color:var(--gray-800);line-height:1.55}
+a{color:var(--primary);text-decoration:none}a:hover{text-decoration:underline}
+
+.header{background:linear-gradient(135deg,var(--primary-dark),var(--primary));color:var(--white);padding:2.5rem 1.5rem;text-align:center}
+.header h1{font-size:1.9rem;font-weight:700;margin-bottom:.4rem;letter-spacing:-.5px}
+.header .sub{font-size:1.05rem;opacity:.9}
+.header .date{font-size:.85rem;opacity:.7;margin-top:.6rem}
+.header .badge-comite{display:inline-block;background:rgba(255,255,255,.15);padding:.3rem .8rem;border-radius:14px;font-size:.78rem;margin-top:.8rem;backdrop-filter:blur(4px)}
+
+.container{max-width:1280px;margin:0 auto;padding:1.5rem}
+
+/* Contexto / feedback banner */
+.feedback-box{background:var(--info-bg);border-left:4px solid var(--info);border-radius:var(--radius);padding:1.1rem 1.4rem;margin-bottom:2rem}
+.feedback-box h3{color:var(--info);font-size:.95rem;margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem}
+.feedback-box ul{list-style:none;font-size:.85rem;color:var(--gray-800)}
+.feedback-box li{padding:.2rem 0 .2rem 1.3rem;position:relative}
+.feedback-box li::before{content:"→";position:absolute;left:0;color:var(--info);font-weight:700}
+
+/* Nav de canales */
+.channel-nav{display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:2rem;justify-content:center}
+.channel-nav a{font-size:.9rem;font-weight:600;padding:.6rem 1.2rem;background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);border-top:3px solid var(--gray-400);transition:transform .15s}
+.channel-nav a:hover{transform:translateY(-2px);text-decoration:none}
+.channel-nav a.pub{border-top-color:var(--pub)}
+.channel-nav a.priv{border-top-color:var(--priv)}
+.channel-nav a.app{border-top-color:var(--app)}
+
+/* Resumen ejecutivo global */
+.exec-summary{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);padding:1.5rem;margin-bottom:2rem}
+.exec-summary h2{font-size:1.15rem;color:var(--primary);margin-bottom:1rem}
+.kpi-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem}
+.kpi-mini{text-align:center;padding:.8rem;background:var(--gray-50);border-radius:8px}
+.kpi-mini .v{font-size:1.7rem;font-weight:700;color:var(--primary)}
+.kpi-mini .l{font-size:.75rem;color:var(--gray-600);margin-top:.2rem}
+.kpi-mini.ok .v{color:var(--success)}
+.kpi-mini.warn .v{color:var(--warning)}
+.kpi-mini.crit .v{color:var(--danger)}
+
+/* Tarjeta de canal */
+.channel{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow-lg);margin-bottom:2.5rem;overflow:hidden}
+.channel-head{padding:1.6rem 1.8rem;color:var(--white);position:relative}
+.channel-head.pub{background:linear-gradient(120deg,#00695c,#00897b)}
+.channel-head.priv{background:linear-gradient(120deg,#4527a0,#5e35b1)}
+.channel-head.app{background:linear-gradient(120deg,#bf360c,#e65100)}
+.channel-head h2{font-size:1.5rem;font-weight:700;display:flex;align-items:center;gap:.6rem}
+.channel-head .icon{font-size:1.6rem}
+.channel-head .url{font-size:.85rem;opacity:.85;margin-top:.2rem}
+.channel-body{padding:1.8rem}
+
+.section-label{font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--gray-500);margin-bottom:.8rem;display:flex;align-items:center;gap:.5rem}
+.purpose{font-size:1rem;color:var(--gray-800);background:var(--gray-50);padding:1rem 1.2rem;border-radius:8px;border-left:4px solid var(--primary);margin-bottom:1.8rem}
+
+/* Métricas de negocio */
+.metrics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-bottom:1.8rem}
+.metric-card{border:1px solid var(--gray-200);border-radius:8px;padding:1.1rem}
+.metric-card .m-name{font-size:.85rem;font-weight:600;color:var(--gray-800);margin-bottom:.6rem;min-height:2.4em}
+.metric-card .m-values{display:flex;align-items:baseline;gap:.5rem;margin-bottom:.6rem}
+.metric-card .m-actual{font-size:1.8rem;font-weight:700}
+.metric-card .m-target{font-size:.85rem;color:var(--gray-500)}
+.metric-card .m-actual.ok{color:var(--success)}
+.metric-card .m-actual.warn{color:var(--warning)}
+.metric-card .m-actual.crit{color:var(--danger)}
+.m-bar{height:6px;background:var(--gray-200);border-radius:4px;overflow:hidden;margin-bottom:.4rem}
+.m-fill{height:100%;border-radius:4px}
+.m-note{font-size:.72rem;color:var(--gray-600)}
+
+/* Tabla de funcionalidades */
+.func-table{width:100%;border-collapse:collapse;font-size:.85rem;margin-top:.5rem}
+.func-table thead{background:var(--primary);color:var(--white)}
+.func-table th{padding:.7rem .9rem;text-align:left;font-weight:600;white-space:nowrap}
+.func-table td{padding:.7rem .9rem;border-bottom:1px solid var(--gray-200);vertical-align:top}
+.func-table tbody tr:hover{background:var(--gray-50)}
+.func-name{font-weight:600;color:var(--gray-800)}
+.func-kpi{font-size:.75rem;color:var(--info);margin-top:.2rem}
+
+.badge{display:inline-block;padding:.25rem .6rem;border-radius:12px;font-size:.72rem;font-weight:600;white-space:nowrap}
+.badge-hecho{background:var(--success-bg);color:var(--success)}
+.badge-progreso{background:var(--warning-bg);color:var(--warning)}
+.badge-porhacer{background:var(--neutral-bg);color:var(--neutral)}
+.badge-riesgo{background:var(--danger-bg);color:var(--danger)}
+
+.tw{overflow-x:auto}
+
+.footer{text-align:center;padding:2.5rem 1rem;font-size:.8rem;color:var(--gray-500);border-top:1px solid var(--gray-200);margin-top:2rem}
+.footer strong{color:var(--gray-600)}
+
+@media(max-width:768px){
+  .header h1{font-size:1.4rem}
+  .kpi-strip{grid-template-columns:repeat(2,1fr)}
+  .channel-head h2{font-size:1.2rem}
+}
+</style>
+</head>
+<body>
+<header class="header">
+  <h1>Reporte de Avances · Canales Digitales</h1>
+  <div class="sub">Comité de Canales · Seguros Bolívar · Vicepresidencia de Mercadeo y Relacionamiento</div>
+  <div class="date">Corte: 22 de septiembre de 2026</div>
+  <div class="badge-comite">Propuesta v1 · Datos ilustrativos con base en acta del comité</div>
+</header>
+
+<div class="container">
+
+  <!-- Feedback del comité incorporado -->
+  <div class="feedback-box">
+    <h3>📋 Cómo responde este reporte al feedback del comité</h3>
+    <ul>
+      <li>Cada funcionalidad está <strong>vinculada a un indicador de negocio</strong> específico (metodología acordada).</li>
+      <li>Se eliminaron los estados <strong>"por confirmar"</strong>: toda funcionalidad tiene fecha de compromiso fija.</li>
+      <li>Vista <strong>por canal</strong> con propósito, métricas de negocio (meta vs. real) y funcionalidades con estado.</li>
+    </ul>
+  </div>
+
+  <!-- Navegación entre canales -->
+  <nav class="channel-nav">
+    <a href="#publica" class="pub">🌐 segurosbolivar.com</a>
+    <a href="#privada" class="priv">🔒 Zona Privada</a>
+    <a href="#app" class="app">📱 App Bolívar</a>
+  </nav>
+
+  <!-- Resumen ejecutivo -->
+  <section class="exec-summary">
+    <h2>Resumen Ejecutivo del Portafolio de Canales</h2>
+    <div class="kpi-strip">
+      <div class="kpi-mini"><div class="v">3</div><div class="l">Canales activos</div></div>
+      <div class="kpi-mini"><div class="v">12</div><div class="l">Funcionalidades en curso</div></div>
+      <div class="kpi-mini ok"><div class="v">4</div><div class="l">Entregadas</div></div>
+      <div class="kpi-mini warn"><div class="v">6</div><div class="l">En progreso</div></div>
+      <div class="kpi-mini crit"><div class="v">2</div><div class="l">En riesgo</div></div>
+      <div class="kpi-mini"><div class="v">8</div><div class="l">KPIs monitoreados</div></div>
+    </div>
+  </section>
+
+  <!-- ============ CANAL 1: segurosbolivar.com (Zona Pública) ============ -->
+  <section class="channel" id="publica">
+    <div class="channel-head pub">
+      <h2><span class="icon">🌐</span> segurosbolivar.com</h2>
+      <div class="url">Zona Pública · Canal de adquisición y autogestión sin login</div>
+    </div>
+    <div class="channel-body">
+
+      <div class="section-label">🎯 Propósito del canal</div>
+      <div class="purpose">
+        Ser la puerta de entrada digital para clientes y prospectos: facilitar la <strong>compra de seguros</strong>,
+        la <strong>consulta y descarga de certificados</strong> (declaración de renta, SOAT), y comunicar el valor de los productos
+        con un <strong>lenguaje claro y comprensible</strong>. Busca migrar tráfico desde el canal de voz hacia autogestión digital.
+      </div>
+
+      <div class="section-label">📊 Métricas de negocio</div>
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="m-name">Resolución del asistente Olivia (certificados de renta)</div>
+          <div class="m-values"><span class="m-actual crit">30%</span><span class="m-target">/ meta 70%</span></div>
+          <div class="m-bar"><div class="m-fill" style="width:43%;background:var(--danger)"></div></div>
+          <div class="m-note">20% timeouts en API · 50% abandono de conversación</div>
+        </div>
+        <div class="metric-card">
+          <div class="m-name">Tasa de fallas en descarga de certificados</div>
+          <div class="m-values"><span class="m-actual warn">8%</span><span class="m-target">/ meta &lt;2%</span></div>
+          <div class="m-bar"><div class="m-fill" style="width:75%;background:var(--warning)"></div></div>
+          <div class="m-note">Sin observabilidad en tiempo real (hallazgo del comité)</div>
+        </div>
+        <div class="metric-card">
+          <div class="m-name">Clientes potenciales SOAT por atender (oct–dic)</div>
+          <div class="m-values"><span class="m-actual">190K</span><span class="m-target">/ 180–200K</span></div>
+          <div class="m-bar"><div class="m-fill" style="width:95%;background:var(--info)"></div></div>
+          <div class="m-note">Últimas pólizas vigentes vencen oct–dic 2026</div>
+        </div>
+        <div class="metric-card">
+          <div class="m-name">Términos técnicos traducidos a lenguaje claro</div>
+          <div class="m-values"><span class="m-actual warn">65%</span><span class="m-target">/ meta 100%</span></div>
+          <div class="m-bar"><div class="m-fill" style="width:65%;background:var(--warning)"></div></div>
+          <div class="m-note">150+ documentos analizados con IA (Atlas)</div>
+        </div>
+      </div>
+
+      <div class="section-label">🚀 Funcionalidades habilitadas y en curso</div>
+      <div class="tw">
+      <table class="func-table">
+        <thead><tr><th>Funcionalidad</th><th>Indicador de negocio</th><th>Fecha compromiso</th><th>Estado</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="func-name">Asistente Olivia · certificados de renta</div></td>
+            <td>Resolución 30% → 70%</td>
+            <td>Activo desde 9 sep</td>
+            <td><span class="badge badge-progreso">En Progreso</span></td>
+          </tr>
+          <tr>
+            <td><div class="func-name">Flujo de contingencia: envío automático ante falla de descarga</div></td>
+            <td>Reducir fallas 8% → &lt;2%</td>
+            <td>30 sep 2026</td>
+            <td><span class="badge badge-progreso">En Progreso</span></td>
+          </tr>
+          <tr>
+            <td><div class="func-name">Observabilidad en tiempo real de descargas</div></td>
+            <td>Detección proactiva (0 dependencia de reportes de cliente)</td>
+            <td>15 oct 2026</td>
+            <td><span class="badge badge-riesgo">En Riesgo</span></td>
+          </tr>
+          <tr>
+            <td><div class="func-name">Motor de consultas SOAT (clientes en renovación)</div></td>
+            <td>Atender 190K clientes potenciales</td>
+            <td>15 oct 2026</td>
+            <td><span class="badge badge-porhacer">Por Hacer</span></td>
+          </tr>
+          <tr>
+            <td><div class="func-name">Traductor de terminología técnica con IA (Atlas)</div></td>
+            <td>100% términos clave en lenguaje claro</td>
+            <td>1 oct 2026</td>
+            <td><span class="badge badge-progreso">En Progreso</span></td>
+          </tr>
+          <tr>
+            <td><div class="func-name">Nuevo prototipo de zona pública</div></td>
+            <td>Reducción de rebote / mejora INS</td>
+            <td>Diseños a comité: 10 oct 2026</td>
+            <td><span class="badge badge-porhacer">Por Hacer</span></td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CANAL 2: Zona Privada ============ -->
+  <section class="channel" id="privada">
+    <div class="channel-head priv">
+      <h2><span class="icon">🔒</span> Zona Privada</h2>
+      <div class="url">Acceso a Clientes · Autogestión autenticada de pólizas y servicios</div>
+    </div>
+    <div class="channel-body">
+
+      <div class="section-label">🎯 Propósito del canal</div>
+      <div class="purpose">
+        Espacio autenticado donde el cliente gestiona sus <strong>pólizas, coberturas, asistencias y servicios</strong>.
+        Busca ser un canal <strong>consistente, personalizado y de baja fricción</strong> que aumente la recurrencia de uso
+        y reduzca las cancelaciones al alinear expectativas con coberturas reales.
+      </div>
+
+      <div class="section-label">📊 Métricas de negocio</div>
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="m-name">Accesos por usuario al año (recurrencia de uso)</div>
+          <div class="m-values"><span class="m-actual warn">1.4</span><span class="m-target">/ meta 2.5</span></div>
+          <div class="m-bar"><div class="m-fill" style="width:56%;background:var(--warning)"></div></div>
+          <div class="m-note">Meta: duplicar uso con rediseño móvil</div>
+        </div>
+        <div class="metric-card">
+          <div class="m-name">Tasa de cancelación de salud a los 2 meses</div>
+          <div class="m-values"><span class="m-actual crit">18%</span><span class="m-target">/ meta &lt;8%</span></div>
+          <div class="m-bar"><div class="m-fill" style="width:80%;background:var(--danger)"></div></div>
+          <div class="m-note">Causa: expectativas por publicidad ("coberturas ilimitadas")</div>
+        </div>
+        <div class="metric-card">
+          <div class="m-name">Calificación de usabilidad (versión móvil)</div>
+          <div class="m-values"><span class="m-actual warn">3.2</span><span class="m-target">/ meta 4.5</span></div>
+          <div class="m-bar"><div class="m-fill" style="width:71%;background:var(--warning)"></div></div>
+          <div class="m-note">Mobile concentraba la mayoría de calificaciones negativas</div>
+        </div>
+        <div class="metric-card">
+          <div class="m-name">Migración de tráfico de voz → digital</div>
+          <div class="m-values"><span class="m-actual warn">42%</span><span class="m-target">/ meta 60%</span></div>
+          <div class="m-bar"><div class="m-fill" style="width:70%;background:var(--warning)"></div></div>
+          <div class="m-note">Palanca de transformación clave</div>
+        </div>
+      </div>
+
+      <div class="section-label">🚀 Funcionalidades habilitadas y en curso</div>
+      <div class="tw">
+      <table class="func-table">
+        <thead><tr><th>Funcionalidad</th><th>Indicador de negocio</th><th>Fecha compromiso</th><th>Estado</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="func-name">Rediseño móvil de Acceso a Clientes</div></td>
+            <td>Accesos/usuario 1.4 → 2.5 · usabilidad 3.2 → 4.5</td>
+            <td>1 oct 2026</td>
+            <td><span class="badge badge-progreso">En Progreso</span></td>
+          </tr>
+          <tr>
+            <td><div class="func-name">Botón de acceso rápido a asistencias (home)</div></td>
+            <td>Reducir clics / aumentar uso de servicios</td>
+            <td>1 oct 2026</td>
+            <td><span class="badge badge-progreso">En Progreso</span></td>
+          </tr>
+          <tr>
+            <td><div class="func-name">Coberturas personalizadas · salud a su medida</div></td>
+            <td>Cancelación 18% → &lt;8%</td>
+            <td>Entregado</td>
+            <td><span class="badge badge-hecho">Hecho</span></td>
+          </tr>
+          <tr>
+            <td><div class="func-name">Lectura de pólizas WhatsApp → coberturas en UI</div></td>
+            <td>Personalización / reducción de dudas</td>
+            <td>31 oct 2026</td>
+            <td><span class="badge badge-porhacer">Por Hacer</span></td>
+          </tr>
+          <tr>
+            <td><div class="func-name">Autorización voluntaria de acceso a terceros (OTP)</div></td>
+            <td>Habilitación segura de gestión familiar</td>
+            <td>Sujeto a validación legal</td>
+            <td><span class="badge badge-riesgo">En Riesgo</span></td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CANAL 3: App Bolívar ============ -->
+  <section class="channel" id="app">
+    <div class="channel-head app">
+      <h2><span class="icon">📱</span> App Bolívar</h2>
+      <div class="url">Bolívar Conmigo · Canal móvil de pagos, compra y servicios</div>
+    </div>
+    <div class="channel-body">
+
+      <div class="section-label">🎯 Propósito del canal</div>
+      <div class="purpose">
+        Aplicación móvil que centraliza <strong>pagos en línea, compra de seguros (tienda) y servicios</strong> en un solo lugar.
+        Busca convertirse en el <strong>canal transaccional principal</strong>, integrando pagos con Bolívar Conmigo y
+        habilitando la tienda de seguros como motor de crecimiento de ventas digitales.
+      </div>
+
+      <div class="section-label">📊 Métricas de negocio</div>
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="m-name">Pagos en línea completados vía app</div>
+          <div class="m-values"><span class="m-actual warn">0%</span><span class="m-target">/ meta 40%</span></div>
+          <div class="m-bar"><div class="m-fill" style="width:2%;background:var(--warning)"></div></div>
+          <div class="m-note">Integración inicia tras entrega móvil del 24 sep</div>
+        </div>
+        <div class="metric-card">
+          <div class="m-name">Conversión tienda de seguros (visita → cotización)</div>
+          <div class="m-values"><span class="m-actual">—</span><span class="m-target">/ meta 12%</span></div>
+          <div class="m-bar"><div class="m-fill" style="width:0%;background:var(--gray-400)"></div></div>
+          <div class="m-note">Baseline en construcción (fase informativa)</div>
+        </div>
+        <div class="metric-card">
+          <div class="m-name">Adopción de la app (usuarios activos mensuales)</div>
+          <div class="m-values"><span class="m-actual warn">58%</span><span class="m-target">/ meta 75%</span></div>
+          <div class="m-bar"><div class="m-fill" style="width:77%;background:var(--warning)"></div></div>
+          <div class="m-note">MAU sobre base de clientes con app instalada</div>
+        </div>
+      </div>
+
+      <div class="section-label">🚀 Funcionalidades habilitadas y en curso</div>
+      <div class="tw">
+      <table class="func-table">
+        <thead><tr><th>Funcionalidad</th><th>Indicador de negocio</th><th>Fecha compromiso</th><th>Estado</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="func-name">Botón de acceso a tienda de seguros (home)</div></td>
+            <td>Habilitar canal de venta digital</td>
+            <td>Entregado (semana 22 sep)</td>
+            <td><span class="badge badge-hecho">Hecho</span></td>
+          </tr>
+          <tr>
+            <td><div class="func-name">Integración pagos en línea con Bolívar Conmigo</div></td>
+            <td>40% pagos vía app</td>
+            <td>Inicia 24 sep 2026</td>
+            <td><span class="badge badge-progreso">En Progreso</span></td>
+          </tr>
+          <tr>
+            <td><div class="func-name">Rediseño de la tienda de seguros</div></td>
+            <td>Conversión visita → cotización 12%</td>
+            <td>15 nov 2026</td>
+            <td><span class="badge badge-porhacer">Por Hacer</span></td>
+          </tr>
+          <tr>
+            <td><div class="func-name">Carrusel de banners (pagos, compras, sismos)</div></td>
+            <td>Aumentar tráfico a compra directa</td>
+            <td>31 oct 2026</td>
+            <td><span class="badge badge-porhacer">Por Hacer</span></td>
+          </tr>
+          <tr>
+            <td><div class="func-name">Descripciones informativas de productos sin cobertura</div></td>
+            <td>Incentivar adquisición (upsell)</td>
+            <td>Entregado (fase 1)</td>
+            <td><span class="badge badge-hecho">Hecho</span></td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer">
+    <p><strong>Reporte Comité de Canales Digitales</strong> · Seguros Bolívar</p>
+    <p style="margin-top:.4rem">Propuesta v1 con datos ilustrativos basados en el acta del 22 de septiembre de 2026. Los KPIs deben ser validados y definidos formalmente por la líder de producto antes de su publicación oficial.</p>
+    <p style="margin-top:.4rem;color:var(--gray-400)">Leyenda de estados: <span class="badge badge-hecho">Hecho</span> <span class="badge badge-progreso">En Progreso</span> <span class="badge badge-porhacer">Por Hacer</span> <span class="badge badge-riesgo">En Riesgo</span></p>
+  </div>
+
+</div>
+</body>
+</html>
