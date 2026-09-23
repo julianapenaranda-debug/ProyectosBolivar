@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Autogestión de Modificaciones — Pólizas Individuales | Simón Ventas × Motor de Decisión</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <style>
+    :root {
+      --verde: #009639;
+      --verde-oscuro: #00662a;
+      --gris: #5a5a5a;
+      --gris-claro: #f4f6f8;
+      --amarillo: #ffcd00;
+      --azul: #0071ce;
+      --borde: #e2e6ea;
+      --texto: #1c2b36;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      background: var(--gris-claro);
+      color: var(--texto);
+      line-height: 1.5;
+    }
+    header {
+      background: linear-gradient(135deg, var(--verde) 0%, var(--verde-oscuro) 100%);
+      color: #fff;
+      padding: 32px 40px;
+    }
+    header h1 { margin: 0 0 6px; font-size: 26px; }
+    header p { margin: 0; opacity: 0.92; font-size: 15px; }
+    .meta {
+      margin-top: 14px;
+      font-size: 13px;
+      display: flex;
+      gap: 22px;
+      flex-wrap: wrap;
+      opacity: 0.95;
+    }
+    main { max-width: 1200px; margin: 0 auto; padding: 32px 24px 60px; }
+    section {
+      background: #fff;
+      border: 1px solid var(--borde);
+      border-radius: 12px;
+      padding: 28px 32px;
+      margin-bottom: 28px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    h2 {
+      font-size: 20px;
+      margin: 0 0 4px;
+      color: var(--verde-oscuro);
+      border-left: 4px solid var(--verde);
+      padding-left: 12px;
+    }
+    .subtitulo { margin: 0 0 20px 16px; color: var(--gris); font-size: 14px; }
+    .diagrama {
+      overflow-x: auto;
+      background: #fbfcfd;
+      border: 1px dashed var(--borde);
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+    }
+    .leyenda {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+      font-size: 13px;
+    }
+    .leyenda span { display: inline-flex; align-items: center; gap: 7px; }
+    .caja { width: 15px; height: 15px; border-radius: 3px; display: inline-block; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 8px; }
+    .card {
+      border: 1px solid var(--borde);
+      border-left: 4px solid var(--verde);
+      border-radius: 8px;
+      padding: 14px 16px;
+      background: #fbfdfb;
+    }
+    .card h3 { margin: 0 0 6px; font-size: 15px; color: var(--verde-oscuro); }
+    .card p { margin: 0; font-size: 13.5px; color: var(--gris); }
+    table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 14px; }
+    th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--borde); vertical-align: top; }
+    th { background: var(--gris-claro); color: var(--verde-oscuro); font-weight: 600; }
+    .tag {
+      display: inline-block; padding: 2px 9px; border-radius: 20px; font-size: 12px;
+      font-weight: 600;
+    }
+    .tag-auto { background: #e3f5e9; color: var(--verde-oscuro); }
+    .tag-tarif { background: #fff3d6; color: #8a6d00; }
+    .tag-nom { background: #e6f0fb; color: #004a87; }
+    footer { text-align: center; color: var(--gris); font-size: 12.5px; padding: 20px; }
+    .nota { font-size: 12.5px; color: var(--gris); margin-top: 16px; font-style: italic; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Autogestión de Modificaciones de Pólizas Individuales</h1>
+    <p>Gap Analysis de movimientos y ruteo por el Motor de Decisión — Autos, Vida, Salud y Hogar</p>
+    <div class="meta">
+      <span>📅 Propuesta de trabajo: 22 de septiembre de 2026</span>
+      <span>🎯 Objetivo: clasificar cada modificación por tipo de tratamiento</span>
+      <span>🔗 Relacionado: Convergencia Simón Ventas × Motor de Decisión</span>
+    </div>
+  </header>
+
+  <main>
+    <!-- 1. FLUJO DE MODIFICACION -->
+    <section>
+      <h2>1. Flujo de una Solicitud de Modificación</h2>
+      <p class="subtitulo">Desde que el intermediario solicita un movimiento en Simón Ventas hasta que se aplica en el core. El Motor de Decisión clasifica el movimiento y define la ruta: automática, tarifable o nominativa con revisión.</p>
+      <div class="diagrama">
+        <pre class="mermaid">
+flowchart TB
+  actor["👤 Intermediario / Asesor"]
+
+  subgraph canal["Canal (Simón Ventas)"]
+    solicita["🖥️ Solicita modificación<br/><small>Cambio de tomador, forma de pago,<br/>valores asegurados, coberturas</small>"]
+  end
+
+  subgraph decision["Motor de Decisión"]
+    clasifica{"⚖️ Clasificación<br/>del movimiento"}
+    reglas["🧠 Reglas y controles<br/>técnicos (centralizados)"]
+  end
+
+  subgraph rutas["Rutas de Tratamiento"]
+    auto["⚡ Aplicación Automática<br/><small>Movimiento nominativo simple</small>"]
+    tarifa["💲 Recálculo Tarifario<br/><small>Recalcula prima y condiciones</small>"]
+    revision["📋 Revisión Operativa<br/><small>Riesgo no estándar → Reenganche</small>"]
+  end
+
+  subgraph persistencia["Persistencia"]
+    apis["🔌 APIs Livianas<br/><small>Aplican el cambio, sin reglas</small>"]
+    core[("🏛️ Core Pólizas")]
+  end
+
+  bizagi["🔄 Bizagi / Filenet<br/><small>Trazabilidad y documentos</small>"]
+
+  actor --> solicita
+  solicita --> clasifica
+  clasifica --> reglas
+  reglas -->|"Nominativa"| auto
+  reglas -->|"Tarifable"| tarifa
+  reglas -->|"No estándar"| revision
+  auto --> apis
+  tarifa --> apis
+  revision -->|"reglas revalidadas"| reglas
+  apis --> core
+  solicita -.->|Trazabilidad| bizagi
+  revision -.->|Gestión de caso| bizagi
+
+  classDef canalc fill:#e3f5e9,stroke:#009639,stroke-width:2px,color:#00662a;
+  classDef decc fill:#fff3d6,stroke:#c79a00,stroke-width:2px,color:#8a6d00;
+  classDef rutac fill:#e6f0fb,stroke:#0071ce,stroke-width:2px,color:#004a87;
+  classDef perc fill:#f0f0f0,stroke:#5a5a5a,stroke-width:2px,color:#1c2b36;
+  classDef sopc fill:#f7ecff,stroke:#8e44ad,stroke-width:2px,color:#5b2c6f;
+  class solicita canalc;
+  class clasifica,reglas decc;
+  class auto,tarifa,revision rutac;
+  class apis,core perc;
+  class bizagi sopc;
+        </pre>
+      </div>
+      <div class="leyenda">
+        <span><span class="caja" style="background:#e3f5e9;border:1px solid #009639;"></span> Canal (Simón Ventas)</span>
+        <span><span class="caja" style="background:#fff3d6;border:1px solid #c79a00;"></span> Motor de Decisión</span>
+        <span><span class="caja" style="background:#e6f0fb;border:1px solid #0071ce;"></span> Rutas de tratamiento</span>
+        <span><span class="caja" style="background:#f0f0f0;border:1px solid #5a5a5a;"></span> Persistencia</span>
+        <span><span class="caja" style="background:#f7ecff;border:1px solid #8e44ad;"></span> Trazabilidad / Documentos</span>
+      </div>
+    </section>
+
+    <!-- 2. GAP ANALYSIS -->
+    <section>
+      <h2>2. Gap Analysis — Clasificación de Movimientos</h2>
+      <p class="subtitulo">Cada tipo de modificación se clasifica por su tratamiento para determinar cuáles son automáticas (nominativas), cuáles requieren recálculo tarifario y cuáles necesitan revisión operativa.</p>
+      <table>
+        <thead>
+          <tr><th>Movimiento</th><th>Producto(s)</th><th>Tratamiento</th><th>Ruta</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Cambio de tomador / beneficiario</td>
+            <td>Todos</td>
+            <td><span class="tag tag-nom">Nominativo</span></td>
+            <td>Aplicación automática</td>
+          </tr>
+          <tr>
+            <td>Cambio de forma de pago</td>
+            <td>Todos</td>
+            <td><span class="tag tag-auto">Automático</span></td>
+            <td>Aplicación automática</td>
+          </tr>
+          <tr>
+            <td>Modificación de valor asegurado</td>
+            <td>Autos, Hogar</td>
+            <td><span class="tag tag-tarif">Tarifable</span></td>
+            <td>Recálculo tarifario</td>
+          </tr>
+          <tr>
+            <td>Inclusión / exclusión de coberturas</td>
+            <td>Vida, Salud</td>
+            <td><span class="tag tag-tarif">Tarifable</span></td>
+            <td>Recálculo tarifario</td>
+          </tr>
+          <tr>
+            <td>Cambio de deducible</td>
+            <td>Autos, Salud</td>
+            <td><span class="tag tag-tarif">Tarifable</span></td>
+            <td>Recálculo tarifario</td>
+          </tr>
+          <tr>
+            <td>Ampliación fuera de política</td>
+            <td>Todos</td>
+            <td><span class="tag tag-tarif">No estándar</span></td>
+            <td>Revisión operativa → Reenganche</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="nota">Nota: la clasificación es una propuesta base para validar con negocio. El Motor de Decisión concentra las reglas; Simón Ventas solo presenta el resultado y captura la solicitud.</p>
+    </section>
+
+    <!-- 3. TIPOS DE TRATAMIENTO -->
+    <section>
+      <h2>3. Definición de Tipos de Tratamiento</h2>
+      <p class="subtitulo">Qué significa cada categoría de movimiento y cómo se resuelve.</p>
+      <div class="grid">
+        <div class="card">
+          <h3>🟢 Nominativo / Automático</h3>
+          <p>Cambio de datos que no altera la prima ni el riesgo. Se aplica en línea sin intervención humana ni recálculo.</p>
+        </div>
+        <div class="card">
+          <h3>🟡 Tarifable</h3>
+          <p>Movimiento que modifica prima o condiciones. El Motor recalcula, presenta la nueva prima y, con aprobación, se aplica.</p>
+        </div>
+        <div class="card">
+          <h3>🔵 No Estándar</h3>
+          <p>Movimiento fuera de parámetros de suscripción. Genera solicitud para revisión operativa y retoma vía el Módulo de Reenganche.</p>
+        </div>
+        <div class="card">
+          <h3>🔁 Reenganche</h3>
+          <p>Operaciones retoma la solicitud precargada, ajusta deducibles/coberturas y devuelve el caso al Motor para revalidar reglas.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. MATRIZ DE PRIORIZACION -->
+    <section>
+      <h2>4. Matriz de Priorización de Movimientos</h2>
+      <p class="subtitulo">Ordena los movimientos por valor de negocio y esfuerzo de implementación para definir el orden de habilitación.</p>
+      <table>
+        <thead>
+          <tr><th>Movimiento</th><th>Valor de negocio</th><th>Esfuerzo</th><th>Prioridad</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Cambio de forma de pago</td>
+            <td>Alto (alto volumen)</td>
+            <td>Bajo</td>
+            <td><span class="tag tag-auto">1 — Quick win</span></td>
+          </tr>
+          <tr>
+            <td>Cambio de tomador / beneficiario</td>
+            <td>Alto</td>
+            <td>Medio</td>
+            <td><span class="tag tag-auto">2</span></td>
+          </tr>
+          <tr>
+            <td>Modificación de valor asegurado</td>
+            <td>Medio</td>
+            <td>Medio</td>
+            <td><span class="tag tag-tarif">3</span></td>
+          </tr>
+          <tr>
+            <td>Inclusión / exclusión de coberturas</td>
+            <td>Medio</td>
+            <td>Alto</td>
+            <td><span class="tag tag-tarif">4</span></td>
+          </tr>
+          <tr>
+            <td>Ampliación fuera de política</td>
+            <td>Bajo (baja frecuencia)</td>
+            <td>Alto</td>
+            <td><span class="tag tag-nom">5</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 5. PROXIMOS PASOS -->
+    <section>
+      <h2>5. Próximos Pasos</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Validar clasificación con negocio</h3>
+          <p>Confirmar el tratamiento de cada movimiento por producto con suscripción y operaciones antes de implementar.</p>
+        </div>
+        <div class="card">
+          <h3>Contrato de APIs de modificación</h3>
+          <p>Definir el contrato OpenAPI de las APIs livianas que aplican cada movimiento en el core, versionado con prefijo.</p>
+        </div>
+        <div class="card">
+          <h3>Reglas en el Motor de Decisión</h3>
+          <p>Trasladar la lógica de clasificación al Motor, evitando cualquier regla en el canal Simón Ventas.</p>
+        </div>
+        <div class="card">
+          <h3>Piloto con quick wins</h3>
+          <p>Arrancar por cambio de forma de pago y tomador (alto volumen, bajo esfuerzo) para validar el flujo end-to-end.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Propuesta de arquitectura para la Autogestión de Modificaciones de Pólizas Individuales · Complementa la sesión de alineación Simón Ventas × Motor de Decisión
+  </footer>
+
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: "base",
+      themeVariables: {
+        fontFamily: "-apple-system, Segoe UI, Roboto, sans-serif",
+        fontSize: "14px"
+      },
+      flowchart: { curve: "basis", nodeSpacing: 40, rankSpacing: 55, useMaxWidth: true }
+    });
+  </script>
+</body>
+</html>
