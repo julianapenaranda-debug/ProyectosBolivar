@@ -82,13 +82,25 @@ a{color:var(--primary);text-decoration:none}a:hover{text-decoration:underline}
 
 .section-label{font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--gray-500);margin-bottom:.8rem;display:flex;align-items:center;gap:.5rem}
 
-/* KPIs colapsables */
-.kpi-collapse{margin-bottom:1.8rem;border:1px solid var(--gray-200);border-radius:8px;overflow:hidden}
-.kpi-collapse>summary{list-style:none;cursor:pointer;padding:.9rem 1.1rem;background:var(--gray-50);font-size:.85rem;font-weight:700;color:var(--primary);display:flex;align-items:center;gap:.5rem}
+/* KPIs colapsables — estilo banner interactivo evidente */
+.kpi-collapse{margin-bottom:1.8rem;border:1.5px solid var(--info);border-radius:8px;overflow:hidden;box-shadow:0 1px 6px rgba(2,119,189,.12)}
+.kpi-collapse>summary{list-style:none;cursor:pointer;padding:1rem 1.2rem;background:var(--info-bg);font-size:.9rem;font-weight:700;color:var(--info);display:flex;align-items:center;gap:.6rem;transition:background .15s}
+.kpi-collapse>summary:hover{background:#d4ecfa}
 .kpi-collapse>summary::-webkit-details-marker{display:none}
-.kpi-collapse>summary::before{content:"▸";display:inline-block;transition:transform .2s;color:var(--gray-500)}
-.kpi-collapse[open]>summary::before{transform:rotate(90deg)}
-.kpi-collapse>summary .hint{margin-left:auto;font-size:.72rem;font-weight:400;color:var(--gray-500)}
+/* Ícono de ojo que indica "ver" */
+.kpi-collapse>summary .eye{font-size:1.1rem}
+/* Botón pill a la derecha */
+.kpi-collapse>summary .toggle-btn{margin-left:auto;display:inline-flex;align-items:center;gap:.4rem;background:var(--info);color:var(--white);font-size:.76rem;font-weight:700;padding:.4rem .85rem;border-radius:20px;white-space:nowrap;box-shadow:0 1px 4px rgba(2,119,189,.3)}
+.kpi-collapse>summary .toggle-btn .chev{display:inline-block;transition:transform .2s}
+.kpi-collapse[open]>summary .toggle-btn .chev{transform:rotate(180deg)}
+/* El texto del botón cambia según abierto/cerrado */
+.kpi-collapse>summary .txt-ver{display:inline}
+.kpi-collapse>summary .txt-ocultar{display:none}
+.kpi-collapse[open]>summary .txt-ver{display:none}
+.kpi-collapse[open]>summary .txt-ocultar{display:inline}
+.kpi-collapse[open]>summary{border-bottom:1px solid var(--info);background:var(--info)}
+.kpi-collapse[open]>summary,.kpi-collapse[open]>summary .eye{color:var(--white)}
+.kpi-collapse[open]>summary .toggle-btn{background:var(--white);color:var(--info)}
 .kpi-collapse-body{padding:1.1rem}
 .kpi-cat{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--gray-600);margin:1.1rem 0 .5rem}
 .kpi-cat:first-child{margin-top:0}
@@ -235,7 +247,7 @@ a{color:var(--primary);text-decoration:none}a:hover{text-decoration:underline}
 
       <!-- KPIs colapsables -->
       <details class="kpi-collapse">
-        <summary>📊 KPIs de segurosbolivar.com <span class="hint">corte a septiembre · clic para ver</span></summary>
+        <summary><span class="eye"></span>�️</span> KPIs de segurosbolivar.com · corte a septiembre <span class="toggle-btn"><span class="txt-ver">Ver KPIs</span><span class="txt-ocultar">Ocultar KPIs</span> <span class="chev">▾</span></span></summary>
         <div class="kpi-collapse-body">
           <div class="kpi-cat">💼 Negocio</div>
           <div class="kpi-grid">
@@ -342,7 +354,7 @@ a{color:var(--primary);text-decoration:none}a:hover{text-decoration:underline}
     <div class="channel-body">
 
       <details class="kpi-collapse">
-        <summary>📊 KPIs de Acceso a Clientes <span class="hint">corte a septiembre · clic para ver</span></summary>
+        <summary><span class="eye"></span>�️</span> KPIs de Acceso a Clientes · corte a septiembre <span class="toggle-btn"><span class="txt-ver">Ver KPIs</span><span class="txt-ocultar">Ocultar KPIs</span> <span class="chev">▾</span></span></summary>
         <div class="kpi-collapse-body">
           <div class="kpi-cat">💼 Negocio</div>
           <div class="kpi-grid">
@@ -481,7 +493,7 @@ a{color:var(--primary);text-decoration:none}a:hover{text-decoration:underline}
     <div class="channel-body">
 
       <details class="kpi-collapse">
-        <summary>📊 KPIs de App Bolívar <span class="hint">corte a septiembre · clic para ver</span></summary>
+        <summary><span class="eye"></span>�️</span> KPIs de App Bolívar · corte a septiembre <span class="toggle-btn"><span class="txt-ver">Ver KPIs</span><span class="txt-ocultar">Ocultar KPIs</span> <span class="chev">▾</span></span></summary>
         <div class="kpi-collapse-body">
           <div class="kpi-cat">💼 Negocio</div>
           <div class="kpi-grid">
